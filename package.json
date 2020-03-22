@@ -1,0 +1,16 @@
+{
+  "name": "recordar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc | node dist/qr.js",
+    "dev": "tsc | nodemon src/qr.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.7.0",
+    "typescript": "^3.8.3"
+  }
+}
