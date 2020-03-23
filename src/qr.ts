@@ -254,6 +254,11 @@ class QR {
     }
 
     draw(ctx) {
+        this.addPatterns();
+        this.loadData(this.getFinalForm().toString());
+        this.mask();
+        this.formatInfo();
+
         const sizeRect = Math.floor(ctx.canvas.width / this.d);
         for (let i = 0; i < this.d; i++) {
             for (let j = 0; j < this.d; j++) {

@@ -233,6 +233,10 @@ var QR = /** @class */ (function () {
         return value;
     };
     QR.prototype.draw = function (ctx) {
+        this.addPatterns();
+        this.loadData(this.getFinalForm().toString());
+        this.mask();
+        this.formatInfo();
         var sizeRect = Math.floor(ctx.canvas.width / this.d);
         for (var i = 0; i < this.d; i++) {
             for (var j = 0; j < this.d; j++) {
