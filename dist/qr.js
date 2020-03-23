@@ -233,7 +233,7 @@ var QR = /** @class */ (function () {
         return value;
     };
     QR.prototype.draw = function (ctx) {
-        var sizeRect = ctx.canvas.width / this.d;
+        var sizeRect = Math.floor(ctx.canvas.width / this.d);
         for (var i = 0; i < this.d; i++) {
             for (var j = 0; j < this.d; j++) {
                 ctx.beginPath();
@@ -421,19 +421,27 @@ var QR = /** @class */ (function () {
         }
     };
     QR.prototype.mask = function () {
-        if (this.maskNumber == 0) {
-            for (var j = 0; j < this.d; j++) {
-                for (var i = 0; i < this.d; i++) {
-                    if ((i + j) % 2 == 0) {
-                        switch (this.board[i][j]) {
-                            case 0:
-                                this.board[i][j] = 1;
-                                break;
-                            case 1:
-                                this.board[i][j] = 0;
-                                break;
-                            //default: console.log("hi");
-                        }
+        var fmask = [
+            { "func": function (r, c) { return (r + c) % 2 === 0; } },
+            { "func": function (r, c) { return r % 2 === 0; } },
+            { "func": function (r, c) { return c % 3 === 0; } },
+            { "func": function (r, c) { return (r + c) % 3 === 0; } },
+            { "func": function (r, c) { return (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0; } },
+            { "func": function (r, c) { return (((r * c) % 2) + ((r * c) % 3)) === 0; } },
+            { "func": function (r, c) { return (((r * c) % 2) + ((r * c) % 3)) % 2 === 0; } },
+            { "func": function (r, c) { return (((r + c) % 2) + ((r * c) % 3)) % 2 === 0; } },
+        ];
+        var f = fmask[this.maskNumber];
+        for (var j = 0; j < this.d; j++) {
+            for (var i = 0; i < this.d; i++) {
+                if (f.func(i, j)) {
+                    switch (this.board[i][j]) {
+                        case 0:
+                            this.board[i][j] = 1;
+                            break;
+                        case 1:
+                            this.board[i][j] = 0;
+                            break;
                     }
                 }
             }
@@ -489,24 +497,3 @@ var QR = /** @class */ (function () {
     };
     return QR;
 }());
-/*
-let qr = new QR(`There\\'s a frood who really knows where his towel is!`, 5, "Q")
-
-const canvas:any = document.getElementById("canvas");
-const ctx:any = canvas.getContext("2d");
-
-qr.draw();
-*/
-//console.log("modo+cci",qr.firstPart());
-//console.log("mensaje: ",qr.msgEncoding())
-//console.log("data coding", qr.dataEncoding());
-//console.log("data groups", qr.makeGroups(qr.dataEncoding()))
-/*let arr=
-[[[67,85,70,134,87,38,85,194,119,50,6,18,6,103,38],
-[246,246,66,7,118,134,242,7,38,86,22,198,199,146,6]],
-[[182,230,247,119,50,7,118,134,87,38,82,6,134,151,50,7],
-[70,247,118,86,194,6,151,50,16,236,17,236,17,236,17,236]]];
-
-console.log("error_test", qr.errorEncoding(arr));
-*/
-//console.log(qr.getFinalForm());
