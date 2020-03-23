@@ -241,9 +241,9 @@ var QR = /** @class */ (function () {
                 ctx.fillStyle = this.getColor(this.board[i][j]);
                 //this.board[i][j]===1?"black":"white";
                 ctx.fill();
-                ctx.lineWidth = .3;
-                ctx.strokeStyle = "black";
-                ctx.stroke();
+                //ctx.lineWidth = .3;
+                //ctx.strokeStyle = "black";
+                //ctx.stroke();
                 ctx.closePath();
             }
         }
@@ -362,23 +362,22 @@ var QR = /** @class */ (function () {
             }
         }
         //información de area
-        if (this.version < 7) {
-            for (var i = 0; i < 8; i++) {
-                // información de area (arriba izq)
-                if (i != 6) {
-                    this.board[i][8] = 3;
-                    this.board[8][i] = 3;
-                    this.board[8][8] = 3;
-                }
-                // información de area (abajo izq)
-                if (this.board[this.d - 1 - i][8] != 4) {
-                    this.board[this.d - 1 - i][8] = 3;
-                }
-                // información de area (arriba der)
-                this.board[8][this.d - 1 - i] = 3;
+        //if (this.version < 7) {}
+        for (var i = 0; i < 8; i++) {
+            // información de area (arriba izq)
+            if (i != 6) {
+                this.board[i][8] = 3;
+                this.board[8][i] = 3;
+                this.board[8][8] = 3;
             }
+            // información de area (abajo izq)
+            if (this.board[this.d - 1 - i][8] != 4) {
+                this.board[this.d - 1 - i][8] = 3;
+            }
+            // información de area (arriba der)
+            this.board[8][this.d - 1 - i] = 3;
         }
-        else {
+        if (this.version >= 7) {
             for (var i = 0; i < 6; i++) {
                 this.board[this.d - 9][i] = 3;
                 this.board[this.d - 10][i] = 3;
@@ -442,30 +441,49 @@ var QR = /** @class */ (function () {
     };
     QR.prototype.formatInfo = function () {
         var arrayInfo = [{ "L": "111011111000100", "M": "101010000010010", "Q": "011010101011111", "H": "001011010001001" }, { "L": "111001011110011", "M": "101000100100101", "Q": "011000001101000", "H": "001001110111110" }, { "L": "111110110101010", "M": "101111001111100", "Q": "011111100110001", "H": "001110011100111" }, { "L": "111100010011101", "M": "101101101001011", "Q": "011101000000110", "H": "001100111010000" }, { "L": "110011000101111", "M": "100010111111001", "Q": "010010010110100", "H": "000011101100010" }, { "L": "110001100011000", "M": "100000011001110", "Q": "010000110000011", "H": "000001001010101" }, { "L": "110110001000001", "M": "100111110010111", "Q": "010111011011010", "H": "000110100001100" }, { "L": "110100101110110", "M": "100101010100000", "Q": "010101111101101", "H": "000100000111011" }];
-        if (this.version < 7) {
-            var info = arrayInfo[this.maskNumber][this.lvlCorrection];
-            console.log(info);
-            var ii = 0;
-            var iii = 0;
-            this.board[8][8] = Number(info[7]) == 1 ? 4 : 2;
-            for (var i = 0; i < 8; i++) {
-                // información de area (arriba izq)
-                if (i != 6) {
-                    //console.log(info[i])
-                    this.board[8][i] = Number(info[ii]) == 1 ? 4 : 2;
-                    ii++;
-                }
-                if (i != 1) {
-                    this.board[7 - i][8] = Number(info[7 + i]) == 1 ? 4 : 2;
-                }
-                // información de area (abajo izq)
-                if (this.board[this.d - 1 - i][8] != 4) {
-                    this.board[this.d - 1 - i][8] = Number(info[i]) == 1 ? 4 : 2;
-                    ;
-                }
-                // información de area (arriba der)
-                this.board[8][this.d - 1 - i] = Number(info[info.length - 1 - i]) == 1 ? 4 : 2;
+        //if (this.version < 7) {}
+        var info = arrayInfo[this.maskNumber][this.lvlCorrection];
+        console.log(info);
+        var ii = 0;
+        var iii = 0;
+        this.board[8][8] = Number(info[7]) == 1 ? 4 : 2;
+        for (var i = 0; i < 8; i++) {
+            // información de area (arriba izq)
+            if (i != 6) {
+                //console.log(info[i])
+                this.board[8][i] = Number(info[ii]) == 1 ? 4 : 2;
+                ii++;
+            }
+            if (i != 1) {
+                this.board[7 - i][8] = Number(info[7 + i]) == 1 ? 4 : 2;
+            }
+            // información de area (abajo izq)
+            if (this.board[this.d - 1 - i][8] != 4) {
+                this.board[this.d - 1 - i][8] = Number(info[i]) == 1 ? 4 : 2;
                 ;
+            }
+            // información de area (arriba der)
+            this.board[8][this.d - 1 - i] = Number(info[info.length - 1 - i]) == 1 ? 4 : 2;
+            ;
+        }
+        if (this.version >= 7) {
+            var arrayVersion = ["000111110010010100", "001000010110111100", "001001101010011001", "001010010011010011", "001011101111110110", "001100011101100010", "001101100001000111", "001110011000001101", "001111100100101000", "010000101101111000", "010001010001011101", "010010101000010111", "010011010100110010", "010100100110100110", "010101011010000011", "010110100011001001", "010111011111101100", "011000111011000100", "011001000111100001", "011010111110101011", "011011000010001110", "011100110000011010", "011101001100111111", "011110110101110101", "011111001001010000", "100000100111010101", "100001011011110000", "100010100010111010", "100011011110011111", "100100101100001011", "100101010000101110", "100110101001100100", "100111010101000001", "101000110001101001"];
+            // cambiar información de versión
+            var info_1 = arrayVersion[this.version - 7];
+            var rev = function (str) { return __spreadArrays(str).reverse().join(''); };
+            info_1 = rev(info_1);
+            //console.log(info);
+            var j = 0;
+            var k = 0;
+            for (var i = 0; i < 6; i++) {
+                // abajo
+                this.board[this.d - 11][i] = Number(info_1[j++]) == 1 ? 4 : 2;
+                this.board[this.d - 10][i] = Number(info_1[j++]) == 1 ? 4 : 2;
+                this.board[this.d - 9][i] = Number(info_1[j++]) == 1 ? 4 : 2;
+                // arriba
+                this.board[i][this.d - 11] = Number(info_1[k++]) == 1 ? 4 : 2;
+                this.board[i][this.d - 10] = Number(info_1[k++]) == 1 ? 4 : 2;
+                this.board[i][this.d - 9] = Number(info_1[k++]) == 1 ? 4 : 2;
             }
         }
     };

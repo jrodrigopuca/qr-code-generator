@@ -2,8 +2,8 @@
 My own QR Code Generator from scratch
 
 ## To-do
-[_] add version info
-[_] add mask 2..7
-[_] add form
-[_] suggest a good version to every text
-[_] suggest the best mask to every qr code
+- [o] add version info
+- [o] add mask 2..7
+- [o] add form
+- [o] suggest a good version to every text
+- [o] suggest the best mask to every qr code
