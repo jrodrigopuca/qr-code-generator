@@ -1,0 +1,17 @@
+body, canvas{
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+}
+
+#txt{
+    margin:20px;
+    border-radius: 50px;
+    text-align: center;
+    font-size: x-large;
+    padding: 10px;
+}
+
+#canvas{
+    margin: 40px;
+}
