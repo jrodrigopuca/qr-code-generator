@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc | node dist/qr.js",
     "dev": "tsc | nodemon src/qr.ts",
-    "tsc": "tsc src/qr.ts"
+    "tsc": "tsc",
+    "live": "live-server ."
   },
   "dependencies": {},
   "devDependencies": {
