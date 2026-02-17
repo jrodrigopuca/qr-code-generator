@@ -1,6 +1,6 @@
 {
   "name": "qr-generator",
-  "version": "1.0.0-alpha.1",
+  "version": "2.0.5",
   "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -39,22 +39,22 @@
     "zero-dependency",
     "iso-18004"
   ],
-  "author": "Juan",
+  "author": "JuanPuca",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juanqr/qr-generator"
+    "url": "https://github.com/jrodrigopuca/qr-generator"
   },
   "bugs": {
-    "url": "https://github.com/juanqr/qr-generator/issues"
+    "url": "https://github.com/jrodrigopuca/qr-generator/issues"
   },
-  "homepage": "https://github.com/juanqr/qr-generator#readme",
+  "homepage": "https://github.com/jrodrigopuca/qr-generator#readme",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2",
-    "ts-node": "^8.7.0",
-    "typescript": "^5.3.0"
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
   }
 }

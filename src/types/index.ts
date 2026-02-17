@@ -82,16 +82,12 @@ export type EncodingMode = "numeric" | "alphanumeric" | "byte" | "kanji";
  * @example
  * ```typescript
  * const options: QRCodeOptions = {
- *   content: 'Hello World',
- *   errorCorrection: 'M',
+ *   errorCorrectionLevel: 'M',
  *   version: 'auto',
  * };
  * ```
  */
 export interface QRCodeOptions {
-	/** Texto o datos a codificar en el QR */
-	content: string;
-
 	/**
 	 * Versión específica (1-40) o 'auto' para selección automática.
 	 * @default 'auto'
@@ -102,7 +98,7 @@ export interface QRCodeOptions {
 	 * Nivel de corrección de errores.
 	 * @default 'M'
 	 */
-	errorCorrection?: ErrorCorrectionLevel;
+	errorCorrectionLevel?: ErrorCorrectionLevel;
 
 	/**
 	 * Patrón de máscara específico (0-7) o 'auto' para selección óptima.
@@ -123,7 +119,7 @@ export interface QRCodeOptions {
  * @example
  * ```typescript
  * const renderOptions: RenderOptions = {
- *   size: 256,
+ *   scale: 10,
  *   margin: 4,
  *   darkColor: '#000000',
  *   lightColor: '#ffffff',
@@ -132,10 +128,10 @@ export interface QRCodeOptions {
  */
 export interface RenderOptions {
 	/**
-	 * Tamaño en píxeles (ancho = alto).
-	 * @default 256
+	 * Escala en píxeles por módulo.
+	 * @default 10
 	 */
-	size?: number;
+	scale?: number;
 
 	/**
 	 * Margen en módulos (quiet zone).
@@ -155,12 +151,6 @@ export interface RenderOptions {
 	 * @default '#ffffff'
 	 */
 	lightColor?: string;
-
-	/**
-	 * Color de fondo (incluyendo margen).
-	 * @default '#ffffff'
-	 */
-	backgroundColor?: string;
 }
 
 /**
@@ -179,13 +169,10 @@ export interface QRCodeResult {
 	version: QRVersion;
 
 	/** Nivel de corrección de errores aplicado */
-	errorCorrection: ErrorCorrectionLevel;
+	errorCorrectionLevel: ErrorCorrectionLevel;
 
 	/** Patrón de máscara aplicado (0-7) */
-	mask: MaskPattern;
-
-	/** Modo de codificación utilizado */
-	mode: EncodingMode;
+	maskPattern: MaskPattern;
 
 	/** Dimensión de la matriz (módulos por lado) */
 	size: number;
@@ -232,8 +219,9 @@ export interface Position {
  * Códigos de error personalizados para la librería.
  */
 export type QRErrorCode =
-	| "EMPTY_CONTENT"
-	| "CONTENT_TOO_LONG"
+	| "DATA_EMPTY"
+	| "DATA_TOO_LONG"
+	| "VERSION_TOO_SMALL"
 	| "INVALID_VERSION"
 	| "INVALID_CHARACTER"
 	| "INVALID_MASK"

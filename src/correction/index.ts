@@ -3,8 +3,5 @@
  * @module correction
  */
 
-// TODO: Fase 2 - Implementar Reed-Solomon
-// export { ReedSolomon } from './ReedSolomon';
-// export { GaloisField } from './GaloisField';
-
-export {};
+export { GaloisField } from "./GaloisField";
+export { ReedSolomon } from "./ReedSolomon";

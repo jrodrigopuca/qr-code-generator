@@ -17,7 +17,7 @@ import type { QRErrorCode } from "./types";
  *   const qr = new QRCode({ content: '' });
  * } catch (error) {
  *   if (error instanceof QRCodeError) {
- *     console.log(error.code); // 'EMPTY_CONTENT'
+ *     console.log(error.code); // 'DATA_EMPTY'
  *   }
  * }
  * ```
@@ -31,22 +31,25 @@ export class QRCodeError extends Error {
 	/**
 	 * Crea una nueva instancia de QRCodeError.
 	 *
-	 * @param message - Mensaje descriptivo del error
 	 * @param code - Código de error tipado
+	 * @param message - Mensaje descriptivo del error
 	 *
 	 * @example
 	 * ```typescript
-	 * throw new QRCodeError('Content cannot be empty', 'EMPTY_CONTENT');
+	 * throw new QRCodeError('DATA_EMPTY', 'Content cannot be empty');
 	 * ```
 	 */
-	constructor(message: string, code: QRErrorCode) {
+	constructor(code: QRErrorCode, message: string) {
 		super(message);
 		this.name = "QRCodeError";
 		this.code = code;
 
-		// Mantiene el stack trace correcto en V8
-		if (Error.captureStackTrace) {
-			Error.captureStackTrace(this, QRCodeError);
+		// Mantiene el stack trace correcto en V8 (Node.js)
+		const ErrorWithCapture = Error as typeof Error & {
+			captureStackTrace?: (target: object, constructor: Function) => void;
+		};
+		if (ErrorWithCapture.captureStackTrace) {
+			ErrorWithCapture.captureStackTrace(this, QRCodeError);
 		}
 	}
 }
