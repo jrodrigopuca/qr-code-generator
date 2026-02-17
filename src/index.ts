@@ -61,7 +61,8 @@ export { toBinary, fromBinary, chunkString } from "./utils";
 export { QRCode } from "./QRCode";
 
 // Export renderers
-export { CanvasRenderer } from "./renderer";
+export { CanvasRenderer, SVGRenderer } from "./renderer";
+export type { SVGRenderOptions } from "./renderer";
 
 // Export internal modules for advanced usage
 export { ByteEncoder } from "./encoder";
@@ -76,7 +77,7 @@ export { MaskEvaluator } from "./mask";
 
 // Import for helper functions
 import { QRCode } from "./QRCode";
-import { CanvasRenderer } from "./renderer";
+import { CanvasRenderer, SVGRenderer } from "./renderer";
 import type { QRCodeOptions, RenderOptions, QRCodeResult } from "./types";
 
 /**
@@ -183,31 +184,16 @@ export function renderToSVG(
 		mask: options?.mask,
 	};
 
-	const scale = options?.scale ?? 10;
-	const margin = options?.margin ?? 4;
-	const darkColor = options?.darkColor ?? "#000000";
-	const lightColor = options?.lightColor ?? "#ffffff";
+	const renderOptions: RenderOptions = {
+		scale: options?.scale,
+		margin: options?.margin,
+		darkColor: options?.darkColor,
+		lightColor: options?.lightColor,
+	};
 
 	const qr = new QRCode(content, qrOptions);
 	const result = qr.generate();
-	const size = result.size;
-	const totalSize = (size + margin * 2) * scale;
-
-	let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalSize} ${totalSize}" width="${totalSize}" height="${totalSize}">`;
-	svg += `<rect width="${totalSize}" height="${totalSize}" fill="${lightColor}"/>`;
-
-	for (let row = 0; row < size; row++) {
-		for (let col = 0; col < size; col++) {
-			if (result.matrix[row][col] === 1) {
-				const x = (col + margin) * scale;
-				const y = (row + margin) * scale;
-				svg += `<rect x="${x}" y="${y}" width="${scale}" height="${scale}" fill="${darkColor}"/>`;
-			}
-		}
-	}
-
-	svg += "</svg>";
-	return svg;
+	return SVGRenderer.render(result.matrix, renderOptions);
 }
 
 // Version info

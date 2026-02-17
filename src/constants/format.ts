@@ -6,7 +6,7 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/format-version-information}
  */
 
-import type { ErrorCorrectionLevel, MaskPattern } from "../types";
+import type { ErrorCorrectionLevel } from "../types";
 
 /**
  * Cadenas de información de formato (15 bits).

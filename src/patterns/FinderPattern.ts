@@ -5,8 +5,6 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/module-placement-matrix}
  */
 
-import type { QRVersion } from "../types";
-
 /** Valor para módulo oscuro en patrones */
 const DARK = 1;
 /** Valor para módulo claro en patrones */

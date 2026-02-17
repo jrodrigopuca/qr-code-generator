@@ -102,7 +102,13 @@ export class QRCode {
 		}
 
 		this.data = data;
-		const opts = { ...DEFAULT_OPTIONS, ...options };
+		const opts = {
+			errorCorrectionLevel:
+				options.errorCorrectionLevel ?? DEFAULT_OPTIONS.errorCorrectionLevel,
+			version: options.version ?? DEFAULT_OPTIONS.version,
+			mask: options.mask ?? DEFAULT_OPTIONS.mask,
+			mode: options.mode ?? DEFAULT_OPTIONS.mode,
+		};
 
 		this.errorLevel = opts.errorCorrectionLevel;
 		this.autoVersion = opts.version === "auto";
@@ -247,8 +253,6 @@ export class QRCode {
 		const bytes = encoder.encodeUTF8(this.data);
 
 		// Calcular capacidad de datos
-		const eccCodewords =
-			ECC_CODEWORDS_PER_BLOCK[this.version - 1][this.errorLevel];
 		const blockConfig = BLOCK_CONFIG[this.version - 1][this.errorLevel];
 
 		const [g1Blocks, g1DataCw, g2Blocks, g2DataCw] = blockConfig;

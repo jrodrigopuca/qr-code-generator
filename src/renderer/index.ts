@@ -4,3 +4,5 @@
  */
 
 export { CanvasRenderer } from "./CanvasRenderer";
+export { SVGRenderer } from "./SVGRenderer";
+export type { SVGRenderOptions } from "./SVGRenderer";
