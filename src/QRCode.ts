@@ -9,12 +9,19 @@ import type {
 	QRVersion,
 	ErrorCorrectionLevel,
 	MaskPattern,
+	EncodingMode,
 	QRCodeOptions,
 	QRMatrix,
 	QRCodeResult,
 } from "./types";
 
-import { ByteEncoder } from "./encoder";
+import {
+	ByteEncoder,
+	NumericEncoder,
+	AlphanumericEncoder,
+	ModeDetector,
+	BaseEncoder,
+} from "./encoder";
 import { ReedSolomon } from "./correction";
 import {
 	FinderPattern,
@@ -25,7 +32,6 @@ import {
 import { MaskEvaluator } from "./mask";
 import { QRCodeError } from "./errors";
 import {
-	BYTE_CAPACITY,
 	ECC_CODEWORDS_PER_BLOCK,
 	BLOCK_CONFIG,
 	REMAINDER_BITS,
@@ -71,6 +77,9 @@ export class QRCode {
 	/** Patrón de máscara actual */
 	private mask: MaskPattern;
 
+	/** Modo de codificación */
+	private mode: EncodingMode;
+
 	/** Tamaño de la matriz */
 	private size: number;
 
@@ -79,6 +88,9 @@ export class QRCode {
 
 	/** Si la máscara fue auto-detectada */
 	private readonly autoMask: boolean;
+
+	/** Si el modo fue auto-detectado */
+	private readonly autoMode: boolean;
 
 	/**
 	 * Crea una nueva instancia de QRCode.
@@ -113,6 +125,15 @@ export class QRCode {
 		this.errorLevel = opts.errorCorrectionLevel;
 		this.autoVersion = opts.version === "auto";
 		this.autoMask = opts.mask === "auto";
+		this.autoMode = opts.mode === "auto";
+
+		// Determinar modo de codificación
+		if (this.autoMode) {
+			this.mode = ModeDetector.detectMode(data);
+		} else {
+			this.mode = opts.mode as EncodingMode;
+			this.validateMode();
+		}
 
 		// Determinar versión
 		if (this.autoVersion) {
@@ -170,6 +191,7 @@ export class QRCode {
 			size: this.size,
 			errorCorrectionLevel: this.errorLevel,
 			maskPattern: this.mask,
+			mode: this.mode,
 		};
 	}
 
@@ -182,20 +204,20 @@ export class QRCode {
 	 * @internal
 	 */
 	private findMinVersion(): QRVersion {
-		const encoder = new ByteEncoder();
-		const dataLength = encoder.encodeUTF8(this.data).length;
+		const version = ModeDetector.findMinVersion(
+			this.data,
+			this.mode,
+			this.errorLevel,
+		);
 
-		for (let v = 1; v <= 40; v++) {
-			const capacity = BYTE_CAPACITY[v - 1][this.errorLevel];
-			if (capacity >= dataLength) {
-				return v as QRVersion;
-			}
+		if (version === null) {
+			throw new QRCodeError(
+				"DATA_TOO_LONG",
+				`Los datos son demasiado largos para cualquier versión QR con nivel ${this.errorLevel} y modo ${this.mode}`,
+			);
 		}
 
-		throw new QRCodeError(
-			"DATA_TOO_LONG",
-			`Los datos son demasiado largos para cualquier versión QR con nivel ${this.errorLevel}`,
-		);
+		return version;
 	}
 
 	/**
@@ -206,15 +228,54 @@ export class QRCode {
 	 * @internal
 	 */
 	private validateVersion(): void {
-		const encoder = new ByteEncoder();
-		const dataLength = encoder.encodeUTF8(this.data).length;
-		const capacity = BYTE_CAPACITY[this.version - 1][this.errorLevel];
+		const dataLength = this.data.length;
+		const capacity = ModeDetector.getCapacity(
+			this.version,
+			this.mode,
+			this.errorLevel,
+		);
 
 		if (dataLength > capacity) {
 			throw new QRCodeError(
 				"VERSION_TOO_SMALL",
-				`La versión ${this.version} con nivel ${this.errorLevel} solo puede contener ${capacity} bytes, pero los datos tienen ${dataLength} bytes`,
+				`La versión ${this.version} con nivel ${this.errorLevel} y modo ${this.mode} solo puede contener ${capacity} caracteres, pero los datos tienen ${dataLength} caracteres`,
 			);
+		}
+	}
+
+	/**
+	 * Valida que el modo especificado puede codificar los datos.
+	 *
+	 * @throws {QRCodeError} Si los datos no son válidos para el modo
+	 *
+	 * @internal
+	 */
+	private validateMode(): void {
+		const encoder = this.getEncoder();
+		if (!encoder.canEncode(this.data)) {
+			throw new QRCodeError(
+				"INVALID_MODE",
+				`Los datos no pueden ser codificados con el modo ${this.mode}`,
+			);
+		}
+	}
+
+	/**
+	 * Obtiene el codificador apropiado para el modo actual.
+	 *
+	 * @returns Instancia del codificador
+	 *
+	 * @internal
+	 */
+	private getEncoder(): BaseEncoder {
+		switch (this.mode) {
+			case "numeric":
+				return new NumericEncoder();
+			case "alphanumeric":
+				return new AlphanumericEncoder();
+			case "byte":
+			default:
+				return new ByteEncoder();
 		}
 	}
 
@@ -249,8 +310,7 @@ export class QRCode {
 	 * @internal
 	 */
 	private encodeData(): number[] {
-		const encoder = new ByteEncoder();
-		const bytes = encoder.encodeUTF8(this.data);
+		const encoder = this.getEncoder();
 
 		// Calcular capacidad de datos
 		const blockConfig = BLOCK_CONFIG[this.version - 1][this.errorLevel];
@@ -258,26 +318,41 @@ export class QRCode {
 		const [g1Blocks, g1DataCw, g2Blocks, g2DataCw] = blockConfig;
 		const totalDataCodewords = g1Blocks * g1DataCw + g2Blocks * g2DataCw;
 
-		// Construir el flujo de bits
+		// Construir el flujo de bits usando el encoder apropiado
 		const bits: number[] = [];
 
-		// Indicador de modo (byte = 0100)
-		const modeIndicator = parseInt(MODE_INDICATORS.byte, 2);
+		// Indicador de modo
+		const modeIndicator = parseInt(MODE_INDICATORS[this.mode], 2);
 		for (let i = 3; i >= 0; i--) {
 			bits.push((modeIndicator >> i) & 1);
 		}
 
 		// Indicador de longitud de caracteres
 		const charCountBits = encoder.getCharacterCountBits(this.version);
+		const dataLength =
+			this.mode === "byte"
+				? (encoder as ByteEncoder).encodeUTF8(this.data).length
+				: this.data.length;
+
 		for (let i = charCountBits - 1; i >= 0; i--) {
-			bits.push((bytes.length >> i) & 1);
+			bits.push((dataLength >> i) & 1);
 		}
 
-		// Datos
-		for (let b = 0; b < bytes.length; b++) {
-			const byteVal = bytes[b];
-			for (let i = 7; i >= 0; i--) {
-				bits.push((byteVal >> i) & 1);
+		// Codificar datos según el modo
+		if (this.mode === "byte") {
+			// Modo byte: usar encodeUTF8 para obtener bytes
+			const bytes = (encoder as ByteEncoder).encodeUTF8(this.data);
+			for (let b = 0; b < bytes.length; b++) {
+				const byteVal = bytes[b];
+				for (let i = 7; i >= 0; i--) {
+					bits.push((byteVal >> i) & 1);
+				}
+			}
+		} else {
+			// Modo numérico o alfanumérico: usar encode
+			const encodedBits = encoder.encode(this.data);
+			for (const bit of encodedBits) {
+				bits.push(parseInt(bit, 10));
 			}
 		}
 

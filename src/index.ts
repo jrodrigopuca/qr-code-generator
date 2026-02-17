@@ -65,7 +65,12 @@ export { CanvasRenderer, SVGRenderer } from "./renderer";
 export type { SVGRenderOptions } from "./renderer";
 
 // Export internal modules for advanced usage
-export { ByteEncoder } from "./encoder";
+export {
+	ByteEncoder,
+	NumericEncoder,
+	AlphanumericEncoder,
+	ModeDetector,
+} from "./encoder";
 export { GaloisField, ReedSolomon } from "./correction";
 export {
 	FinderPattern,

@@ -261,4 +261,77 @@ END:VCARD`;
 			expect(result.version).toBeGreaterThanOrEqual(1);
 		});
 	});
+
+	describe("Encoding modes", () => {
+		it("should auto-detect numeric mode for digits", () => {
+			const result = generateQR("1234567890");
+
+			expect(result.mode).toBe("numeric");
+			expect(result.version).toBe(1);
+		});
+
+		it("should auto-detect alphanumeric mode for uppercase", () => {
+			const result = generateQR("HELLO WORLD");
+
+			expect(result.mode).toBe("alphanumeric");
+		});
+
+		it("should auto-detect byte mode for lowercase", () => {
+			const result = generateQR("hello world");
+
+			expect(result.mode).toBe("byte");
+		});
+
+		it("should use specified mode when valid", () => {
+			const qr = new QRCode("12345", { mode: "byte" });
+			const result = qr.generate();
+
+			// Should use byte even though numeric would work
+			expect(result.mode).toBe("byte");
+		});
+
+		it("should throw for invalid mode", () => {
+			// Trying to use numeric mode for text with letters
+			expect(() => new QRCode("ABC", { mode: "numeric" })).toThrow();
+		});
+
+		it("should optimize capacity with numeric mode", () => {
+			// Long numeric string should fit in smaller version with numeric mode
+			const digits = "1234567890".repeat(3); // 30 digits
+			const result = generateQR(digits);
+
+			expect(result.mode).toBe("numeric");
+			expect(result.version).toBe(1); // 34 digits fit in v1-M numeric
+		});
+
+		it("should optimize capacity with alphanumeric mode", () => {
+			// Uppercase text should use alphanumeric
+			const text = "ABCDEFGHIJKLMNOP"; // 16 chars
+			const result = generateQR(text);
+
+			expect(result.mode).toBe("alphanumeric");
+			expect(result.version).toBe(1); // 20 chars fit in v1-M alphanumeric
+		});
+
+		it("should include mode in result", () => {
+			const result = generateQR("Test");
+
+			expect(result.mode).toBeDefined();
+			expect(["numeric", "alphanumeric", "byte"]).toContain(result.mode);
+		});
+
+		it("should generate valid QR with alphanumeric symbols", () => {
+			const result = generateQR("AC-42/CODE:123");
+
+			expect(result.mode).toBe("alphanumeric");
+			expect(result.matrix).toBeDefined();
+		});
+
+		it("should handle URL with uppercase optimization", () => {
+			// URLs are case-insensitive for domain, uppercase can use alphanumeric
+			const result = generateQR("HTTPS://EXAMPLE.COM/TEST");
+
+			expect(result.mode).toBe("alphanumeric");
+		});
+	});
 });

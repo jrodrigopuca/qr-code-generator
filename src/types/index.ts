@@ -174,6 +174,9 @@ export interface QRCodeResult {
 	/** Patrón de máscara aplicado (0-7) */
 	maskPattern: MaskPattern;
 
+	/** Modo de codificación utilizado */
+	mode: EncodingMode;
+
 	/** Dimensión de la matriz (módulos por lado) */
 	size: number;
 

@@ -3,7 +3,12 @@
  * @module constants
  */
 
-export { BYTE_CAPACITY, TOTAL_DATA_CODEWORDS } from "./capacity";
+export {
+	BYTE_CAPACITY,
+	NUMERIC_CAPACITY,
+	ALPHANUMERIC_CAPACITY,
+	TOTAL_DATA_CODEWORDS,
+} from "./capacity";
 export {
 	ECC_CODEWORDS_PER_BLOCK,
 	BLOCK_CONFIG,
