@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-	QRCode,
-	generateQR,
-	renderToSVG,
-	SVGRenderer,
-} from "../../src";
+import { QRCode, generateQR, renderToSVG, SVGRenderer } from "../../src";
 
 describe("QR Code Generation - Integration", () => {
 	describe("generateQR helper", () => {
@@ -191,7 +186,7 @@ describe("QR Code Generation - Integration", () => {
 			const svg = SVGRenderer.render(result.matrix);
 
 			expect(svg).toContain("<svg");
-			expect(svg).toContain("<path") || expect(svg).toContain("<rect");
+			expect(svg.includes("<path") || svg.includes("<rect")).toBe(true);
 		});
 
 		it("should generate optimized path by default", () => {
