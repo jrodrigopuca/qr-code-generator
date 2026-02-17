@@ -1,18 +1,60 @@
 {
-  "name": "recordar",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "start": "tsc | node dist/qr.js",
-    "dev": "tsc | nodemon src/qr.ts",
-    "tsc": "tsc",
-    "live": "live-server ."
+  "name": "qr-generator",
+  "version": "1.0.0-alpha.1",
+  "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "dependencies": {},
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'Tests not configured yet - see Phase 4'",
+    "lint": "echo 'ESLint not configured yet - see Phase 4'",
+    "format": "echo 'Prettier not configured yet - see Phase 4'",
+    "docs": "echo 'TypeDoc not configured yet - see Phase 6'",
+    "prepublishOnly": "npm run build",
+    "legacy:live": "live-server .",
+    "legacy:build": "tsc && node dist/qr.legacy.js"
+  },
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "generator",
+    "typescript",
+    "zero-dependency",
+    "iso-18004"
+  ],
+  "author": "Juan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanqr/qr-generator"
+  },
+  "bugs": {
+    "url": "https://github.com/juanqr/qr-generator/issues"
+  },
+  "homepage": "https://github.com/juanqr/qr-generator#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "devDependencies": {
     "nodemon": "^2.0.2",
     "ts-node": "^8.7.0",
-    "typescript": "^3.8.3"
+    "typescript": "^5.3.0"
   }
 }
