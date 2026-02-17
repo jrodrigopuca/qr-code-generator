@@ -91,7 +91,11 @@ export class AlignmentPattern {
 	 * ```
 	 */
 	static getPositions(version: QRVersion): readonly number[] {
-		return ALIGNMENT_PATTERN_POSITIONS[version] || [];
+		if (version < 2) {
+			return [];
+		}
+		// Array is indexed by version - 2 (version 1 has no alignment patterns)
+		return ALIGNMENT_PATTERN_POSITIONS[version - 2] || [];
 	}
 
 	/**
