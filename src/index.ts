@@ -202,4 +202,4 @@ export function renderToSVG(
 }
 
 // Version info
-export const VERSION = "1.0.0-alpha";
+export const VERSION = "2.0.5";
