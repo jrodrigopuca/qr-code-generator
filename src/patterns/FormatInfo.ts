@@ -156,25 +156,28 @@ export class FormatInfo {
 		];
 
 		// Segunda copia: entre finder patterns
-		// Bits 0-7: columnas size-1 a size-8, fila 8 (8 bits horizontales)
-		// Bits 8-14: columna 8, filas size-7 a size-1 (7 bits verticales)
+		// Según ISO/IEC 18004:
+		// Bits 0-6: columna 8, filas (size-1) hasta (size-7), de abajo hacia arriba
+		// Bits 7-14: fila 8, columnas (size-8) hasta (size-1), de izquierda a derecha
 
 		const secondCopyPositions = [
-			{ row: 8, col: size - 1 },
-			{ row: 8, col: size - 2 },
-			{ row: 8, col: size - 3 },
-			{ row: 8, col: size - 4 },
-			{ row: 8, col: size - 5 },
-			{ row: 8, col: size - 6 },
-			{ row: 8, col: size - 7 },
-			{ row: 8, col: size - 8 }, // bit 7 - horizontal, NO en el módulo oscuro
-			{ row: size - 7, col: 8 }, // bit 8 - inicio de parte vertical
-			{ row: size - 6, col: 8 },
-			{ row: size - 5, col: 8 },
-			{ row: size - 4, col: 8 },
-			{ row: size - 3, col: 8 },
-			{ row: size - 2, col: 8 },
-			{ row: size - 1, col: 8 },
+			// Bits 0-6: Vertical, columna 8, desde abajo
+			{ row: size - 1, col: 8 }, // bit 0
+			{ row: size - 2, col: 8 }, // bit 1
+			{ row: size - 3, col: 8 }, // bit 2
+			{ row: size - 4, col: 8 }, // bit 3
+			{ row: size - 5, col: 8 }, // bit 4
+			{ row: size - 6, col: 8 }, // bit 5
+			{ row: size - 7, col: 8 }, // bit 6
+			// Bits 7-14: Horizontal, fila 8, desde izquierda
+			{ row: 8, col: size - 8 }, // bit 7
+			{ row: 8, col: size - 7 }, // bit 8
+			{ row: 8, col: size - 6 }, // bit 9
+			{ row: 8, col: size - 5 }, // bit 10
+			{ row: 8, col: size - 4 }, // bit 11
+			{ row: 8, col: size - 3 }, // bit 12
+			{ row: 8, col: size - 2 }, // bit 13
+			{ row: 8, col: size - 1 }, // bit 14
 		];
 
 		// Colocar los bits

@@ -1,12 +1,21 @@
-# Debug Scripts
+# QR Code Readability Tests
 
-Scripts de depuración para verificar el funcionamiento del generador de códigos QR.
+Tests E2E que verifican que los codigos QR generados sean legibles/escaneables.
 
-**⚠️ Estos scripts NO forman parte del paquete publicado.**
+**Estos tests NO forman parte del paquete publicado.**
+
+## Que hace
+
+1. Genera un QR con nuestra libreria
+2. Lo renderiza a imagen
+3. Lo decodifica con jsQR
+4. Verifica que el texto decodificado coincida con el original
+
+Si jsQR puede leer el QR, el test pasa. Asi de simple.
 
 ## Requisitos
 
-1. Compilar el código fuente del proyecto padre:
+1. Compilar el codigo fuente del proyecto padre:
 
 ```bash
 cd ..
@@ -20,42 +29,46 @@ cd debug-scripts
 npm install
 ```
 
-## Scripts disponibles
-
-| Script       | Descripción                                                    |
-| ------------ | -------------------------------------------------------------- |
-| `codewords`  | Verifica la codificación de datos numéricos                    |
-| `ec`         | Verifica los codewords de corrección de errores (Reed-Solomon) |
-| `placement`  | Verifica el algoritmo de colocación zigzag                     |
-| `trace`      | Traza completa de la generación de QR                          |
-| `format`     | Debug de la información de formato                             |
-| `reserved`   | Debug de áreas reservadas                                      |
-| `compare`    | Compara con qrcode-generator (librería externa)                |
-| `debug`      | Script TypeScript de verificación general                      |
-| `decode`     | Prueba de decodificación con jsqr                              |
-| `compare:ts` | Comparación TypeScript con matriz de referencia                |
-
-## Uso
+## Tests de Comparacion E2E
 
 ```bash
-# Desde esta carpeta
-npm run codewords
+# Ejecutar todos los tests E2E
+npm test
 
-# O directamente
-node test-codewords-simple.js
-npx tsx test-debug.ts
+# Con output verbose (ver cada test)
+npm run test:verbose
+
+# Ejecutar mas tests aleatorios
+npm run test:random    # 100 tests
+node e2e-test.js --count=200
+
+# Usar semilla especifica para reproducibilidad
+npm run test:seed      # semilla 12345
+node e2e-test.js --seed=42
+
+# Combinacion
+node e2e-test.js --count=100 --seed=42 --verbose
 ```
 
-## Dependencias incluidas
+## Tipos de tests
 
-Este directorio tiene su propio `package.json` con las dependencias necesarias:
+- **Fixed Data**: Textos fijos en todos los niveles de correccion (L, M, Q, H)
+- **Random Data**: Datos aleatorios (alfanumericos y numericos)
+- **Edge Cases**: Casos limite (1 caracter, URL, espacios, etc)
 
-- `qrcode-generator` - Para comparación con implementación de referencia
-- `jsqr` - Para pruebas de decodificación
-- `canvas` - Para renderizado en Node.js
-- `tsx` - Para ejecutar archivos TypeScript
+## Dependencias
 
-## Notas
+- **jsqr**: Decodificador de QR
+- **canvas**: Renderizado de matrices QR para jsQR
 
-- Los archivos `.js` usan `require()` y apuntan a `../dist/`
-- Los archivos `.ts` usan imports TypeScript y apuntan a `../src/`
+## Integracion con CI
+
+```yaml
+# GitHub Actions example
+- name: Run E2E comparison tests
+  run: |
+    npm run build
+    cd debug-scripts
+    npm install
+    npm test
+```

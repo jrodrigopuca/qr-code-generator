@@ -1,28 +1,17 @@
 {
-  "name": "qr-generator-debug-scripts",
+  "name": "qr-generator-readability-tests",
   "version": "1.0.0",
-  "description": "Scripts de depuración para el generador de QR - NO forman parte del paquete publicado",
+  "description": "Tests E2E que verifican que los QR generados sean legibles",
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "codewords": "node test-codewords-simple.js",
-    "ec": "node test-ec-codewords.js",
-    "placement": "node test-placement.js",
-    "trace": "node test-full-trace.js",
-    "format": "node debug-format.js",
-    "reserved": "node debug-reserved.js",
-    "compare": "node compare-with-qrgen.js",
-    "debug": "npx tsx test-debug.ts",
-    "decode": "npx tsx test-decode.ts",
-    "compare:ts": "npx tsx test-compare.ts",
-    "all": "npm run codewords && npm run ec && npm run placement && npm run trace"
+    "test": "node e2e-test.js",
+    "test:verbose": "node e2e-test.js --verbose",
+    "test:100": "node e2e-test.js --count=100",
+    "test:seed": "node e2e-test.js --seed=12345"
   },
   "dependencies": {
     "canvas": "^3.2.1",
-    "jsqr": "^1.4.0",
-    "qrcode-generator": "^2.0.4"
-  },
-  "devDependencies": {
-    "tsx": "^4.21.0"
+    "jsqr": "^1.4.0"
   }
 }

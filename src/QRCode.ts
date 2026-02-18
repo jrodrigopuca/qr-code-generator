@@ -468,6 +468,11 @@ export class QRCode {
 		// Alignment patterns (versión >= 2)
 		AlignmentPattern.draw(matrix, reserved, this.version);
 
+		// Dark module (siempre oscuro, posición fija)
+		const darkModuleRow = 4 * this.version + 9;
+		matrix[darkModuleRow][8] = 1;
+		reserved[darkModuleRow][8] = 1;
+
 		// Reservar área para información de formato
 		FormatInfo.reserveFormatArea(reserved, this.size);
 
@@ -506,6 +511,7 @@ export class QRCode {
 		// Colocar bits en patrón zigzag
 		let bitIndex = 0;
 		let right = this.size - 1;
+		let goingUp = true; // Empezar yendo hacia arriba (desde row size-1 hacia 0)
 
 		while (right >= 0 && bitIndex < bits.length) {
 			// Skip columna 6 (timing pattern vertical)
@@ -516,11 +522,8 @@ export class QRCode {
 
 			// Procesar columna doble de abajo hacia arriba y viceversa
 			for (let vert = 0; vert < this.size; vert++) {
-				// Alternar dirección
-				const row =
-					Math.floor((this.size - 1 - right) / 2) % 2 === 0
-						? this.size - 1 - vert
-						: vert;
+				// Usar toggle para la dirección (no fórmula basada en posición)
+				const row = goingUp ? this.size - 1 - vert : vert;
 
 				for (let horz = 0; horz < 2; horz++) {
 					const col = right - horz;
@@ -535,6 +538,7 @@ export class QRCode {
 			}
 
 			right -= 2;
+			goingUp = !goingUp; // Alternar dirección después de cada par de columnas
 		}
 	}
 
