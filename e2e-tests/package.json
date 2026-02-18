@@ -1,5 +1,5 @@
 {
-  "name": "qr-generator-readability-tests",
+  "name": "qr-generator-e2e-tests",
   "version": "1.0.0",
   "description": "Tests E2E que verifican que los QR generados sean legibles",
   "private": true,

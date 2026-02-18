@@ -25,7 +25,7 @@ npm run build
 2. Instalar dependencias de este directorio:
 
 ```bash
-cd debug-scripts
+cd e2e-tests
 npm install
 ```
 
@@ -68,7 +68,7 @@ node e2e-test.js --count=100 --seed=42 --verbose
 - name: Run E2E comparison tests
   run: |
     npm run build
-    cd debug-scripts
+    cd e2e-tests
     npm install
     npm test
 ```
