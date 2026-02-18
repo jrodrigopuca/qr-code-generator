@@ -63,10 +63,10 @@ qr-code-generator/
 
 ### Tecnologías Utilizadas
 
-- **TypeScript 3.8.3**: Lenguaje principal
+- **TypeScript 5.7+**: Lenguaje principal
 - **HTML5 Canvas**: Renderizado del código QR
-- **Live Server**: Servidor de desarrollo
-- **Nodemon**: Hot-reload durante desarrollo
+- **Vitest**: Framework de testing
+- **tsx**: Ejecución directa de TypeScript
 
 ---
 
@@ -449,10 +449,9 @@ exportAsSVG(): string {
 ```json
 {
 	"devDependencies": {
-		"typescript": "^5.3.0",
-		"ts-node": "^10.9.0",
-		"vitest": "^1.0.0",
-		"@types/node": "^20.0.0"
+		"typescript": "^5.7.0",
+		"vitest": "^4.0.0",
+		"tsx": "^4.21.0"
 	}
 }
 ```

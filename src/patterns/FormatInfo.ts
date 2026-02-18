@@ -131,33 +131,33 @@ export class FormatInfo {
 		size: number,
 	): void {
 		// Primera copia: cerca del finder superior izquierdo
-		// Bits 0-5: columna 8, filas 0-5
-		// Bit 6: columna 8, fila 7 (skip fila 6 = timing)
-		// Bit 7: columna 8, fila 8
-		// Bit 8: columna 7, fila 8 (skip columna 6 = timing)
-		// Bits 9-14: columnas 5-0, fila 8
+		// Bits 0-5: fila 8, columnas 0-5
+		// Bit 6: fila 8, columna 7 (skip columna 6 = timing)
+		// Bit 7: fila 8, columna 8
+		// Bit 8: fila 7, columna 8 (skip fila 6 = timing)
+		// Bits 9-14: fila 5 hasta 0, columna 8
 
 		const firstCopyPositions = [
-			{ row: 0, col: 8 },
-			{ row: 1, col: 8 },
-			{ row: 2, col: 8 },
-			{ row: 3, col: 8 },
-			{ row: 4, col: 8 },
-			{ row: 5, col: 8 },
-			{ row: 7, col: 8 }, // Skip row 6 (timing)
-			{ row: 8, col: 8 },
-			{ row: 8, col: 7 }, // Skip col 6 (timing)
-			{ row: 8, col: 5 },
-			{ row: 8, col: 4 },
-			{ row: 8, col: 3 },
-			{ row: 8, col: 2 },
-			{ row: 8, col: 1 },
-			{ row: 8, col: 0 },
+			{ row: 8, col: 0 }, // bit 0
+			{ row: 8, col: 1 }, // bit 1
+			{ row: 8, col: 2 }, // bit 2
+			{ row: 8, col: 3 }, // bit 3
+			{ row: 8, col: 4 }, // bit 4
+			{ row: 8, col: 5 }, // bit 5
+			{ row: 8, col: 7 }, // bit 6 - Skip col 6 (timing)
+			{ row: 8, col: 8 }, // bit 7
+			{ row: 7, col: 8 }, // bit 8 - Skip row 6 (timing)
+			{ row: 5, col: 8 }, // bit 9
+			{ row: 4, col: 8 }, // bit 10
+			{ row: 3, col: 8 }, // bit 11
+			{ row: 2, col: 8 }, // bit 12
+			{ row: 1, col: 8 }, // bit 13
+			{ row: 0, col: 8 }, // bit 14
 		];
 
 		// Segunda copia: entre finder patterns
-		// Bits 0-6: columnas size-1 a size-7, fila 8
-		// Bits 7-14: columna 8, filas size-8 a size-1
+		// Bits 0-7: columnas size-1 a size-8, fila 8 (8 bits horizontales)
+		// Bits 8-14: columna 8, filas size-7 a size-1 (7 bits verticales)
 
 		const secondCopyPositions = [
 			{ row: 8, col: size - 1 },
@@ -167,8 +167,8 @@ export class FormatInfo {
 			{ row: 8, col: size - 5 },
 			{ row: 8, col: size - 6 },
 			{ row: 8, col: size - 7 },
-			{ row: size - 8, col: 8 },
-			{ row: size - 7, col: 8 },
+			{ row: 8, col: size - 8 }, // bit 7 - horizontal, NO en el módulo oscuro
+			{ row: size - 7, col: 8 }, // bit 8 - inicio de parte vertical
 			{ row: size - 6, col: 8 },
 			{ row: size - 5, col: 8 },
 			{ row: size - 4, col: 8 },

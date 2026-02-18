@@ -1,0 +1,26 @@
+# Debug scripts (not part of published package)
+debug-scripts/
+
+# Source files (dist/ is published)
+src/
+
+# Test files
+tests/
+coverage/
+vitest.config.ts
+
+# Legacy files
+js/
+index.html
+style.css
+
+# Development files
+.github/
+.git/
+.prettierrc
+eslint.config.mjs
+tsconfig.json
+
+# Documentation (README is included)
+DOCUMENTATION.md
+ROADMAP.md

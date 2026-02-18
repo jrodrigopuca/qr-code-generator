@@ -1,0 +1,28 @@
+{
+  "name": "qr-generator-debug-scripts",
+  "version": "1.0.0",
+  "description": "Scripts de depuración para el generador de QR - NO forman parte del paquete publicado",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "codewords": "node test-codewords-simple.js",
+    "ec": "node test-ec-codewords.js",
+    "placement": "node test-placement.js",
+    "trace": "node test-full-trace.js",
+    "format": "node debug-format.js",
+    "reserved": "node debug-reserved.js",
+    "compare": "node compare-with-qrgen.js",
+    "debug": "npx tsx test-debug.ts",
+    "decode": "npx tsx test-decode.ts",
+    "compare:ts": "npx tsx test-compare.ts",
+    "all": "npm run codewords && npm run ec && npm run placement && npm run trace"
+  },
+  "dependencies": {
+    "canvas": "^3.2.1",
+    "jsqr": "^1.4.0",
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
+  }
+}
