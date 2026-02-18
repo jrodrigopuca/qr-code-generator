@@ -1,5 +1,5 @@
 {
-  "name": "qr-generator",
+  "name": "qr-gen",
   "version": "2.0.5",
   "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
   "type": "commonjs",

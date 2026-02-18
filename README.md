@@ -1,4 +1,4 @@
-# qr-generator
+# qr-gen
 
 Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.
 
@@ -14,7 +14,7 @@ Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 1800
 ## Installation
 
 ```bash
-npm install qr-generator
+npm install qr-gen
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ npm install qr-generator
 ### Basic
 
 ```typescript
-import { QRCode } from "qr-generator";
+import { QRCode } from "qr-gen";
 
 const qr = new QRCode("Hello World");
 const result = qr.generate();
@@ -42,7 +42,7 @@ const qr = new QRCode("Hello World", {
 ### Render to Canvas
 
 ```typescript
-import { QRCode, CanvasRenderer } from "qr-generator";
+import { QRCode, CanvasRenderer } from "qr-gen";
 
 const qr = new QRCode("Hello World");
 const { matrix } = qr.generate();
@@ -59,7 +59,7 @@ CanvasRenderer.render(canvas, matrix, {
 ### Render to SVG
 
 ```typescript
-import { QRCode, SVGRenderer } from "qr-generator";
+import { QRCode, SVGRenderer } from "qr-gen";
 
 const qr = new QRCode("Hello World");
 const { matrix } = qr.generate();
