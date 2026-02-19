@@ -61,8 +61,9 @@ export { toBinary, fromBinary, chunkString } from "./utils";
 export { QRCode } from "./QRCode";
 
 // Export renderers
-export { CanvasRenderer, SVGRenderer } from "./renderer";
+export { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
 export type { SVGRenderOptions } from "./renderer";
+export type { TerminalRenderOptions, TerminalStyle } from "./renderer";
 
 // Export internal modules for advanced usage
 export {
@@ -82,7 +83,8 @@ export { MaskEvaluator } from "./mask";
 
 // Import for helper functions
 import { QRCode } from "./QRCode";
-import { CanvasRenderer, SVGRenderer } from "./renderer";
+import { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
+import type { TerminalRenderOptions } from "./renderer";
 import type { QRCodeOptions, RenderOptions, QRCodeResult } from "./types";
 
 /**
@@ -199,6 +201,49 @@ export function renderToSVG(
 	const qr = new QRCode(content, qrOptions);
 	const result = qr.generate();
 	return SVGRenderer.render(result.matrix, renderOptions);
+}
+
+/**
+ * Genera un código QR como texto para terminal.
+ *
+ * @description Función helper para obtener el QR como texto ASCII/Unicode
+ * para imprimir en la consola. Ideal para herramientas CLI y debugging.
+ *
+ * @param content - Texto o datos a codificar
+ * @param options - Opciones de generación y renderizado terminal
+ * @returns Cadena con el QR representado en texto
+ *
+ * @example
+ * ```typescript
+ * import { renderToTerminal } from 'qr-pure';
+ *
+ * console.log(renderToTerminal('Hello World'));
+ *
+ * // Modo compacto
+ * console.log(renderToTerminal('Hello', { style: 'compact' }));
+ * ```
+ *
+ * @throws {QRCodeError} Si el contenido excede la capacidad
+ */
+export function renderToTerminal(
+	content: string,
+	options?: QRCodeOptions & TerminalRenderOptions,
+): string {
+	const qrOptions: QRCodeOptions = {
+		errorCorrectionLevel: options?.errorCorrectionLevel,
+		version: options?.version,
+		mask: options?.mask,
+	};
+
+	const terminalOptions: TerminalRenderOptions = {
+		style: options?.style,
+		margin: options?.margin,
+		invert: options?.invert,
+	};
+
+	const qr = new QRCode(content, qrOptions);
+	const result = qr.generate();
+	return TerminalRenderer.render(result.matrix, terminalOptions);
 }
 
 // Version info
