@@ -15,6 +15,15 @@ const DEFAULT_OPTIONS: Required<RenderOptions> = {
 };
 
 /**
+ * Forma de los módulos individuales del QR.
+ * - `square`: Cuadrado estándar (por defecto)
+ * - `rounded`: Cuadrado con esquinas redondeadas
+ * - `circle`: Círculo inscrito en el módulo
+ * - `dot`: Punto circular más pequeño (80% del módulo)
+ */
+export type ModuleShape = "square" | "rounded" | "circle" | "dot";
+
+/**
  * Opciones adicionales específicas para SVG.
  */
 export interface SVGRenderOptions extends RenderOptions {
@@ -26,9 +35,24 @@ export interface SVGRenderOptions extends RenderOptions {
 
 	/**
 	 * Usar optimización de paths para módulos adyacentes.
+	 * Solo aplica cuando moduleShape es 'square'.
 	 * @default true
 	 */
 	optimizePaths?: boolean;
+
+	/**
+	 * Forma de los módulos individuales.
+	 * @default 'square'
+	 */
+	moduleShape?: ModuleShape;
+
+	/**
+	 * Radio de esquinas para moduleShape 'rounded' (0-1).
+	 * 0 = sin redondeo (cuadrado), 1 = máximo redondeo (píldora).
+	 * Se aplica como proporción del tamaño del módulo.
+	 * @default 0.5
+	 */
+	cornerRadius?: number;
 }
 
 /**
@@ -72,6 +96,7 @@ export class SVGRenderer {
 		const opts = { ...DEFAULT_OPTIONS, ...options };
 		const size = matrix.length;
 		const totalSize = (size + opts.margin * 2) * opts.scale;
+		const moduleShape = options.moduleShape ?? "square";
 
 		const parts: string[] = [];
 
@@ -92,11 +117,20 @@ export class SVGRenderer {
 			`<rect width="${totalSize}" height="${totalSize}" fill="${opts.lightColor}"/>`,
 		);
 
-		// Dibujar módulos
-		if (options.optimizePaths !== false) {
-			parts.push(this.renderOptimizedPath(matrix, opts));
-		} else {
-			parts.push(this.renderIndividualRects(matrix, opts));
+		// Dibujar módulos según la forma seleccionada
+		if (moduleShape === "square") {
+			if (options.optimizePaths !== false) {
+				parts.push(this.renderOptimizedPath(matrix, opts));
+			} else {
+				parts.push(this.renderIndividualRects(matrix, opts));
+			}
+		} else if (moduleShape === "rounded") {
+			const radius = Math.max(0, Math.min(1, options.cornerRadius ?? 0.5));
+			parts.push(this.renderRoundedModules(matrix, opts, radius));
+		} else if (moduleShape === "circle") {
+			parts.push(this.renderCircleModules(matrix, opts, 0.5));
+		} else if (moduleShape === "dot") {
+			parts.push(this.renderCircleModules(matrix, opts, 0.4));
 		}
 
 		// SVG closing tag
@@ -185,6 +219,77 @@ export class SVGRenderer {
 		}
 
 		return `<path fill="${opts.darkColor}" d="${pathParts.join("")}"/>`;
+	}
+
+	/**
+	 * Renderiza módulos como rectángulos con esquinas redondeadas.
+	 *
+	 * @param matrix - Matriz del código QR
+	 * @param opts - Opciones normalizadas
+	 * @param radiusRatio - Radio de esquina como proporción del módulo (0-1)
+	 * @returns Cadena con los elementos rect redondeados
+	 *
+	 * @internal
+	 */
+	private static renderRoundedModules(
+		matrix: QRMatrix,
+		opts: Required<RenderOptions>,
+		radiusRatio: number,
+	): string {
+		const rects: string[] = [];
+		const size = matrix.length;
+		const r = (opts.scale / 2) * radiusRatio;
+
+		for (let row = 0; row < size; row++) {
+			for (let col = 0; col < size; col++) {
+				if (matrix[row][col] === 1) {
+					const x = (col + opts.margin) * opts.scale;
+					const y = (row + opts.margin) * opts.scale;
+					rects.push(
+						`<rect x="${x}" y="${y}" width="${opts.scale}" height="${opts.scale}" rx="${r}" ry="${r}" fill="${opts.darkColor}"/>`,
+					);
+				}
+			}
+		}
+
+		return rects.join("");
+	}
+
+	/**
+	 * Renderiza módulos como círculos.
+	 *
+	 * @description Usado tanto para moduleShape 'circle' (radio = 50% del módulo)
+	 * como para 'dot' (radio = 40% del módulo).
+	 *
+	 * @param matrix - Matriz del código QR
+	 * @param opts - Opciones normalizadas
+	 * @param radiusRatio - Radio como proporción del módulo (0-0.5)
+	 * @returns Cadena con los elementos circle
+	 *
+	 * @internal
+	 */
+	private static renderCircleModules(
+		matrix: QRMatrix,
+		opts: Required<RenderOptions>,
+		radiusRatio: number,
+	): string {
+		const circles: string[] = [];
+		const size = matrix.length;
+		const r = opts.scale * radiusRatio;
+
+		for (let row = 0; row < size; row++) {
+			for (let col = 0; col < size; col++) {
+				if (matrix[row][col] === 1) {
+					const cx = (col + opts.margin) * opts.scale + opts.scale / 2;
+					const cy = (row + opts.margin) * opts.scale + opts.scale / 2;
+					circles.push(
+						`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${opts.darkColor}"/>`,
+					);
+				}
+			}
+		}
+
+		return circles.join("");
 	}
 
 	/**

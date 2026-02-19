@@ -285,4 +285,286 @@ describe("SVGRenderer", () => {
 			expect(text).toContain("<svg");
 		});
 	});
+
+	describe("render() — moduleShape: 'square' (por defecto)", () => {
+		it("usa paths optimizados por defecto con shape square", () => {
+			const result = SVGRenderer.render(MATRIX_ALL_DARK, {
+				moduleShape: "square",
+			});
+			expect(result).toContain("<path ");
+		});
+
+		it("usa rects con optimizePaths=false y shape square", () => {
+			const result = SVGRenderer.render(MATRIX_ALL_DARK, {
+				moduleShape: "square",
+				optimizePaths: false,
+			});
+			expect(result).toContain("<rect ");
+			expect(result).not.toContain("<path ");
+		});
+
+		it("sin moduleShape se comporta como square", () => {
+			const withShape = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "square",
+			});
+			const withoutShape = SVGRenderer.render(MATRIX_5X5);
+			expect(withShape).toBe(withoutShape);
+		});
+	});
+
+	describe("render() — moduleShape: 'rounded'", () => {
+		it("genera rects con rx y ry", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+			});
+			expect(result).toMatch(/rx="\d+(\.\d+)?" ry="\d+(\.\d+)?"/);
+		});
+
+		it("no usa path optimizado", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+			});
+			expect(result).not.toContain("<path ");
+		});
+
+		it("genera un rect por cada módulo oscuro", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+			});
+			const darkModules = MATRIX_5X5.flat().filter((v) => v === 1).length;
+			const rects = result.match(/<rect /g) || [];
+			// 1 fondo + N módulos oscuros
+			expect(rects.length).toBe(1 + darkModules);
+		});
+
+		it("usa cornerRadius por defecto de 0.5", () => {
+			// scale=10, radius = (10/2) * 0.5 = 2.5
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+			});
+			expect(result).toContain('rx="2.5"');
+			expect(result).toContain('ry="2.5"');
+		});
+
+		it("respeta cornerRadius personalizado", () => {
+			// scale=10, radius = (10/2) * 0.8 = 4
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+				cornerRadius: 0.8,
+			});
+			expect(result).toContain('rx="4"');
+			expect(result).toContain('ry="4"');
+		});
+
+		it("clampea cornerRadius a 0 si es negativo", () => {
+			// clamp(-1) → 0, radius = (10/2) * 0 = 0
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+				cornerRadius: -1,
+			});
+			expect(result).toContain('rx="0"');
+		});
+
+		it("clampea cornerRadius a 1 si excede 1", () => {
+			// clamp(5) → 1, radius = (10/2) * 1 = 5
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+				cornerRadius: 5,
+			});
+			expect(result).toContain('rx="5"');
+		});
+
+		it("cornerRadius=0 produce cuadrados sin redondeo", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+				cornerRadius: 0,
+			});
+			expect(result).toContain('rx="0"');
+			expect(result).toContain('ry="0"');
+		});
+
+		it("cornerRadius=1 produce píldoras", () => {
+			// scale=10, radius = (10/2) * 1 = 5 (máximo)
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				scale: 10,
+				cornerRadius: 1,
+			});
+			expect(result).toContain('rx="5"');
+			expect(result).toContain('ry="5"');
+		});
+
+		it("usa darkColor para los módulos", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "rounded",
+				darkColor: "#ff0000",
+			});
+			// Excluir el rect de fondo, los demás tienen darkColor
+			const moduleRects = (result.match(/<rect [^/]*\/>/g) || []).slice(1);
+			for (const rect of moduleRects) {
+				expect(rect).toContain('fill="#ff0000"');
+			}
+		});
+
+		it("respeta margen en posicionamiento", () => {
+			const single: QRMatrix = [[1]];
+			const result = SVGRenderer.render(single, {
+				moduleShape: "rounded",
+				margin: 2,
+				scale: 10,
+			});
+			expect(result).toContain('x="20" y="20"');
+		});
+
+		it("no genera módulos para matriz vacía", () => {
+			const result = SVGRenderer.render(MATRIX_EMPTY, {
+				moduleShape: "rounded",
+			});
+			const rects = result.match(/<rect /g) || [];
+			expect(rects.length).toBe(1); // solo fondo
+		});
+	});
+
+	describe("render() — moduleShape: 'circle'", () => {
+		it("genera elementos circle", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+			});
+			expect(result).toContain("<circle ");
+		});
+
+		it("no usa path ni rects de módulos", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+			});
+			expect(result).not.toContain("<path ");
+			const rects = result.match(/<rect /g) || [];
+			expect(rects.length).toBe(1); // solo fondo
+		});
+
+		it("genera un circle por cada módulo oscuro", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+			});
+			const darkModules = MATRIX_5X5.flat().filter((v) => v === 1).length;
+			const circles = result.match(/<circle /g) || [];
+			expect(circles.length).toBe(darkModules);
+		});
+
+		it("el radio es 50% del scale (inscrito)", () => {
+			// scale=10, r = 10 * 0.5 = 5
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+				scale: 10,
+			});
+			expect(result).toContain('r="5"');
+		});
+
+		it("el centro está en el medio del módulo", () => {
+			const single: QRMatrix = [[1]];
+			// margin=0, scale=10 → cx = 0*10 + 5 = 5, cy = 5
+			const result = SVGRenderer.render(single, {
+				moduleShape: "circle",
+				margin: 0,
+				scale: 10,
+			});
+			expect(result).toContain('cx="5"');
+			expect(result).toContain('cy="5"');
+		});
+
+		it("el centro respeta el margen", () => {
+			const single: QRMatrix = [[1]];
+			// margin=2, scale=10 → cx = (0+2)*10 + 5 = 25, cy = 25
+			const result = SVGRenderer.render(single, {
+				moduleShape: "circle",
+				margin: 2,
+				scale: 10,
+			});
+			expect(result).toContain('cx="25"');
+			expect(result).toContain('cy="25"');
+		});
+
+		it("usa darkColor para los círculos", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+				darkColor: "#00ff00",
+			});
+			const circles = result.match(/<circle [^/]*\/>/g) || [];
+			for (const circle of circles) {
+				expect(circle).toContain('fill="#00ff00"');
+			}
+		});
+
+		it("no genera círculos para matriz vacía", () => {
+			const result = SVGRenderer.render(MATRIX_EMPTY, {
+				moduleShape: "circle",
+			});
+			expect(result).not.toContain("<circle ");
+		});
+	});
+
+	describe("render() — moduleShape: 'dot'", () => {
+		it("genera elementos circle", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "dot",
+			});
+			expect(result).toContain("<circle ");
+		});
+
+		it("el radio es 40% del scale (más pequeño que circle)", () => {
+			// scale=10, r = 10 * 0.4 = 4
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "dot",
+				scale: 10,
+			});
+			expect(result).toContain('r="4"');
+		});
+
+		it("dot tiene radio menor que circle", () => {
+			const dotResult = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "dot",
+				scale: 10,
+			});
+			const circleResult = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "circle",
+				scale: 10,
+			});
+			const dotRadius = dotResult.match(/r="(\d+(\.\d+)?)"/)?.[1];
+			const circleRadius = circleResult.match(/r="(\d+(\.\d+)?)"/)?.[1];
+			expect(Number(dotRadius)).toBeLessThan(Number(circleRadius));
+		});
+
+		it("genera un circle por cada módulo oscuro", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "dot",
+			});
+			const darkModules = MATRIX_5X5.flat().filter((v) => v === 1).length;
+			const circles = result.match(/<circle /g) || [];
+			expect(circles.length).toBe(darkModules);
+		});
+
+		it("el centro está en el medio del módulo", () => {
+			const single: QRMatrix = [[1]];
+			const result = SVGRenderer.render(single, {
+				moduleShape: "dot",
+				margin: 0,
+				scale: 10,
+			});
+			expect(result).toContain('cx="5"');
+			expect(result).toContain('cy="5"');
+		});
+
+		it("usa darkColor", () => {
+			const result = SVGRenderer.render(MATRIX_5X5, {
+				moduleShape: "dot",
+				darkColor: "#abcdef",
+			});
+			expect(result).toContain('fill="#abcdef"');
+		});
+	});
 });

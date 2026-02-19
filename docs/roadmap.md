@@ -144,30 +144,50 @@ jobs:
 
 Mejoras que aumentan el valor de la librería sin romper la API existente.
 
-### 3.1 Renderer de terminal (ASCII/Unicode)
+### ~~3.1 Renderer de terminal (ASCII/Unicode)~~ ✅ Completado
 
-Útil para Node.js CLI. Representar módulos con `██` / `  ` o caracteres Unicode de bloques.
+`TerminalRenderer` implementado con 3 estilos de renderizado:
+
+- **unicode**: Bloques `██` / `  ` — mejor contraste
+- **compact**: Medio bloque `▀▄█ ` — mitad de altura
+- **ascii**: Caracteres `##` / `  ` — máxima compatibilidad
+
+Opciones: `style`, `margin`, `invert` (para terminales con fondo oscuro).
+Helper function `renderToTerminal()` agregada. 33 unit tests.
 
 ```typescript
 import { generateQR, TerminalRenderer } from "qr-pure";
 const { matrix } = generateQR("hello");
 console.log(TerminalRenderer.render(matrix));
+console.log(
+	TerminalRenderer.render(matrix, { style: "compact", invert: true }),
+);
 ```
 
-### 3.2 Modo Kanji
+### 3.2 Modo Kanji _(postergado)_
 
-El tipo `EncodingMode` ya incluye `kanji` y el mode indicator `"1000"` existe en constantes.
-Falta implementar `KanjiEncoder` con codificación Shift JIS → 13 bits por carácter.
+~~El tipo `EncodingMode` ya incluye `kanji` y el mode indicator `"1000"` existe en constantes.
+Falta implementar `KanjiEncoder` con codificación Shift JIS → 13 bits por carácter.~~
 
-### 3.3 Módulos con formas personalizadas
+### ~~3.3 Módulos con formas personalizadas~~ ✅ Completado
 
-Soporte para módulos redondeados, circulares o con puntos en el SVGRenderer:
+Soporte para 4 formas de módulos en `SVGRenderer` via `moduleShape`:
+
+- **square** (default): Cuadrado estándar con paths optimizados
+- **rounded**: Rectángulos con esquinas redondeadas (`cornerRadius` 0-1)
+- **circle**: Círculos inscritos (radio = 50% del módulo)
+- **dot**: Puntos más pequeños (radio = 40% del módulo)
+
+Tipo `ModuleShape` y opción `cornerRadius` exportados. 29 unit tests.
+Demo browser actualizada con selector de forma (auto-switch a SVG).
 
 ```typescript
-SVGRenderer.render(matrix, { moduleShape: "rounded" | "circle" | "dot" });
+SVGRenderer.render(matrix, { moduleShape: "rounded", cornerRadius: 0.3 });
+SVGRenderer.render(matrix, { moduleShape: "circle" });
+SVGRenderer.render(matrix, { moduleShape: "dot" });
 ```
 
-### 3.4 Embedding de logo
+### 3.4 Embedding de logo _(próximamente)_
 
 Insertar una imagen en el centro del QR aprovechando la redundancia de la corrección de errores (requiere nivel Q o H):
 
@@ -175,9 +195,9 @@ Insertar una imagen en el centro del QR aprovechando la redundancia de la correc
 SVGRenderer.render(matrix, { logo: { url: "logo.svg", size: 0.2 } });
 ```
 
-### 3.5 Codificación multi-modo
+### 3.5 Codificación multi-modo _(postergado)_
 
-Optimizar capacidad alternando modos dentro del mismo QR (ej: numérico + alfanumérico + byte) según el contenido.
+~~Optimizar capacidad alternando modos dentro del mismo QR (ej: numérico + alfanumérico + byte) según el contenido.~~
 
 ---
 

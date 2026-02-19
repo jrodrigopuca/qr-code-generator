@@ -62,7 +62,7 @@ export { QRCode } from "./QRCode";
 
 // Export renderers
 export { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
-export type { SVGRenderOptions } from "./renderer";
+export type { SVGRenderOptions, ModuleShape } from "./renderer";
 export type { TerminalRenderOptions, TerminalStyle } from "./renderer";
 
 // Export internal modules for advanced usage

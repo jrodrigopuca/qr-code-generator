@@ -8,6 +8,7 @@ import type {
 	ErrorCorrectionLevel,
 	QRCodeResult,
 } from "../../src/types/index.ts";
+import type { ModuleShape } from "../../src/renderer/SVGRenderer.ts";
 
 // Elementos del DOM
 const contentInput = document.getElementById("content") as HTMLTextAreaElement;
@@ -22,6 +23,9 @@ const darkColorInput = document.getElementById("darkColor") as HTMLInputElement;
 const lightColorInput = document.getElementById(
 	"lightColor",
 ) as HTMLInputElement;
+const moduleShapeSelect = document.getElementById(
+	"moduleShape",
+) as HTMLSelectElement;
 
 const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
 const svgContainer = document.getElementById("qrSvg") as HTMLDivElement;
@@ -57,6 +61,10 @@ function generateQR(): void {
 		const darkColor = darkColorInput.value;
 		const lightColor = lightColorInput.value;
 		const renderMode = renderModeSelect.value;
+		const moduleShape = (moduleShapeSelect?.value ?? "square") as ModuleShape;
+
+		// Las formas personalizadas solo funcionan con SVG
+		const effectiveRenderMode = moduleShape !== "square" ? "svg" : renderMode;
 
 		// Generar QR
 		const qr = new QRCode(content, {
@@ -82,14 +90,17 @@ function generateQR(): void {
 			lightColor,
 		};
 
-		if (renderMode === "canvas") {
+		if (effectiveRenderMode === "canvas") {
 			canvas.style.display = "block";
 			svgContainer.style.display = "none";
 			CanvasRenderer.render(canvas, currentResult.matrix, renderOptions);
 		} else {
 			canvas.style.display = "none";
 			svgContainer.style.display = "block";
-			const svg = SVGRenderer.render(currentResult.matrix, renderOptions);
+			const svg = SVGRenderer.render(currentResult.matrix, {
+				...renderOptions,
+				moduleShape,
+			});
 			svgContainer.innerHTML = svg;
 		}
 	} catch (error) {
@@ -156,6 +167,7 @@ function downloadSvg(): void {
 		margin,
 		darkColor,
 		lightColor,
+		moduleShape: (moduleShapeSelect?.value ?? "square") as ModuleShape,
 		xmlDeclaration: true,
 	});
 
@@ -175,6 +187,7 @@ renderModeSelect.addEventListener("change", generateQR);
 sizeInput.addEventListener("input", generateQR);
 darkColorInput.addEventListener("input", generateQR);
 lightColorInput.addEventListener("input", generateQR);
+moduleShapeSelect?.addEventListener("change", generateQR);
 
 downloadPngBtn.addEventListener("click", downloadPng);
 downloadSvgBtn.addEventListener("click", downloadSvg);
