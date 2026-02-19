@@ -4,12 +4,12 @@
  * Implements ISO/IEC 18004 standard for QR code generation.
  *
  * @packageDocumentation
- * @module qr-generator
+ * @module qr-pure
  * @license MIT
  *
  * @example Basic Usage
  * ```typescript
- * import { QRCode, generateQR } from 'qr-generator';
+ * import { QRCode, generateQR } from 'qr-pure';
  *
  * // Simple usage with helper function
  * const result = generateQR('Hello World');
@@ -25,7 +25,7 @@
  *
  * @example Canvas Rendering
  * ```typescript
- * import { renderToCanvas } from 'qr-generator';
+ * import { renderToCanvas } from 'qr-pure';
  *
  * const canvas = document.getElementById('qr-canvas');
  * renderToCanvas(canvas, 'Hello World', {

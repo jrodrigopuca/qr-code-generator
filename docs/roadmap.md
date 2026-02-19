@@ -1,6 +1,6 @@
 # Roadmap
 
-Estado actual del proyecto y próximos pasos para publicar `qr-generator` en npm.
+Estado actual del proyecto y próximos pasos para publicar `qr-pure` en npm.
 
 ---
 
@@ -90,7 +90,7 @@ npm publish --access public
 - `renderRounded()`: esquinas, cornerRadius, clamping
 - `CanvasRenderer`: `calculateSize()`, `fillStyle` verificado, argumentos de `toDataURL`/`toBlob`
 
-### 2.3 Cobertura al 80%+
+### 2.3 Cobertura al 80%+ _(en progreso)_
 
 Cobertura actual tras agregar tests de renderers y `binary.ts` (threshold configurado en 70%):
 
@@ -112,11 +112,11 @@ Cuando se alcance el 80%, subir threshold en `vitest.config.ts`:
 thresholds: { branches: 80, functions: 80, lines: 80, statements: 80 }
 ```
 
-### 2.4 CI multi-versión
+### 2.4 CI multi-versión _(postergado)_
 
-Agregar Node 18 y 20 a la matrix de GitHub Actions para garantizar compatibilidad con `engines: >=18`.
+~~Agregar Node 18 y 20 a la matrix de GitHub Actions para garantizar compatibilidad con `engines: >=18`.~~
 
-### 2.5 Workflow de publicación automática
+### 2.5 Workflow de publicación automática _(postergado)_
 
 ```yaml
 # .github/workflows/publish.yml
@@ -149,7 +149,7 @@ Mejoras que aumentan el valor de la librería sin romper la API existente.
 Útil para Node.js CLI. Representar módulos con `██` / `  ` o caracteres Unicode de bloques.
 
 ```typescript
-import { generateQR, TerminalRenderer } from "qr-generator";
+import { generateQR, TerminalRenderer } from "qr-pure";
 const { matrix } = generateQR("hello");
 console.log(TerminalRenderer.render(matrix));
 ```
@@ -211,9 +211,9 @@ Guía de contribución con:
 ### 4.4 Badges en README
 
 ```markdown
-[![npm](https://img.shields.io/npm/v/qr-generator)](https://www.npmjs.com/package/qr-generator)
-[![CI](https://github.com/jrodrigopuca/qr-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-generator/actions)
-[![codecov](https://codecov.io/gh/jrodrigopuca/qr-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/jrodrigopuca/qr-generator)
+[![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure)
+[![CI](https://github.com/jrodrigopuca/qr-code-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-code-generator/actions)
+[![codecov](https://codecov.io/gh/jrodrigopuca/qr-code-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/jrodrigopuca/qr-code-generator)
 ```
 
 ---
@@ -227,7 +227,7 @@ Ideas que requieren investigación o cambios más significativos.
 | ECI (Extended Channel Interpretation) | Alta        | Permite declarar charset explícito                            |
 | Structured Append                     | Alta        | Dividir datos en múltiples QR enlazados                       |
 | Micro QR                              | Alta        | Estándar ISO/IEC 18004 Annex I                                |
-| CLI tool (`npx qr-generator "text"`)  | Baja        | Usar bin field en package.json + terminal renderer            |
+| CLI tool (`npx qr-pure "text"`)       | Baja        | Usar bin field en package.json + terminal renderer            |
 | Bundle size tracking                  | Baja        | Integrar [size-limit](https://github.com/ai/size-limit) en CI |
 | Benchmarks vs otras librerías         | Media       | Comparar con qrcode, qr-image, etc.                           |
 
