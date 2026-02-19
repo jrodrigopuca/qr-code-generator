@@ -1,6 +1,6 @@
 {
   "name": "qr-pure",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
   "type": "commonjs",
   "main": "dist/index.js",

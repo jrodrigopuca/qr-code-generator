@@ -3,6 +3,7 @@
 [![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure)
 [![CI](https://github.com/jrodrigopuca/qr-code-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-code-generator/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![API Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jrodrigopuca.github.io/qr-code-generator/)
 
 Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.
 
@@ -173,6 +174,7 @@ cd e2e-tests && npm install && npm test
 
 ## Documentation
 
+- [API Reference](https://jrodrigopuca.github.io/qr-code-generator/) — generated with TypeDoc, deployed on GitHub Pages
 - [Technical Documentation](docs/technical.md)
 - [Roadmap](docs/roadmap.md)
 

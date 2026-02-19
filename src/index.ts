@@ -250,4 +250,4 @@ export function renderToTerminal(
 }
 
 // Version info
-export const VERSION = "2.0.5";
+export const VERSION = "2.1.0";

@@ -4,7 +4,7 @@ Estado actual del proyecto y próximos pasos para publicar `qr-pure` en npm.
 
 ---
 
-## Estado Actual (v2.0.5)
+## Estado Actual (v2.1.0)
 
 ### Implementado
 
@@ -12,11 +12,11 @@ Estado actual del proyecto y próximos pasos para publicar `qr-pure` en npm.
 - **Corrección de errores**: Reed-Solomon con GF(2^8), niveles L/M/Q/H
 - **Matriz QR**: Finder, Alignment, Timing, Dark module, Format info, Version info (v≥7)
 - **Máscaras**: 8 patrones + selección automática con scoring de penalización
-- **Renderers**: Canvas (`render`, `toDataURL`, `toBlob`) y SVG (rects + optimized path)
-- **Tests**: 290 unit/integration (201 originales + 64 renderers + 25 utils) + E2E con jsQR
-- **CI**: GitHub Actions (typecheck, lint, test, coverage, build, E2E)
-- **Ejemplos**: Demo browser interactiva (Vite) + script Node.js
-- **DX**: ESLint, Prettier, JSDoc en todo el código fuente, custom errors
+- **Renderers**: Canvas (`render`, `toDataURL`, `toBlob`), SVG (rects + optimized path + module shapes) y Terminal (unicode, compact, ascii)
+- **Tests**: 352 unit/integration + E2E con jsQR
+- **CI**: GitHub Actions (typecheck, lint, test, coverage, build, E2E, docs → GitHub Pages)
+- **Demo**: Demo browser interactiva (Vite) + script Node.js
+- **DX**: ESLint, Prettier, JSDoc en todo el código fuente, custom errors, TypeDoc API docs
 - **Build dual CJS + ESM**: tsup configurado, genera ambos formatos con tipos
 - **VERSION sincronizada**: constante `VERSION` alineada con `package.json`
 - **Source maps**: habilitados en build

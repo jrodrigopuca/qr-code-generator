@@ -630,4 +630,4 @@ dist/
 ---
 
 _Documentación actualizada: Febrero 2026_
-_Versión del proyecto: 2.0.5_
+_Versión del proyecto: 2.1.0_
