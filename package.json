@@ -38,8 +38,8 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "docs": "echo 'TypeDoc not configured yet - see Phase 6'",
     "prepublishOnly": "npm run build",
-    "example:node": "npx tsx examples/node/basic.ts",
-    "example:browser": "npx vite examples/browser",
+    "demo:node": "npx tsx demo/node/basic.ts",
+    "demo:browser": "npx vite demo/browser",
     "legacy:live": "live-server .",
     "legacy:build": "tsc && node dist/qr.legacy.js"
   },

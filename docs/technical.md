@@ -501,7 +501,7 @@ qr-code-generator/
 ├── tests/
 │   ├── encoder.test.ts
 │   └── reed-solomon.test.ts
-├── examples/
+├── demo/
 │   └── basic-usage.html
 └── dist/
 ```

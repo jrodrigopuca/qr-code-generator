@@ -14,7 +14,7 @@ export default defineConfig({
 				"src/**/index.ts",
 				"node_modules",
 				"tests",
-				"examples",
+				"demo",
 			],
 			thresholds: {
 				branches: 70,

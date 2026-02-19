@@ -1,13 +1,13 @@
-# Ejemplos de QR Code Generator
+# Demos de QR Code Generator
 
-Esta carpeta contiene ejemplos funcionales de cómo usar la librería.
+Esta carpeta contiene demos funcionales de cómo usar la librería.
 
-## Ejemplo Browser
+## Demo Browser
 
 Una demo interactiva con Vite que permite generar códigos QR en el navegador.
 
 ```bash
-npm run example:browser
+npm run demo:browser
 ```
 
 Luego abrir http://localhost:5173 en el navegador.
@@ -21,12 +21,12 @@ Luego abrir http://localhost:5173 en el navegador.
 - Descarga como PNG o SVG
 - Muestra información del QR (versión, modo, tamaño, máscara)
 
-## Ejemplo Node.js
+## Demo Node.js
 
 Script de demostración que muestra las principales funcionalidades.
 
 ```bash
-npm run example:node
+npm run demo:node
 ```
 
 **Demuestra:**
@@ -37,14 +37,15 @@ npm run example:node
 4. Generación y guardado de SVG
 5. Comparación de niveles de corrección
 6. Acceso directo a la matriz binaria
+7. Renderizado en terminal (Unicode, Compacto, ASCII, Invertido)
 
 ## Ejecutar sin instalar dependencias globales
 
-Ambos ejemplos usan TypeScript directamente desde `src/` sin necesidad de compilar a `dist/`:
+Ambas demos usan TypeScript directamente desde `src/` sin necesidad de compilar a `dist/`:
 
 - **Browser**: Vite transpila TypeScript automáticamente
 - **Node.js**: tsx ejecuta TypeScript directamente
 
 ## Archivos generados
 
-- `node/output.svg` - SVG generado por el ejemplo de Node.js
+- `node/output.svg` - SVG generado por la demo de Node.js

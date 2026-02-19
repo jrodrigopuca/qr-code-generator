@@ -1,9 +1,14 @@
 /**
  * @fileoverview Ejemplo básico de generación de QR en Node.js
- * @description Ejecutar con: node --experimental-strip-types examples/node/basic.ts
+ * @description Ejecutar con: npx tsx demo/node/basic.ts
  */
 
-import { QRCode, generateQR, SVGRenderer } from "../../src/index.ts";
+import {
+	QRCode,
+	generateQR,
+	SVGRenderer,
+	TerminalRenderer,
+} from "../../src/index.ts";
 import { writeFileSync } from "fs";
 
 console.log("=== QR Code Generator - Node.js Examples ===\n");
@@ -57,7 +62,7 @@ const svgContent = SVGRenderer.render(result.matrix, {
 	lightColor: "#ffffff",
 });
 
-const outputPath = "examples/node/output.svg";
+const outputPath = "demo/node/output.svg";
 writeFileSync(outputPath, svgContent);
 console.log(`   SVG guardado en: ${outputPath}`);
 
@@ -87,5 +92,31 @@ for (let row = 0; row < 7; row++) {
 	console.log(`   ${line}`);
 }
 console.log("   (Finder pattern superior izquierdo)");
+
+// Ejemplo 7: Renderizado en terminal
+console.log("\n7. Renderizado en terminal:");
+const terminalQR = generateQR("HELLO", { errorCorrectionLevel: "L" });
+
+console.log("\n   Estilo Unicode (por defecto):");
+console.log(TerminalRenderer.render(terminalQR.matrix, { margin: 1 }));
+
+console.log("\n   Estilo Compacto (mitad de altura):");
+console.log(
+	TerminalRenderer.render(terminalQR.matrix, { style: "compact", margin: 1 }),
+);
+
+console.log("\n   Estilo ASCII:");
+console.log(
+	TerminalRenderer.render(terminalQR.matrix, { style: "ascii", margin: 1 }),
+);
+
+console.log("\n   Invertido (para fondo oscuro):");
+console.log(
+	TerminalRenderer.render(terminalQR.matrix, {
+		style: "compact",
+		margin: 1,
+		invert: true,
+	}),
+);
 
 console.log("\n=== Ejemplos completados ===");
