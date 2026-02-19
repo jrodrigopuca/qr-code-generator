@@ -13,16 +13,20 @@ Estado actual del proyecto y próximos pasos para publicar `qr-generator` en npm
 - **Matriz QR**: Finder, Alignment, Timing, Dark module, Format info, Version info (v≥7)
 - **Máscaras**: 8 patrones + selección automática con scoring de penalización
 - **Renderers**: Canvas (`render`, `toDataURL`, `toBlob`) y SVG (rects + optimized path)
-- **Tests**: 201 unit/integration + E2E con jsQR
+- **Tests**: 290 unit/integration (201 originales + 64 renderers + 25 utils) + E2E con jsQR
 - **CI**: GitHub Actions (typecheck, lint, test, coverage, build, E2E)
 - **Ejemplos**: Demo browser interactiva (Vite) + script Node.js
 - **DX**: ESLint, Prettier, JSDoc en todo el código fuente, custom errors
+- **Build dual CJS + ESM**: tsup configurado, genera ambos formatos con tipos
+- **VERSION sincronizada**: constante `VERSION` alineada con `package.json`
+- **Source maps**: habilitados en build
+- **Publicado en npm**: primer `npm publish` realizado ✅
 
 ---
 
-## Fase 1: Preparar para publicación (Bloqueante)
+## ~~Fase 1: Preparar para publicación~~ ✅ Completada
 
-Correcciones necesarias antes del primer `npm publish`.
+~~Correcciones necesarias antes del primer `npm publish`.~~
 
 ### 1.1 Build dual CJS + ESM
 
@@ -70,21 +74,43 @@ npm publish --access public
 
 ## Fase 2: Calidad y confianza
 
-### 2.1 CHANGELOG
+### 2.1 CHANGELOG _(postergado)_
 
-Crear `CHANGELOG.md` con historial de versiones. Considerar [changesets](https://github.com/changesets/changesets) para automatizar.
+~~Crear `CHANGELOG.md` con historial de versiones.~~ Revisar en el futuro si adoptar [changesets](https://github.com/changesets/changesets) o un formato manual. No es bloqueante para las demás tareas.
 
-### 2.2 Tests de renderers
+### ~~2.2 Tests de renderers~~ ✅ Completado
 
-`CanvasRenderer` y `SVGRenderer` no tienen tests. Agregar tests que verifiquen:
+64 tests agregados en `tests/unit/svg-renderer.test.ts` y `tests/unit/canvas-renderer.test.ts`:
 
-- Estructura SVG generada (parsear XML)
-- Dimensiones y colores correctos
-- Opciones de margen y tamaño
+- Estructura SVG (namespace, viewBox, dimensiones, rect de fondo)
+- Colores dark/light en posición correcta
+- Paths optimizados vs rects individuales
+- Posicionamiento con margen y escala
+- `toDataURL()`, `toBlob()` y manejo de errores
+- `renderRounded()`: esquinas, cornerRadius, clamping
+- `CanvasRenderer`: `calculateSize()`, `fillStyle` verificado, argumentos de `toDataURL`/`toBlob`
 
 ### 2.3 Cobertura al 80%+
 
-Coverage actual configurado al 70%. Subir gradualmente a 80% en `vitest.config.ts`.
+Cobertura actual tras agregar tests de renderers y `binary.ts` (threshold configurado en 70%):
+
+| Módulo                | Statements | Branches | Lines    |
+| --------------------- | ---------- | -------- | -------- |
+| `CanvasRenderer`      | **100%**   | **100%** | **100%** |
+| `src/utils/binary.ts` | **100%**   | **100%** | **100%** |
+| `SVGRenderer`         | 82%        | 83%      | 81%      |
+| `src/encoder`         | 99%        | 98%      | 99%      |
+| `src/mask`            | 99%        | 93%      | 99%      |
+
+Pendiente para alcanzar el 80% global:
+
+- `SVGRenderer.createSVGElement()` y `SVGRenderer.download()` sin cubrir (líneas 213-216, 284-292) — requieren DOM real o E2E
+
+Cuando se alcance el 80%, subir threshold en `vitest.config.ts`:
+
+```ts
+thresholds: { branches: 80, functions: 80, lines: 80, statements: 80 }
+```
 
 ### 2.4 CI multi-versión
 
@@ -210,7 +236,7 @@ Ideas que requieren investigación o cambios más significativos.
 ## Resumen de prioridades
 
 ```
-Publicar (Fase 1)  ████████████████████  Crítico — hacer primero
+~~Publicar (Fase 1)  ████████████████████  Crítico — ✅ COMPLETADO~~
 Calidad (Fase 2)   ███████████████░░░░░  Alta — inmediatamente después
 Features (Fase 3)  ██████████░░░░░░░░░░  Media — incrementan adopción
 Docs (Fase 4)      ████████░░░░░░░░░░░░  Media — incrementan confianza
