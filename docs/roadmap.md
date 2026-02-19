@@ -203,10 +203,10 @@ SVGRenderer.render(matrix, { logo: { url: "logo.svg", size: 0.2 } });
 
 ## Fase 4: Documentación y comunidad
 
-### 4.1 Actualizar `docs/technical.md`
+### ~~4.1 Actualizar `docs/technical.md`~~ ✅ Completado
 
-El documento técnico aún referencia la arquitectura monolítica original (`src/qr.ts`, `js/canvas.js`).
-Actualizar para reflejar la estructura modular actual.
+Documento técnico reescrito completamente para reflejar la arquitectura modular actual:
+arquitectura de archivos, módulos del sistema (QRCode, Encoders, ReedSolomon, Patterns, MaskEvaluator, Renderers, Constants, Types, Errors), algoritmos, flujo de datos, API pública, testing y build.
 
 ### 4.2 Generación de API docs
 
@@ -228,13 +228,10 @@ Guía de contribución con:
 - Proceso de PR
 - Cómo correr los tests
 
-### 4.4 Badges en README
+### ~~4.4 Badges en README~~ ✅ Completado
 
-```markdown
-[![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure)
-[![CI](https://github.com/jrodrigopuca/qr-code-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-code-generator/actions)
-[![codecov](https://codecov.io/gh/jrodrigopuca/qr-code-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/jrodrigopuca/qr-code-generator)
-```
+Badges agregados al README: npm version, CI status, License MIT.
+Además se actualizó el README completo con la documentación de los 3 renderers (Canvas, SVG con moduleShape, Terminal), helper functions y scripts npm actualizados.
 
 ---
 
