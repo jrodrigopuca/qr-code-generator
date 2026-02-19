@@ -208,16 +208,20 @@ SVGRenderer.render(matrix, { logo: { url: "logo.svg", size: 0.2 } });
 Documento técnico reescrito completamente para reflejar la arquitectura modular actual:
 arquitectura de archivos, módulos del sistema (QRCode, Encoders, ReedSolomon, Patterns, MaskEvaluator, Renderers, Constants, Types, Errors), algoritmos, flujo de datos, API pública, testing y build.
 
-### 4.2 Generación de API docs
+### ~~4.2 Generación de API docs~~ ✅ Completado
 
-Configurar [TypeDoc](https://typedoc.org) para generar documentación a partir de JSDoc:
+[TypeDoc](https://typedoc.org) configurado y funcionando:
+
+- `typedoc.json` con entry point `src/index.ts`, README incluido, links de navegación hacia GitHub y npm
+- Script `npm run docs` genera `docs/api/` con HTML completo
+- Tipos internos `CapacityInfo`, `BlockInfo`, `BlocksConfig` exportados desde la API pública
+- Workflow `.github/workflows/docs.yml` despliega automáticamente a GitHub Pages en cada push a `master`
+- `docs/api/` agregado a `.gitignore` (generado en CI/CD)
 
 ```bash
-npm install -D typedoc
-npx typedoc src/index.ts --out docs/api
+npm run docs        # genera docs/api/
+npm run docs:watch  # modo watch
 ```
-
-Publicar en GitHub Pages.
 
 ### 4.3 CONTRIBUTING.md
 

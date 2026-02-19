@@ -46,6 +46,9 @@ export type {
 	QRMatrix,
 	QRCodeResult,
 	QRErrorCode,
+	CapacityInfo,
+	BlockInfo,
+	BlocksConfig,
 } from "./types";
 
 // Export error class

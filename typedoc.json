@@ -1,0 +1,31 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api",
+  "name": "qr-pure",
+  "readme": "README.md",
+  "includeVersion": true,
+  "disableSources": false,
+  "categorizeByGroup": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "blockTags": [
+    "@description",
+    "@fileoverview",
+    "@license",
+    "@param",
+    "@returns",
+    "@throws",
+    "@example",
+    "@see",
+    "@deprecated",
+    "@since",
+    "@default",
+    "@module",
+    "@packageDocumentation"
+  ],
+  "navigationLinks": {
+    "GitHub": "https://github.com/jrodrigopuca/qr-code-generator",
+    "npm": "https://www.npmjs.com/package/qr-pure"
+  }
+}

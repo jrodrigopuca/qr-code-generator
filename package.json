@@ -36,7 +36,8 @@
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
-    "docs": "echo 'TypeDoc not configured yet - see Phase 6'",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
     "prepublishOnly": "npm run build",
     "demo:node": "npx tsx demo/node/basic.ts",
     "demo:browser": "npx vite demo/browser",
@@ -76,6 +77,7 @@
     "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
+    "typedoc": "^0.28.17",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.56.0",
     "vitest": "^4.0.18"
