@@ -74,9 +74,9 @@ npm publish --access public
 
 ## Fase 2: Calidad y confianza
 
-### 2.1 CHANGELOG _(postergado)_
+### ~~2.1 CHANGELOG~~ ✅ Completado
 
-~~Crear `CHANGELOG.md` con historial de versiones.~~ Revisar en el futuro si adoptar [changesets](https://github.com/changesets/changesets) o un formato manual. No es bloqueante para las demás tareas.
+`CHANGELOG.md` creado siguiendo el formato [Keep a Changelog](https://keepachangelog.com/). Incluye historial desde la versión 2.0.5 (primer release en npm) hasta la actual.
 
 ### ~~2.2 Tests de renderers~~ ✅ Completado
 

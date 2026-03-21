@@ -55,7 +55,7 @@ export class CanvasRenderer {
 		const ctx = canvas.getContext("2d");
 
 		if (!ctx) {
-			throw new Error("No se pudo obtener el contexto 2D del canvas");
+			throw new Error("Could not get 2D context from canvas");
 		}
 
 		const size = matrix.length;
@@ -200,7 +200,7 @@ export class CanvasRenderer {
 		const ctx = canvas.getContext("2d");
 
 		if (!ctx) {
-			throw new Error("No se pudo obtener el contexto 2D del canvas");
+			throw new Error("Could not get 2D context from canvas");
 		}
 
 		const size = matrix.length;

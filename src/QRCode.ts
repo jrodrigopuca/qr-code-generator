@@ -110,7 +110,7 @@ export class QRCode {
 	 */
 	constructor(data: string, options: QRCodeOptions = {}) {
 		if (!data || data.length === 0) {
-			throw new QRCodeError("DATA_EMPTY", "Los datos no pueden estar vacíos");
+			throw new QRCodeError("DATA_EMPTY", "Data cannot be empty");
 		}
 
 		this.data = data;
@@ -213,7 +213,7 @@ export class QRCode {
 		if (version === null) {
 			throw new QRCodeError(
 				"DATA_TOO_LONG",
-				`Los datos son demasiado largos para cualquier versión QR con nivel ${this.errorLevel} y modo ${this.mode}`,
+				`Data is too long for any QR version with error level ${this.errorLevel} and mode ${this.mode}`,
 			);
 		}
 
@@ -238,7 +238,7 @@ export class QRCode {
 		if (dataLength > capacity) {
 			throw new QRCodeError(
 				"VERSION_TOO_SMALL",
-				`La versión ${this.version} con nivel ${this.errorLevel} y modo ${this.mode} solo puede contener ${capacity} caracteres, pero los datos tienen ${dataLength} caracteres`,
+				`Version ${this.version} with error level ${this.errorLevel} and mode ${this.mode} can only hold ${capacity} characters, but data has ${dataLength} characters`,
 			);
 		}
 	}
@@ -255,7 +255,7 @@ export class QRCode {
 		if (!encoder.canEncode(this.data)) {
 			throw new QRCodeError(
 				"INVALID_MODE",
-				`Los datos no pueden ser codificados con el modo ${this.mode}`,
+				`Data cannot be encoded with mode ${this.mode}`,
 			);
 		}
 	}

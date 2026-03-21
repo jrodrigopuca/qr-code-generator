@@ -176,6 +176,7 @@ cd e2e-tests && npm install && npm test
 
 - [API Reference](https://jrodrigopuca.github.io/qr-code-generator/) — generated with TypeDoc, deployed on GitHub Pages
 - [Technical Documentation](docs/technical.md)
+- [Changelog](CHANGELOG.md)
 - [Roadmap](docs/roadmap.md)
 
 ## License
