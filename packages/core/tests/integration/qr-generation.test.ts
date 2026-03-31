@@ -2,8 +2,8 @@
  * @fileoverview Tests de integración para generación completa de códigos QR
  */
 
-import { describe, it, expect } from "vitest";
-import { QRCode, generateQR, renderToSVG, SVGRenderer } from "../../src";
+import { describe, expect, it } from "vitest";
+import { generateQR, QRCode, renderToSVG, SVGRenderer } from "../../src";
 
 describe("QR Code Generation - Integration", () => {
 	describe("generateQR helper", () => {

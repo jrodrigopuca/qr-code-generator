@@ -1,38 +1,35 @@
 {
-	"name": "qr-pure-monorepo",
-	"version": "0.0.0",
-	"private": true,
-	"description": "Monorepo for the qr-pure ecosystem",
-	"scripts": {
-		"build": "turbo run build",
-		"typecheck": "turbo run typecheck",
-		"test": "turbo run test",
-		"test:coverage": "turbo run test:coverage",
-		"lint": "turbo run lint",
-		"format": "prettier --write \"packages/*/src/**/*.ts\"",
-		"format:check": "prettier --check \"packages/*/src/**/*.ts\"",
-		"docs": "turbo run docs",
-		"clean": "turbo run clean && rm -rf node_modules",
-		"e2e": "pnpm --filter qr-pure-e2e-tests test"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.39.2",
-		"eslint": "^9.39.2",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-jsdoc": "^62.5.5",
-		"prettier": "^3.8.1",
-		"tsx": "^4.21.0",
-		"turbo": "^2.5.4",
-		"typescript-eslint": "^8.56.0"
-	},
-	"packageManager": "pnpm@10.33.0",
-	"engines": {
-		"node": ">=18.0.0"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"canvas",
-			"esbuild"
-		]
-	}
+  "name": "qr-pure-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for the qr-pure ecosystem",
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "lint": "biome lint",
+    "format": "biome format --write",
+    "format:check": "biome format",
+    "docs": "turbo run docs",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "e2e": "pnpm --filter qr-pure-e2e-tests test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "tsx": "^4.21.0",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "canvas",
+      "esbuild"
+    ]
+  }
 }

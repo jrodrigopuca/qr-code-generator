@@ -5,8 +5,8 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/alphanumeric-mode-encoding}
  */
 
+import { ALPHANUMERIC_CHARS, MODE_INDICATORS } from "../constants";
 import type { EncodingMode, QRVersion } from "../types";
-import { MODE_INDICATORS, ALPHANUMERIC_CHARS } from "../constants";
 import { BaseEncoder } from "./BaseEncoder";
 
 /**

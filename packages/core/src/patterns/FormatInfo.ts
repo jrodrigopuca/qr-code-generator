@@ -5,8 +5,8 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/format-version-information}
  */
 
-import type { QRVersion, ErrorCorrectionLevel, MaskPattern } from "../types";
 import { FORMAT_INFO_STRINGS, VERSION_INFO_STRINGS } from "../constants";
+import type { ErrorCorrectionLevel, MaskPattern, QRVersion } from "../types";
 
 /** Valor para módulo oscuro */
 const DARK = 1;
@@ -59,11 +59,11 @@ export class FormatInfo {
 		errorLevel: ErrorCorrectionLevel,
 		maskPattern: MaskPattern,
 	): void {
-		const formatString = this.getFormatString(errorLevel, maskPattern);
+		const formatString = FormatInfo.getFormatString(errorLevel, maskPattern);
 		const size = matrix.length;
 
 		// Colocar la información de formato
-		this.placeFormatBits(matrix, reserved, formatString, size);
+		FormatInfo.placeFormatBits(matrix, reserved, formatString, size);
 	}
 
 	/**
@@ -181,7 +181,7 @@ export class FormatInfo {
 		];
 
 		// Colocar los bits
-		for (let i = 0; i < this.FORMAT_LENGTH; i++) {
+		for (let i = 0; i < FormatInfo.FORMAT_LENGTH; i++) {
 			const value = formatBits[i] === "1" ? DARK : LIGHT;
 
 			const pos1 = firstCopyPositions[i];
@@ -229,7 +229,7 @@ export class FormatInfo {
 		const size = matrix.length;
 
 		// Colocar en dos ubicaciones
-		this.placeVersionBits(matrix, reserved, versionString, size);
+		FormatInfo.placeVersionBits(matrix, reserved, versionString, size);
 	}
 
 	/**

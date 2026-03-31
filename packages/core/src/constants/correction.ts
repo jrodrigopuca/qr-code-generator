@@ -6,7 +6,7 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/error-correction-table}
  */
 
-import type { CapacityInfo, BlocksConfig } from "../types";
+import type { BlocksConfig, CapacityInfo } from "../types";
 
 /**
  * Codewords de corrección de errores por bloque.

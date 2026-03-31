@@ -5,8 +5,8 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/module-placement-matrix}
  */
 
-import type { QRVersion } from "../types";
 import { ALIGNMENT_PATTERN_POSITIONS } from "../constants";
+import type { QRVersion } from "../types";
 
 /** Valor para módulo oscuro en patrones */
 const DARK = 1;
@@ -64,16 +64,16 @@ export class AlignmentPattern {
 			return; // Versión 1 no tiene alignment patterns
 		}
 
-		const positions = this.getPositions(version);
+		const positions = AlignmentPattern.getPositions(version);
 
 		for (const row of positions) {
 			for (const col of positions) {
 				// Skip si se solapa con finder patterns (esquinas)
-				if (this.overlapsWithFinder(row, col, matrix.length)) {
+				if (AlignmentPattern.overlapsWithFinder(row, col, matrix.length)) {
 					continue;
 				}
 
-				this.drawSingle(matrix, reserved, row, col);
+				AlignmentPattern.drawSingle(matrix, reserved, row, col);
 			}
 		}
 	}
@@ -114,8 +114,16 @@ export class AlignmentPattern {
 		centerRow: number,
 		centerCol: number,
 	): void {
-		for (let dr = -this.RADIUS; dr <= this.RADIUS; dr++) {
-			for (let dc = -this.RADIUS; dc <= this.RADIUS; dc++) {
+		for (
+			let dr = -AlignmentPattern.RADIUS;
+			dr <= AlignmentPattern.RADIUS;
+			dr++
+		) {
+			for (
+				let dc = -AlignmentPattern.RADIUS;
+				dc <= AlignmentPattern.RADIUS;
+				dc++
+			) {
 				const row = centerRow + dr;
 				const col = centerCol + dc;
 
@@ -182,7 +190,7 @@ export class AlignmentPattern {
 	 */
 	static getCount(version: QRVersion): number {
 		if (version < 2) return 0;
-		const positions = this.getPositions(version);
+		const positions = AlignmentPattern.getPositions(version);
 		const n = positions.length;
 		// Número total de combinaciones menos las 3 esquinas con finder patterns
 		return n * n - 3;

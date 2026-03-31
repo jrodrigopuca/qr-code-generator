@@ -3,4 +3,4 @@
  * @module utils
  */
 
-export { toBinary, fromBinary, chunkString } from "./binary";
+export { chunkString, fromBinary, toBinary } from "./binary";

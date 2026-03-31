@@ -2,11 +2,11 @@
  * @fileoverview Tests unitarios para Encoders
  */
 
-import { describe, it, expect } from "vitest";
-import { ByteEncoder } from "../../src/encoder/ByteEncoder";
-import { NumericEncoder } from "../../src/encoder/NumericEncoder";
+import { describe, expect, it } from "vitest";
 import { AlphanumericEncoder } from "../../src/encoder/AlphanumericEncoder";
+import { ByteEncoder } from "../../src/encoder/ByteEncoder";
 import { ModeDetector } from "../../src/encoder/ModeDetector";
+import { NumericEncoder } from "../../src/encoder/NumericEncoder";
 
 describe("ByteEncoder", () => {
 	describe("encode", () => {
@@ -509,22 +509,22 @@ describe("ModeDetector", () => {
 			const result = ModeDetector.findOptimal("12345", "M");
 
 			expect(result).not.toBeNull();
-			expect(result!.mode).toBe("numeric");
-			expect(result!.version).toBe(1);
+			expect(result?.mode).toBe("numeric");
+			expect(result?.version).toBe(1);
 		});
 
 		it("should select most efficient mode", () => {
 			const result = ModeDetector.findOptimal("HELLO", "M");
 
 			expect(result).not.toBeNull();
-			expect(result!.mode).toBe("alphanumeric");
+			expect(result?.mode).toBe("alphanumeric");
 		});
 
 		it("should fallback to byte mode when needed", () => {
 			const result = ModeDetector.findOptimal("hello@world.com", "M");
 
 			expect(result).not.toBeNull();
-			expect(result!.mode).toBe("byte");
+			expect(result?.mode).toBe("byte");
 		});
 	});
 });

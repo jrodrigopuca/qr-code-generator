@@ -35,60 +35,58 @@
  * ```
  */
 
-// Re-export types
-export type {
-	ErrorCorrectionLevel,
-	QRVersion,
-	MaskPattern,
-	EncodingMode,
-	QRCodeOptions,
-	RenderOptions,
-	QRMatrix,
-	QRCodeResult,
-	QRErrorCode,
-	CapacityInfo,
-	BlockInfo,
-	BlocksConfig,
-} from "./types";
-
-// Export error class
-export { QRCodeError } from "./errors";
-
 // Export constants (useful for advanced users)
 export * as constants from "./constants";
-
-// Export utilities
-export { toBinary, fromBinary, chunkString } from "./utils";
-
-// Export main class
-export { QRCode } from "./QRCode";
-
-// Export renderers
-export { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
-export type { SVGRenderOptions, ModuleShape } from "./renderer";
-export type { TerminalRenderOptions, TerminalStyle } from "./renderer";
-
+export { GaloisField, ReedSolomon } from "./correction";
 // Export internal modules for advanced usage
 export {
-	ByteEncoder,
-	NumericEncoder,
 	AlphanumericEncoder,
+	ByteEncoder,
 	ModeDetector,
+	NumericEncoder,
 } from "./encoder";
-export { GaloisField, ReedSolomon } from "./correction";
-export {
-	FinderPattern,
-	AlignmentPattern,
-	TimingPattern,
-	FormatInfo,
-} from "./patterns";
+// Export error class
+export { QRCodeError } from "./errors";
 export { MaskEvaluator } from "./mask";
+export {
+	AlignmentPattern,
+	FinderPattern,
+	FormatInfo,
+	TimingPattern,
+} from "./patterns";
+// Export main class
+export { QRCode } from "./QRCode";
+export type {
+	ModuleShape,
+	SVGRenderOptions,
+	TerminalRenderOptions,
+	TerminalStyle,
+} from "./renderer";
+// Export renderers
+export { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
+// Re-export types
+export type {
+	BlockInfo,
+	BlocksConfig,
+	CapacityInfo,
+	EncodingMode,
+	ErrorCorrectionLevel,
+	MaskPattern,
+	QRCodeOptions,
+	QRCodeResult,
+	QRErrorCode,
+	QRMatrix,
+	QRVersion,
+	RenderOptions,
+} from "./types";
+// Export utilities
+export { chunkString, fromBinary, toBinary } from "./utils";
 
 // Import for helper functions
 import { QRCode } from "./QRCode";
-import { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
 import type { TerminalRenderOptions } from "./renderer";
-import type { QRCodeOptions, RenderOptions, QRCodeResult } from "./types";
+import { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
+import type { QRCodeOptions, QRCodeResult, RenderOptions } from "./types";
 
 /**
  * Genera un código QR a partir de texto.

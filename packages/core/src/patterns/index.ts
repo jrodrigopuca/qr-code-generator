@@ -3,7 +3,7 @@
  * @module patterns
  */
 
-export { FinderPattern } from "./FinderPattern";
 export { AlignmentPattern } from "./AlignmentPattern";
-export { TimingPattern } from "./TimingPattern";
+export { FinderPattern } from "./FinderPattern";
 export { FormatInfo } from "./FormatInfo";
+export { TimingPattern } from "./TimingPattern";

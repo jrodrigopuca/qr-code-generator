@@ -2,7 +2,7 @@
  * @fileoverview Tests unitarios para SVGRenderer
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { SVGRenderer } from "../../src/renderer/SVGRenderer";
 import type { QRMatrix } from "../../src/types";
 

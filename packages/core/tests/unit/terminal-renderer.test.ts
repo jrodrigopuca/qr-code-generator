@@ -2,7 +2,7 @@
  * @fileoverview Tests unitarios para TerminalRenderer
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { TerminalRenderer } from "../../src/renderer/TerminalRenderer";
 import type { QRMatrix } from "../../src/types";
 

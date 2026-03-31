@@ -4,14 +4,18 @@
  * @module encoder/ModeDetector
  */
 
-import type { EncodingMode, ErrorCorrectionLevel, QRVersion } from "../types";
-import type { CapacityInfo } from "../types";
 import {
-	NUMERIC_CAPACITY,
 	ALPHANUMERIC_CAPACITY,
-	BYTE_CAPACITY,
 	ALPHANUMERIC_CHARS,
+	BYTE_CAPACITY,
+	NUMERIC_CAPACITY,
 } from "../constants";
+import type {
+	CapacityInfo,
+	EncodingMode,
+	ErrorCorrectionLevel,
+	QRVersion,
+} from "../types";
 
 /**
  * Patrón para detectar contenido numérico.

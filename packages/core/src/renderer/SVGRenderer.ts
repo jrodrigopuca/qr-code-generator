@@ -120,17 +120,17 @@ export class SVGRenderer {
 		// Dibujar módulos según la forma seleccionada
 		if (moduleShape === "square") {
 			if (options.optimizePaths !== false) {
-				parts.push(this.renderOptimizedPath(matrix, opts));
+				parts.push(SVGRenderer.renderOptimizedPath(matrix, opts));
 			} else {
-				parts.push(this.renderIndividualRects(matrix, opts));
+				parts.push(SVGRenderer.renderIndividualRects(matrix, opts));
 			}
 		} else if (moduleShape === "rounded") {
 			const radius = Math.max(0, Math.min(1, options.cornerRadius ?? 0.5));
-			parts.push(this.renderRoundedModules(matrix, opts, radius));
+			parts.push(SVGRenderer.renderRoundedModules(matrix, opts, radius));
 		} else if (moduleShape === "circle") {
-			parts.push(this.renderCircleModules(matrix, opts, 0.5));
+			parts.push(SVGRenderer.renderCircleModules(matrix, opts, 0.5));
 		} else if (moduleShape === "dot") {
-			parts.push(this.renderCircleModules(matrix, opts, 0.4));
+			parts.push(SVGRenderer.renderCircleModules(matrix, opts, 0.4));
 		}
 
 		// SVG closing tag
@@ -315,7 +315,7 @@ export class SVGRenderer {
 		matrix: QRMatrix,
 		options: SVGRenderOptions = {},
 	): SVGSVGElement {
-		const svgString = this.render(matrix, options);
+		const svgString = SVGRenderer.render(matrix, options);
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(svgString, "image/svg+xml");
 		return doc.documentElement as unknown as SVGSVGElement;
@@ -339,7 +339,7 @@ export class SVGRenderer {
 	 * ```
 	 */
 	static toDataURL(matrix: QRMatrix, options: SVGRenderOptions = {}): string {
-		const svg = this.render(matrix, options);
+		const svg = SVGRenderer.render(matrix, options);
 		const encoded = btoa(unescape(encodeURIComponent(svg)));
 		return `data:image/svg+xml;base64,${encoded}`;
 	}
@@ -361,7 +361,7 @@ export class SVGRenderer {
 	 * ```
 	 */
 	static toBlob(matrix: QRMatrix, options: SVGRenderOptions = {}): Blob {
-		const svg = this.render(matrix, options);
+		const svg = SVGRenderer.render(matrix, options);
 		return new Blob([svg], { type: "image/svg+xml" });
 	}
 
@@ -386,7 +386,10 @@ export class SVGRenderer {
 		filename: string = "qrcode",
 		options: SVGRenderOptions = {},
 	): void {
-		const blob = this.toBlob(matrix, { ...options, xmlDeclaration: true });
+		const blob = SVGRenderer.toBlob(matrix, {
+			...options,
+			xmlDeclaration: true,
+		});
 		const url = URL.createObjectURL(blob);
 
 		const link = document.createElement("a");

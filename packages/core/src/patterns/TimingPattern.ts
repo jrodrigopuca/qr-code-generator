@@ -48,8 +48,8 @@ export class TimingPattern {
 	static draw(matrix: number[][], reserved: number[][]): void {
 		const size = matrix.length;
 
-		this.drawHorizontal(matrix, reserved, size);
-		this.drawVertical(matrix, reserved, size);
+		TimingPattern.drawHorizontal(matrix, reserved, size);
+		TimingPattern.drawVertical(matrix, reserved, size);
 	}
 
 	/**
@@ -69,7 +69,7 @@ export class TimingPattern {
 		reserved: number[][],
 		size: number,
 	): void {
-		const row = this.POSITION;
+		const row = TimingPattern.POSITION;
 
 		for (let col = 8; col < size - 8; col++) {
 			// Alternar: columnas pares = oscuro, impares = claro
@@ -95,7 +95,7 @@ export class TimingPattern {
 		reserved: number[][],
 		size: number,
 	): void {
-		const col = this.POSITION;
+		const col = TimingPattern.POSITION;
 
 		for (let row = 8; row < size - 8; row++) {
 			// Alternar: filas pares = oscuro, impares = claro

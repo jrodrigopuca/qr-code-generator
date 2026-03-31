@@ -101,7 +101,7 @@ export class CanvasRenderer {
 		options: RenderOptions = {},
 	): HTMLCanvasElement {
 		const canvas = document.createElement("canvas");
-		this.render(canvas, matrix, options);
+		CanvasRenderer.render(canvas, matrix, options);
 		return canvas;
 	}
 
@@ -123,7 +123,7 @@ export class CanvasRenderer {
 	 * ```
 	 */
 	static toDataURL(matrix: QRMatrix, options: RenderOptions = {}): string {
-		const canvas = this.createCanvas(matrix, options);
+		const canvas = CanvasRenderer.createCanvas(matrix, options);
 		return canvas.toDataURL("image/png");
 	}
 
@@ -145,7 +145,7 @@ export class CanvasRenderer {
 	 */
 	static toBlob(matrix: QRMatrix, options: RenderOptions = {}): Promise<Blob> {
 		return new Promise((resolve, reject) => {
-			const canvas = this.createCanvas(matrix, options);
+			const canvas = CanvasRenderer.createCanvas(matrix, options);
 			canvas.toBlob((blob) => {
 				if (blob) {
 					resolve(blob);
@@ -223,7 +223,7 @@ export class CanvasRenderer {
 				if (matrix[row][col] === 1) {
 					const x = (col + opts.margin) * opts.scale;
 					const y = (row + opts.margin) * opts.scale;
-					this.roundedRect(ctx, x, y, opts.scale, opts.scale, radius);
+					CanvasRenderer.roundedRect(ctx, x, y, opts.scale, opts.scale, radius);
 				}
 			}
 		}

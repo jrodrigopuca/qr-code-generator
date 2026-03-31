@@ -2,7 +2,7 @@
  * @fileoverview Tests unitarios para ReedSolomon
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { ReedSolomon } from "../../src/correction/ReedSolomon";
 
 describe("ReedSolomon", () => {

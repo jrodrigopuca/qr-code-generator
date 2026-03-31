@@ -46,7 +46,11 @@ export class QRCodeError extends Error {
 
 		// Mantiene el stack trace correcto en V8 (Node.js)
 		const ErrorWithCapture = Error as typeof Error & {
-			captureStackTrace?: (target: object, constructor: Function) => void;
+			captureStackTrace?: (
+				target: object,
+				// biome-ignore lint/complexity/noBannedTypes: V8's captureStackTrace API requires Function type
+				constructorOpt: Function,
+			) => void;
 		};
 		if (ErrorWithCapture.captureStackTrace) {
 			ErrorWithCapture.captureStackTrace(this, QRCodeError);

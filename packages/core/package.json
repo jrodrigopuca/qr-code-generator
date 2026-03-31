@@ -1,73 +1,73 @@
 {
-	"name": "qr-pure",
-	"version": "3.0.0",
-	"description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
-	"type": "commonjs",
-	"main": "dist/index.js",
-	"module": "dist/index.mjs",
-	"types": "dist/index.d.ts",
-	"exports": {
-		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.ts",
-				"default": "./dist/index.js"
-			}
-		}
-	},
-	"files": [
-		"dist",
-		"README.md",
-		"LICENSE"
-	],
-	"scripts": {
-		"build": "tsup",
-		"build:watch": "tsup --watch",
-		"dev": "tsup --watch",
-		"typecheck": "tsc --noEmit",
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"test:coverage": "vitest run --coverage",
-		"lint": "eslint src/",
-		"lint:fix": "eslint src/ --fix",
-		"format": "prettier --write \"src/**/*.ts\"",
-		"format:check": "prettier --check \"src/**/*.ts\"",
-		"docs": "typedoc",
-		"demo:node": "npx tsx demo/node/basic.ts",
-		"demo:browser": "npx vite demo/browser",
-		"prepublishOnly": "pnpm run build"
-	},
-	"keywords": [
-		"qr",
-		"qrcode",
-		"qr-code",
-		"generator",
-		"typescript",
-		"zero-dependency",
-		"iso-18004"
-	],
-	"author": "JRodrigoPuca",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/jrodrigopuca/qr-code-generator.git",
-		"directory": "packages/core"
-	},
-	"bugs": {
-		"url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
-	},
-	"homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/core#readme",
-	"engines": {
-		"node": ">=18.0.0"
-	},
-	"devDependencies": {
-		"@vitest/coverage-v8": "^4.0.18",
-		"tsup": "^8.5.1",
-		"typedoc": "^0.28.17",
-		"typescript": "^5.7.0",
-		"vitest": "^4.0.18"
-	}
+  "name": "qr-pure",
+  "version": "3.0.0",
+  "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "biome lint src/",
+    "lint:fix": "biome lint --write src/",
+    "format": "biome format --write src/",
+    "format:check": "biome format src/",
+    "docs": "typedoc",
+    "demo:node": "npx tsx demo/node/basic.ts",
+    "demo:browser": "npx vite demo/browser",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "generator",
+    "typescript",
+    "zero-dependency",
+    "iso-18004"
+  ],
+  "author": "JRodrigoPuca",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrodrigopuca/qr-code-generator.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
+  },
+  "homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/core#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
+    "tsup": "^8.5.1",
+    "typedoc": "^0.28.17",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.18"
+  }
 }

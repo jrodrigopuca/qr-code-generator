@@ -2,8 +2,8 @@
  * @fileoverview Tests unitarios para utils/binary
  */
 
-import { describe, it, expect } from "vitest";
-import { toBinary, fromBinary, chunkString } from "../../src/utils/binary";
+import { describe, expect, it } from "vitest";
+import { chunkString, fromBinary, toBinary } from "../../src/utils/binary";
 
 describe("toBinary()", () => {
 	it("convierte cero a cadena de ceros", () => {

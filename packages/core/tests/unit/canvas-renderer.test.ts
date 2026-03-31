@@ -2,7 +2,7 @@
  * @fileoverview Tests unitarios para CanvasRenderer
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CanvasRenderer } from "../../src/renderer/CanvasRenderer";
 import type { QRMatrix } from "../../src/types";
 

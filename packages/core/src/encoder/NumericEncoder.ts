@@ -5,8 +5,8 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/numeric-mode-encoding}
  */
 
-import type { EncodingMode, QRVersion } from "../types";
 import { MODE_INDICATORS } from "../constants";
+import type { EncodingMode, QRVersion } from "../types";
 import { BaseEncoder } from "./BaseEncoder";
 
 /**

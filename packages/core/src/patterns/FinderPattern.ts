@@ -59,16 +59,16 @@ export class FinderPattern {
 		// Posiciones de las tres esquinas
 		const positions = [
 			{ row: 0, col: 0 }, // Superior izquierda
-			{ row: 0, col: size - this.SIZE }, // Superior derecha
-			{ row: size - this.SIZE, col: 0 }, // Inferior izquierda
+			{ row: 0, col: size - FinderPattern.SIZE }, // Superior derecha
+			{ row: size - FinderPattern.SIZE, col: 0 }, // Inferior izquierda
 		];
 
 		for (const pos of positions) {
-			this.drawSingle(matrix, reserved, pos.row, pos.col);
+			FinderPattern.drawSingle(matrix, reserved, pos.row, pos.col);
 		}
 
 		// Dibujar separadores
-		this.drawSeparators(matrix, reserved, size);
+		FinderPattern.drawSeparators(matrix, reserved, size);
 	}
 
 	/**
@@ -87,8 +87,8 @@ export class FinderPattern {
 		startRow: number,
 		startCol: number,
 	): void {
-		for (let row = 0; row < this.SIZE; row++) {
-			for (let col = 0; col < this.SIZE; col++) {
+		for (let row = 0; row < FinderPattern.SIZE; row++) {
+			for (let col = 0; col < FinderPattern.SIZE; col++) {
 				const r = startRow + row;
 				const c = startCol + col;
 
@@ -167,6 +167,6 @@ export class FinderPattern {
 	 * @returns Tamaño total (7 + 1 separador = 8)
 	 */
 	static getTotalSize(): number {
-		return this.SIZE + this.SEPARATOR_SIZE;
+		return FinderPattern.SIZE + FinderPattern.SEPARATOR_SIZE;
 	}
 }

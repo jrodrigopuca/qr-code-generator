@@ -5,38 +5,37 @@
  * @see {@link https://www.thonky.com/qr-code-tutorial/}
  */
 
-import type {
-	QRVersion,
-	ErrorCorrectionLevel,
-	MaskPattern,
-	EncodingMode,
-	QRCodeOptions,
-	QRMatrix,
-	QRCodeResult,
-} from "./types";
-
 import {
-	ByteEncoder,
-	NumericEncoder,
-	AlphanumericEncoder,
-	ModeDetector,
-	BaseEncoder,
-} from "./encoder";
+	BLOCK_CONFIG,
+	ECC_CODEWORDS_PER_BLOCK,
+	MODE_INDICATORS,
+	REMAINDER_BITS,
+} from "./constants";
 import { ReedSolomon } from "./correction";
 import {
-	FinderPattern,
-	AlignmentPattern,
-	TimingPattern,
-	FormatInfo,
-} from "./patterns";
-import { MaskEvaluator } from "./mask";
+	AlphanumericEncoder,
+	type BaseEncoder,
+	ByteEncoder,
+	ModeDetector,
+	NumericEncoder,
+} from "./encoder";
 import { QRCodeError } from "./errors";
+import { MaskEvaluator } from "./mask";
 import {
-	ECC_CODEWORDS_PER_BLOCK,
-	BLOCK_CONFIG,
-	REMAINDER_BITS,
-	MODE_INDICATORS,
-} from "./constants";
+	AlignmentPattern,
+	FinderPattern,
+	FormatInfo,
+	TimingPattern,
+} from "./patterns";
+import type {
+	EncodingMode,
+	ErrorCorrectionLevel,
+	MaskPattern,
+	QRCodeOptions,
+	QRCodeResult,
+	QRMatrix,
+	QRVersion,
+} from "./types";
 
 /** Opciones por defecto */
 const DEFAULT_OPTIONS = {

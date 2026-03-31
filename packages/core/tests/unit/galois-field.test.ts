@@ -2,7 +2,7 @@
  * @fileoverview Tests unitarios para GaloisField
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { GaloisField } from "../../src/correction/GaloisField";
 
 describe("GaloisField", () => {

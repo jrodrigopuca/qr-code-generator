@@ -61,7 +61,7 @@ export class GaloisField {
 	static antilog(exponent: number): number {
 		// Normaliza exponentes >= 255
 		const normalizedExp = exponent % 255;
-		return this.ANTILOG[normalizedExp];
+		return GaloisField.ANTILOG[normalizedExp];
 	}
 
 	/**
@@ -85,7 +85,7 @@ export class GaloisField {
 		if (value === 0) {
 			throw new Error("Logarithm of 0 is undefined in GF(2^8)");
 		}
-		return this.LOG[value];
+		return GaloisField.LOG[value];
 	}
 
 	/**
@@ -147,8 +147,8 @@ export class GaloisField {
 		if (a === 0 || b === 0) {
 			return 0;
 		}
-		const logSum = this.LOG[a] + this.LOG[b];
-		return this.antilog(logSum);
+		const logSum = GaloisField.LOG[a] + GaloisField.LOG[b];
+		return GaloisField.antilog(logSum);
 	}
 
 	/**
@@ -175,11 +175,11 @@ export class GaloisField {
 		if (a === 0) {
 			return 0;
 		}
-		let logDiff = this.LOG[a] - this.LOG[b];
+		let logDiff = GaloisField.LOG[a] - GaloisField.LOG[b];
 		if (logDiff < 0) {
 			logDiff += 255;
 		}
-		return this.antilog(logDiff);
+		return GaloisField.antilog(logDiff);
 	}
 
 	/**
@@ -205,8 +205,8 @@ export class GaloisField {
 		if (base === 0) {
 			return 0;
 		}
-		const logResult = (this.LOG[base] * exponent) % 255;
-		return this.antilog(logResult);
+		const logResult = (GaloisField.LOG[base] * exponent) % 255;
+		return GaloisField.antilog(logResult);
 	}
 
 	/**
@@ -230,6 +230,6 @@ export class GaloisField {
 		if (a === 0) {
 			throw new Error("Zero has no multiplicative inverse in GF(2^8)");
 		}
-		return this.antilog(255 - this.LOG[a]);
+		return GaloisField.antilog(255 - GaloisField.LOG[a]);
 	}
 }

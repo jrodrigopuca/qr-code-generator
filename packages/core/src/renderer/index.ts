@@ -4,7 +4,7 @@
  */
 
 export { CanvasRenderer } from "./CanvasRenderer";
+export type { ModuleShape, SVGRenderOptions } from "./SVGRenderer";
 export { SVGRenderer } from "./SVGRenderer";
-export type { SVGRenderOptions, ModuleShape } from "./SVGRenderer";
-export { TerminalRenderer } from "./TerminalRenderer";
 export type { TerminalRenderOptions, TerminalStyle } from "./TerminalRenderer";
+export { TerminalRenderer } from "./TerminalRenderer";

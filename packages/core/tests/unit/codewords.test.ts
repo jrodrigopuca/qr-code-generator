@@ -8,16 +8,15 @@
  * Basado en: debug-scripts/verify-codewords-simple.js, extract-codewords.js
  */
 
-import { describe, it, expect } from "vitest";
-import { QRCode } from "../../src";
+import { describe, expect, it } from "vitest";
+import {
+	BLOCK_CONFIG,
+	ECC_CODEWORDS_PER_BLOCK,
+} from "../../src/constants/correction";
+import { ReedSolomon } from "../../src/correction/ReedSolomon";
 import { AlphanumericEncoder } from "../../src/encoder/AlphanumericEncoder";
 import { ByteEncoder } from "../../src/encoder/ByteEncoder";
 import { NumericEncoder } from "../../src/encoder/NumericEncoder";
-import { ReedSolomon } from "../../src/correction/ReedSolomon";
-import {
-	ECC_CODEWORDS_PER_BLOCK,
-	BLOCK_CONFIG,
-} from "../../src/constants/correction";
 
 /**
  * Convierte bits a codewords con padding.
@@ -48,7 +47,7 @@ function bitsToCodewords(bits: string, count: number): number[] {
 	for (let i = 0; i < count * 8; i += 8) {
 		let byte = 0;
 		for (let j = 0; j < 8; j++) {
-			byte = (byte << 1) | parseInt(paddedBits[i + j] || "0");
+			byte = (byte << 1) | parseInt(paddedBits[i + j] || "0", 10);
 		}
 		bytes.push(byte);
 	}
@@ -58,7 +57,7 @@ function bitsToCodewords(bits: string, count: number): number[] {
 /**
  * Extrae bits de la matriz en orden zigzag.
  */
-function extractBitsFromMatrix(
+function _extractBitsFromMatrix(
 	matrix: number[][],
 	reserved: number[][],
 	expectedBits: number,

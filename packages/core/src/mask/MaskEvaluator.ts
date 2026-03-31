@@ -70,7 +70,7 @@ export class MaskEvaluator {
 		pattern: MaskPattern,
 	): void {
 		const size = matrix.length;
-		const maskFn = this.MASK_FUNCTIONS[pattern];
+		const maskFn = MaskEvaluator.MASK_FUNCTIONS[pattern];
 
 		for (let row = 0; row < size; row++) {
 			for (let col = 0; col < size; col++) {
@@ -104,10 +104,10 @@ export class MaskEvaluator {
 
 		for (let pattern = 0; pattern < 8; pattern++) {
 			// Crear copia para evaluar
-			const testMatrix = this.copyMatrix(matrix);
-			this.apply(testMatrix, reserved, pattern as MaskPattern);
+			const testMatrix = MaskEvaluator.copyMatrix(matrix);
+			MaskEvaluator.apply(testMatrix, reserved, pattern as MaskPattern);
 
-			const penalty = this.calculatePenalty(testMatrix);
+			const penalty = MaskEvaluator.calculatePenalty(testMatrix);
 
 			if (penalty < bestPenalty) {
 				bestPenalty = penalty;
@@ -132,10 +132,10 @@ export class MaskEvaluator {
 	 */
 	static calculatePenalty(matrix: number[][]): number {
 		return (
-			this.penalty1(matrix) +
-			this.penalty2(matrix) +
-			this.penalty3(matrix) +
-			this.penalty4(matrix)
+			MaskEvaluator.penalty1(matrix) +
+			MaskEvaluator.penalty2(matrix) +
+			MaskEvaluator.penalty3(matrix) +
+			MaskEvaluator.penalty4(matrix)
 		);
 	}
 
