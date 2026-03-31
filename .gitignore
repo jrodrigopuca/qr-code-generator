@@ -2,7 +2,7 @@
 node_modules/
 
 # Build output
-dist/
+**/dist/
 *.tsbuildinfo
 
 # IDE and editors
@@ -18,13 +18,12 @@ coverage/
 .nyc_output/
 
 # Generated API docs
-docs/api/
+**/docs/api/
 
 # Logs
 *.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
 # Environment files
 .env
@@ -45,3 +44,6 @@ ehthumbs.db
 
 # Vitest
 vitest.config.ts.timestamp-*
+
+# Turbo
+.turbo/

@@ -1,0 +1,19 @@
+# Source files (dist/ is published via files field)
+src/
+
+# Test files
+tests/
+coverage/
+vitest.config.ts
+
+# Build config
+tsup.config.ts
+tsconfig.json
+typedoc.json
+
+# Demo
+demo/
+
+# Documentation (README and LICENSE are in files field)
+docs/
+CHANGELOG.md

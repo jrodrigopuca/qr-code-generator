@@ -13,7 +13,7 @@ export default tseslint.config(
 		},
 		languageOptions: {
 			parserOptions: {
-				project: "./tsconfig.json",
+				project: "./packages/core/tsconfig.json",
 			},
 		},
 		rules: {
@@ -49,15 +49,18 @@ export default tseslint.config(
 	},
 	{
 		ignores: [
-			"dist/**",
-			"node_modules/**",
+			"**/dist/**",
+			"**/node_modules/**",
 			"demo/**",
 			"*.js",
 			"*.mjs",
-			"tests/**",
-			"src/qr.legacy.ts",
-			"vitest.config.ts",
+			"**/tests/**",
+			"packages/core/src/qr.legacy.ts",
+			"**/vitest.config.ts",
+			"**/tsup.config.ts",
 			"eslint.config.mjs",
+			"turbo.json",
+			"packages/e2e-tests/**",
 		],
 	},
 );

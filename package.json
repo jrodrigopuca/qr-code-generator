@@ -1,85 +1,38 @@
 {
-  "name": "qr-pure",
-  "version": "2.1.0",
-  "description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    }
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "build:watch": "tsup --watch",
-    "build:tsc": "tsc",
-    "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.ts\"",
-    "docs": "typedoc",
-    "docs:watch": "typedoc --watch",
-    "prepublishOnly": "npm run build",
-    "demo:node": "npx tsx demo/node/basic.ts",
-    "demo:browser": "npx vite demo/browser",
-    "legacy:live": "live-server .",
-    "legacy:build": "tsc && node dist/qr.legacy.js"
-  },
-  "keywords": [
-    "qr",
-    "qrcode",
-    "qr-code",
-    "generator",
-    "typescript",
-    "zero-dependency",
-    "iso-18004"
-  ],
-  "author": "JRodrigoPuca",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jrodrigopuca/qr-code-generator.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
-  },
-  "homepage": "https://github.com/jrodrigopuca/qr-code-generator#readme",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
-    "@typescript-eslint/parser": "^8.56.0",
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsdoc": "^62.5.5",
-    "prettier": "^3.8.1",
-    "tsup": "^8.5.1",
-    "tsx": "^4.21.0",
-    "typedoc": "^0.28.17",
-    "typescript": "^5.7.0",
-    "typescript-eslint": "^8.56.0",
-    "vitest": "^4.0.18"
-  }
+	"name": "qr-pure-monorepo",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Monorepo for the qr-pure ecosystem",
+	"scripts": {
+		"build": "turbo run build",
+		"typecheck": "turbo run typecheck",
+		"test": "turbo run test",
+		"test:coverage": "turbo run test:coverage",
+		"lint": "turbo run lint",
+		"format": "prettier --write \"packages/*/src/**/*.ts\"",
+		"format:check": "prettier --check \"packages/*/src/**/*.ts\"",
+		"docs": "turbo run docs",
+		"clean": "turbo run clean && rm -rf node_modules",
+		"e2e": "pnpm --filter qr-pure-e2e-tests test"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.39.2",
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-jsdoc": "^62.5.5",
+		"prettier": "^3.8.1",
+		"tsx": "^4.21.0",
+		"turbo": "^2.5.4",
+		"typescript-eslint": "^8.56.0"
+	},
+	"packageManager": "pnpm@10.33.0",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"canvas",
+			"esbuild"
+		]
+	}
 }

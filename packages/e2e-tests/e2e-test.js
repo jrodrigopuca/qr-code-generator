@@ -6,7 +6,7 @@
 
 const { createCanvas } = require("canvas");
 const jsQR = require("jsqr");
-const { QRCode } = require("../dist/index.js");
+const { QRCode } = require("qr-pure");
 
 // Parse CLI arguments
 const args = process.argv.slice(2);
