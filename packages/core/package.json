@@ -1,6 +1,6 @@
 {
 	"name": "qr-pure",
-	"version": "2.1.0",
+	"version": "3.0.0",
 	"description": "Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.",
 	"type": "commonjs",
 	"main": "dist/index.js",
@@ -36,6 +36,8 @@
 		"format": "prettier --write \"src/**/*.ts\"",
 		"format:check": "prettier --check \"src/**/*.ts\"",
 		"docs": "typedoc",
+		"demo:node": "npx tsx demo/node/basic.ts",
+		"demo:browser": "npx vite demo/browser",
 		"prepublishOnly": "pnpm run build"
 	},
 	"keywords": [

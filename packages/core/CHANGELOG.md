@@ -7,9 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+---
 
-- Project status documentation (`docs/PROJECT_STATUS.md`)
+## [3.0.0] - 2026-03-31
+
+### Changed
+
+- **BREAKING: Monorepo migration** — the project has been restructured as a pnpm monorepo with Turborepo orchestration. The `qr-pure` npm package itself has NO breaking API changes; the major version bump reflects the repository structure change.
+- Migrated from `npm` to `pnpm` workspaces as package manager
+- Added Turborepo for build/test/lint orchestration with caching
+- Moved core source code to `packages/core/`
+- Moved E2E tests to `packages/e2e-tests/` as a workspace package with `workspace:*` dependency
+- Shared TypeScript base config (`tsconfig.base.json`) with per-package inheritance
+- Updated CI workflows (`.github/workflows/`) for pnpm + Turborepo
+- Updated `repository.directory` to `packages/core` for npm linking
+- Added project status documentation (`docs/PROJECT_STATUS.md`)
+
+### Note for consumers
+
+If you `npm install qr-pure`, **nothing changes** for you. The published package contains the same `dist/`, `README.md`, and `LICENSE` as before. All exports, types, and behavior remain identical. The major bump is a signal that the repository structure changed significantly, which matters for contributors and forks.
 
 ---
 
@@ -131,12 +147,14 @@ Original implementation, never published to npm.
 
 | Version | Date     | Highlights                                |
 | ------- | -------- | ----------------------------------------- |
+| 3.0.0   | Mar 2026 | Monorepo migration (pnpm + Turborepo)     |
 | 2.1.0   | Feb 2026 | TypeDoc API docs, GitHub Pages deployment |
 | 2.0.5   | Feb 2026 | First npm release, complete rewrite       |
 | 1.x     | Mar 2020 | Original implementation (unpublished)     |
 
 ---
 
-[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.0.5...v2.1.0
 [2.0.5]: https://github.com/jrodrigopuca/qr-code-generator/releases/tag/v2.0.5

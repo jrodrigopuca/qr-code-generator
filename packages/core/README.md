@@ -177,9 +177,9 @@ pnpm --filter qr-pure build
 ## Documentation
 
 - [API Reference](https://jrodrigopuca.github.io/qr-code-generator/) — generated with TypeDoc, deployed on GitHub Pages
-- [Technical Documentation](../../docs/technical.md)
+- [Technical Documentation](https://github.com/jrodrigopuca/qr-code-generator/blob/master/docs/technical.md)
 - [Changelog](CHANGELOG.md)
-- [Roadmap](../../docs/roadmap.md)
+- [Roadmap](https://github.com/jrodrigopuca/qr-code-generator/blob/master/docs/roadmap.md)
 
 ## License
 
