@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated CI workflows (`.github/workflows/`) for pnpm + Turborepo
 - Updated `repository.directory` to `packages/core` for npm linking
 - Added project status documentation (`docs/PROJECT_STATUS.md`)
+- **Migrated from ESLint + Prettier to Biome** — single tool for linting, formatting, and import sorting (~100x faster). Removed 6 dev dependencies (111 transitive packages), added 1 (2 transitive packages)
+- **Upgraded TypeScript from 5.x to 6.0** — cleaned deprecated/redundant tsconfig options (`downlevelIteration`, `alwaysStrict`, `esModuleInterop`, individual strict flags already covered by `strict: true`)
 
 ### Note for consumers
 
