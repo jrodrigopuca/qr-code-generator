@@ -12,9 +12,25 @@ Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator 
 | Package                            | Description                                               | Version                                                                                           |
 | ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | [`@qr-plus/core`](./packages/core) | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core) |
-| [`@qr-plus/cli`](./packages/cli)   | CLI tool for generating QR codes from the terminal        | _coming soon_                                                                                     |
+| [`@qr-plus/cli`](./packages/cli)   | CLI tool for generating QR codes from the terminal        | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)   |
 
 ## Quick Start
+
+### CLI
+
+```bash
+npx @qr-plus/cli "https://example.com"
+```
+
+```bash
+# Save as SVG or PNG
+qr-plus "Hello" -o hello.svg
+qr-plus "Hello" -o hello.png -s large
+```
+
+For full CLI options, see the [CLI package README](./packages/cli/README.md).
+
+### Library
 
 ```bash
 npm install @qr-plus/core
@@ -67,7 +83,7 @@ pnpm run docs           # Generate API docs
 qr-plus/
 ├── packages/
 │   ├── core/          ← @qr-plus/core (published to npm)
-│   ├── cli/           ← @qr-plus/cli (coming soon)
+│   ├── cli/           ← @qr-plus/cli (published to npm)
 │   └── e2e-tests/     ← E2E test suite
 ├── docs/              ← Ecosystem documentation
 ├── turbo.json         ← Turborepo pipeline

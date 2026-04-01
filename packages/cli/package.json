@@ -1,0 +1,53 @@
+{
+  "name": "@qr-plus/cli",
+  "version": "1.0.0",
+  "description": "CLI tool for generating QR codes from the terminal. Supports SVG, PNG, and terminal output.",
+  "type": "module",
+  "bin": {
+    "qr-plus": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "cli",
+    "terminal",
+    "svg",
+    "png",
+    "generator"
+  ],
+  "author": "JRodrigoPuca",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrodrigopuca/qr-code-generator.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
+  },
+  "homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/cli#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@qr-plus/core": "workspace:^",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  }
+}
