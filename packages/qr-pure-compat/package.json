@@ -1,0 +1,57 @@
+{
+  "name": "qr-pure",
+  "version": "3.0.1",
+  "description": "DEPRECATED — use @qr-plus/core instead. This package re-exports @qr-plus/core for backward compatibility.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "qr",
+    "qrcode",
+    "qr-code",
+    "deprecated"
+  ],
+  "author": "JRodrigoPuca",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrodrigopuca/qr-code-generator.git",
+    "directory": "packages/qr-pure-compat"
+  },
+  "bugs": {
+    "url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
+  },
+  "homepage": "https://www.npmjs.com/package/@qr-plus/core",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@qr-plus/core": "workspace:^"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.2"
+  }
+}

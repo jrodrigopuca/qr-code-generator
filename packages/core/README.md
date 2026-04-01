@@ -1,11 +1,13 @@
-# qr-pure
+# @qr-plus/core
 
-[![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure)
+[![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core)
 [![CI](https://github.com/jrodrigopuca/qr-code-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-code-generator/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![API Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jrodrigopuca.github.io/qr-code-generator/)
 
 Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 18004 standard.
+
+> **Migrated from `qr-pure`** — if you were using `qr-pure`, simply change your import to `@qr-plus/core`. The API is identical.
 
 ## Features
 
@@ -21,7 +23,7 @@ Zero-dependency QR code generator written in TypeScript. Implements ISO/IEC 1800
 ## Installation
 
 ```bash
-npm install qr-pure
+npm install @qr-plus/core
 ```
 
 ## Usage
@@ -29,7 +31,7 @@ npm install qr-pure
 ### Quick Start
 
 ```typescript
-import { generateQR, renderToSVG, renderToTerminal } from "qr-pure";
+import { generateQR, renderToSVG, renderToTerminal } from "@qr-plus/core";
 
 // Generate QR matrix
 const { matrix } = generateQR("Hello World");
@@ -44,13 +46,13 @@ console.log(renderToTerminal("Hello World"));
 ### With Options
 
 ```typescript
-import { QRCode } from "qr-pure";
+import { QRCode } from "@qr-plus/core";
 
 const qr = new QRCode("Hello World", {
-	errorCorrectionLevel: "H", // L, M, Q, H
-	version: "auto", // 1-40 or 'auto'
-	mode: "auto", // numeric, alphanumeric, byte, or 'auto'
-	mask: "auto", // 0-7 or 'auto'
+  errorCorrectionLevel: "H", // L, M, Q, H
+  version: "auto", // 1-40 or 'auto'
+  mode: "auto", // numeric, alphanumeric, byte, or 'auto'
+  mask: "auto", // 0-7 or 'auto'
 });
 
 const { matrix, version, size, mode, maskPattern } = qr.generate();
@@ -59,24 +61,24 @@ const { matrix, version, size, mode, maskPattern } = qr.generate();
 ### Render to Canvas
 
 ```typescript
-import { QRCode, CanvasRenderer } from "qr-pure";
+import { QRCode, CanvasRenderer } from "@qr-plus/core";
 
 const qr = new QRCode("Hello World");
 const { matrix } = qr.generate();
 
 const canvas = document.getElementById("qr-canvas") as HTMLCanvasElement;
 CanvasRenderer.render(canvas, matrix, {
-	scale: 10,
-	margin: 4,
-	darkColor: "#000000",
-	lightColor: "#ffffff",
+  scale: 10,
+  margin: 4,
+  darkColor: "#000000",
+  lightColor: "#ffffff",
 });
 ```
 
 ### Render to SVG
 
 ```typescript
-import { SVGRenderer } from "qr-pure";
+import { SVGRenderer } from "@qr-plus/core";
 
 // Standard squares
 const svg = SVGRenderer.render(matrix, { scale: 10 });
@@ -92,7 +94,7 @@ SVGRenderer.render(matrix, { moduleShape: "dot" });
 ### Render to Terminal
 
 ```typescript
-import { TerminalRenderer } from "qr-pure";
+import { TerminalRenderer } from "@qr-plus/core";
 
 // Unicode blocks (best contrast)
 console.log(TerminalRenderer.render(matrix));
@@ -159,7 +161,7 @@ TerminalRenderer.render(matrix, options?)
 
 ## Development
 
-This package is part of the [qr-pure monorepo](https://github.com/jrodrigopuca/qr-code-generator). See the [root README](../../README.md) for setup instructions.
+This package is part of the [@qr-plus monorepo](https://github.com/jrodrigopuca/qr-code-generator). See the [root README](../../README.md) for setup instructions.
 
 ```bash
 # From the monorepo root
@@ -170,8 +172,8 @@ pnpm run typecheck   # Type check
 pnpm run lint        # Lint
 
 # Or run commands scoped to the core package
-pnpm --filter qr-pure test
-pnpm --filter qr-pure build
+pnpm --filter @qr-plus/core test
+pnpm --filter @qr-plus/core build
 ```
 
 ## Documentation

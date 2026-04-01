@@ -38,15 +38,28 @@ importers:
 
   packages/e2e-tests:
     dependencies:
+      '@qr-plus/core':
+        specifier: workspace:*
+        version: link:../core
       canvas:
         specifier: ^3.2.1
         version: 3.2.3
       jsqr:
         specifier: ^1.4.0
         version: 1.4.0
-      qr-pure:
-        specifier: workspace:*
+
+  packages/qr-pure-compat:
+    dependencies:
+      '@qr-plus/core':
+        specifier: workspace:^
         version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(postcss@8.5.8)(tsx@4.21.0)(typescript@6.0.2)(yaml@2.8.3)
+      typescript:
+        specifier: ^6.0.2
+        version: 6.0.2
 
 packages:
 

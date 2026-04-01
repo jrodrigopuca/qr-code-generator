@@ -9,7 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [3.0.0] - 2026-03-31
+## [1.0.0] - 2026-03-31
+
+### Changed
+
+- **BREAKING: Renamed package** from `qr-pure` to `@qr-plus/core`. The API is identical — only the package name and import path changed.
+- Version reset to 1.0.0 for the new `@qr-plus` scope
+
+### Migration
+
+```diff
+- npm install qr-pure
++ npm install @qr-plus/core
+
+- import { generateQR } from "qr-pure";
++ import { generateQR } from "@qr-plus/core";
+```
+
+The `qr-pure` package on npm will remain published as a deprecated wrapper pointing to `@qr-plus/core`.
+
+---
+
+## [3.0.0] - 2026-03-31 (as `qr-pure`)
 
 ### Changed
 

@@ -76,7 +76,7 @@ const COMPACT_BOTH_LIGHT = " "; // ambas filas claras
  *
  * @example
  * ```typescript
- * import { generateQR, TerminalRenderer } from 'qr-pure';
+ * import { generateQR, TerminalRenderer } from '@qr-plus/core';
  *
  * const { matrix } = generateQR('Hello World');
  *

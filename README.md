@@ -1,26 +1,27 @@
-# qr-pure
+# @qr-plus
 
-[![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure)
+[![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core)
 [![CI](https://github.com/jrodrigopuca/qr-code-generator/actions/workflows/main.yml/badge.svg)](https://github.com/jrodrigopuca/qr-code-generator/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](packages/core/LICENSE)
 [![API Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jrodrigopuca.github.io/qr-code-generator/)
 
-Monorepo for the **qr-pure** ecosystem — a zero-dependency QR code generator written in TypeScript.
+Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator written in TypeScript.
 
 ## Packages
 
-| Package                      | Description                                               | Version                                                                               |
-| ---------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| [`qr-pure`](./packages/core) | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/qr-pure)](https://www.npmjs.com/package/qr-pure) |
+| Package                            | Description                                               | Version                                                                                           |
+| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [`@qr-plus/core`](./packages/core) | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core) |
+| [`@qr-plus/cli`](./packages/cli)   | CLI tool for generating QR codes from the terminal        | _coming soon_                                                                                     |
 
 ## Quick Start
 
 ```bash
-npm install qr-pure
+npm install @qr-plus/core
 ```
 
 ```typescript
-import { generateQR, renderToSVG, renderToTerminal } from "qr-pure";
+import { generateQR, renderToSVG, renderToTerminal } from "@qr-plus/core";
 
 // Generate QR matrix
 const { matrix } = generateQR("Hello World");
@@ -63,9 +64,10 @@ pnpm run docs           # Generate API docs
 ## Repository Structure
 
 ```
-qr-pure/
+qr-plus/
 ├── packages/
-│   ├── core/          ← qr-pure (published to npm)
+│   ├── core/          ← @qr-plus/core (published to npm)
+│   ├── cli/           ← @qr-plus/cli (coming soon)
 │   └── e2e-tests/     ← E2E test suite
 ├── docs/              ← Ecosystem documentation
 ├── turbo.json         ← Turborepo pipeline

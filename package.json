@@ -1,8 +1,8 @@
 {
-  "name": "qr-pure-monorepo",
+  "name": "qr-plus-monorepo",
   "version": "0.0.0",
   "private": true,
-  "description": "Monorepo for the qr-pure ecosystem",
+  "description": "Monorepo for the @qr-plus ecosystem",
   "scripts": {
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
@@ -15,7 +15,7 @@
     "format:check": "biome format",
     "docs": "turbo run docs",
     "clean": "turbo run clean && rm -rf node_modules",
-    "e2e": "pnpm --filter qr-pure-e2e-tests test"
+    "e2e": "pnpm --filter @qr-plus/e2e-tests test"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",

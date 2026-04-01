@@ -1,18 +1,18 @@
 {
-	"name": "qr-pure-e2e-tests",
-	"version": "1.0.0",
-	"description": "Tests E2E que verifican que los QR generados sean legibles",
-	"private": true,
-	"type": "commonjs",
-	"scripts": {
-		"test": "node e2e-test.js",
-		"test:verbose": "node e2e-test.js --verbose",
-		"test:100": "node e2e-test.js --count=100",
-		"test:seed": "node e2e-test.js --seed=12345"
-	},
-	"dependencies": {
-		"canvas": "^3.2.1",
-		"jsqr": "^1.4.0",
-		"qr-pure": "workspace:*"
-	}
+  "name": "@qr-plus/e2e-tests",
+  "version": "1.0.0",
+  "description": "Tests E2E que verifican que los QR generados sean legibles",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node e2e-test.js",
+    "test:verbose": "node e2e-test.js --verbose",
+    "test:100": "node e2e-test.js --count=100",
+    "test:seed": "node e2e-test.js --seed=12345"
+  },
+  "dependencies": {
+    "canvas": "^3.2.1",
+    "jsqr": "^1.4.0",
+    "@qr-plus/core": "workspace:*"
+  }
 }
