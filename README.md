@@ -93,6 +93,7 @@ qr-plus/
 
 ## Documentation
 
+- [Contributing Guide](CONTRIBUTING.md) — Setup, development, publishing
 - [API Reference](https://jrodrigopuca.github.io/qr-code-generator/) — TypeDoc, deployed on GitHub Pages
 - [Technical Documentation](docs/technical.md)
 - [Roadmap](docs/roadmap.md)
