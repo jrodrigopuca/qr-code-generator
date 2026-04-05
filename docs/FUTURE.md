@@ -1,13 +1,13 @@
-# FUTURE — Ecosistema y expansión de `qr-pure`
+# FUTURE — Ecosistema y expansión de `@qr-plus`
 
-> Última actualización: 2026-03-21
+> Última actualización: 2026-04-05
 > Estado: documento estratégico para evolución del proyecto
 
 ---
 
 ## 1. Propósito de este documento
 
-Este archivo documenta posibles herramientas hermanas, paquetes complementarios y líneas de expansión para `qr-pure`.
+Este archivo documenta posibles herramientas hermanas, paquetes complementarios y líneas de expansión para `@qr-plus`.
 
 La idea NO es convertir esto en una lista infinita de ideas lindas pero inútiles. La idea es identificar extensiones que:
 
@@ -16,15 +16,18 @@ La idea NO es convertir esto en una lista infinita de ideas lindas pero inútile
 3. creen un ecosistema coherente,
 4. puedan ejecutarse por etapas.
 
-`qr-pure` ya tiene una base fuerte:
+`@qr-plus` ya tiene una base fuerte:
 
-- core QR sin dependencias runtime,
-- soporte de generación real y estable,
-- renderers para SVG, Canvas y terminal,
-- testing sólido,
-- documentación y build maduros.
+- core QR sin dependencias runtime (`@qr-plus/core`),
+- soporte de generación real y estable (ISO/IEC 18004),
+- renderers para SVG (con shapes), Canvas y terminal,
+- CLI funcional con soporte SVG, PNG y terminal (`@qr-plus/cli`),
+- monorepo con pnpm workspaces + Turborepo,
+- testing sólido con Vitest,
+- linting y formato con Biome,
+- documentación y build maduros (tsup, TypeScript 6).
 
-Entonces la pregunta correcta no es “¿qué más podemos hacer?”.
+Entonces la pregunta correcta no es "¿qué más podemos hacer?".
 
 La pregunta correcta es:
 
@@ -32,13 +35,49 @@ La pregunta correcta es:
 
 ---
 
-## 2. Principios para expandir el ecosistema
+## 2. Decisiones ya tomadas
 
-Antes de pensar nuevos paquetes, conviene fijar reglas.
+Antes de entrar a las propuestas, conviene documentar las decisiones estructurales que ya se resolvieron desde la primera versión de este documento.
 
-### 2.1 El core debe seguir siendo pequeño
+### 2.1 Nombre y scope
 
-`qr-pure` debería seguir enfocado en:
+El proyecto se renombró de `qr-pure` a **`@qr-plus`** (scope npm).
+
+- `@qr-plus/core` — motor QR (antes `qr-pure`)
+- `@qr-plus/cli` — herramienta CLI (antes propuesta como `qr-pure-cli`)
+- `qr-pure` — paquete de compatibilidad que re-exporta `@qr-plus/core` (deprecated)
+
+Todo paquete nuevo debería seguir la convención `@qr-plus/<nombre>`.
+
+### 2.2 Monorepo
+
+Se resolvió la pregunta monorepo vs multirepo: es **monorepo**.
+
+- Workspace: pnpm workspaces (`packages/*`)
+- Orquestación: Turborepo
+- Build: tsup por paquete
+- Testing: Vitest (core), Node.js vanilla (e2e)
+
+### 2.3 Policy de dependencias
+
+- **Core (`@qr-plus/core`)**: zero runtime dependencies. Esto no se negocia.
+- **Paquetes satélite**: pueden tener dependencias, pero mínimas y justificadas.
+- **CLI (`@qr-plus/cli`)**: solo `commander` como dependencia runtime.
+
+### 2.4 Tooling
+
+- Linting/formato: **Biome** (reemplazó ESLint + Prettier)
+- TypeScript: **6.0.2**
+- Build: **tsup**
+- Testing: **Vitest 4**
+
+---
+
+## 3. Principios para expandir el ecosistema
+
+### 3.1 El core debe seguir siendo pequeño
+
+`@qr-plus/core` debería seguir enfocado en:
 
 - generación de matriz QR,
 - renderizado general,
@@ -54,16 +93,16 @@ No conviene meter en el core cosas como:
 
 Eso pertenece a paquetes satélite.
 
-### 2.2 Paquetes hermanos > core inflado
+### 3.2 Paquetes hermanos > core inflado
 
 Mejor estrategia:
 
-- `qr-pure` = motor,
+- `@qr-plus/core` = motor,
 - paquetes complementarios = adaptadores / DX / verticales.
 
 Eso mantiene la librería principal limpia y a la vez abre camino a monetización, comunidad y especialización.
 
-### 2.3 Priorizar por impacto real
+### 3.3 Priorizar por impacto real
 
 No todas las ideas tienen el mismo valor.
 
@@ -76,180 +115,94 @@ Conviene priorizar lo que cumpla al menos uno de estos objetivos:
 
 ---
 
-## 3. Visión del ecosistema
+## 4. Visión del ecosistema
 
 ```text
                         ┌─────────────────────┐
-                        │      qr-pure        │
-                        │   zero-dep core     │
+                        │   @qr-plus/core     │
+                        │   zero-dep engine    │
                         └──────────┬──────────┘
                                    │
           ┌────────────────────────┼────────────────────────┐
           │                        │                        │
           ▼                        ▼                        ▼
    ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
-   │ qr-pure-cli  │        │ qr-pure-react│        │ qr-pure-server│
+   │ @qr-plus/cli │        │ @qr-plus/    │        │ @qr-plus/    │
+   │   ✅ DONE     │        │   react      │        │   server     │
    └──────────────┘        └──────────────┘        └──────────────┘
           │                        │                        │
           ├──────────────┐         │         ┌──────────────┤
           ▼              ▼         ▼         ▼              ▼
    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-   │ qr-pure-wifi │ │ qr-pure-vcard│ │ qr-pure-pdf  │ │ qr-pure-reader│
+   │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │
+   │   wifi       │ │   vcard      │ │   pdf        │ │   reader     │
    └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
-                                                          │
-                                                          ▼
-                                                   ┌──────────────┐
-                                                   │ @qr-pure/    │
-                                                   │ secure        │
-                                                   └──────────────┘
+                                                           │
+                                                           ▼
+                                                    ┌──────────────┐
+                                                    │ @qr-plus/    │
+                                                    │   secure     │
+                                                    └──────────────┘
 ```
 
 ---
 
-## 4. Propuestas de herramientas hermanas
+## 5. Paquetes ya implementados
 
-## 4.1 `qr-pure-cli`
+### 5.1 `@qr-plus/cli` — ✅ Completado
 
-### Objetivo
+**Estado: publicado en npm v1.0.0**
 
-Ofrecer una interfaz de línea de comandos para generar QRs sin escribir código.
+El CLI fue la primera expansión del ecosistema, tal como recomendaba este documento.
 
-### Por qué tiene sentido
+#### Lo implementado
 
-Esta es la expansión más natural.
+| Feature | Estado |
+| --- | --- |
+| Comando básico (`qr-plus <content>`) | ✅ |
+| Format terminal | ✅ |
+| Format SVG | ✅ |
+| Format PNG (zero-dep encoder propio) | ✅ |
+| Output a archivo (`--output`) | ✅ |
+| Auto-detección de formato por extensión | ✅ |
+| Error correction level (`--ecl`) | ✅ |
+| Size presets (small/medium/large) | ✅ |
+| Colores custom (`--dark-color`, `--light-color`) | ✅ |
+| Terminal styles (unicode/compact/ascii) | ✅ |
+| Invert (`--invert`) | ✅ |
 
-El proyecto ya tiene:
+#### Nota sobre PNG
 
-- generación del QR,
-- renderer terminal,
-- renderer SVG,
-- renderer Canvas.
+El documento original sugería que PNG podría requerir "un wrapper Node usando canvas externo". En la práctica, se implementó un **encoder PNG zero-dependency** dentro del CLI (store-only deflate, CRC32, Adler32, chunks IHDR/IDAT/IEND). Esto mantiene al CLI ligero y sin dependencias de canvas nativo.
 
-O sea: el trabajo pesado ya existe. El CLI es un empaquetado inteligente de capacidades ya disponibles.
+#### Lo pendiente del CLI (mejoras futuras)
 
-### Casos de uso
+Estas features estaban en la propuesta original y siguen siendo válidas para una v2:
 
-- generar un QR rápido desde terminal,
-- exportar SVG para diseño,
-- automatizar lotes,
-- integrar en scripts shell,
-- usarlo en CI o tooling interno.
-
-### Ejemplos de uso
-
-```bash
-# Mostrar en terminal
-npx qr-pure "https://example.com"
-
-# Guardar SVG
-npx qr-pure "Hello" --format svg --output qr.svg
-
-# Elegir estilo terminal
-npx qr-pure "Hello" --format terminal --style compact
-
-# Más opciones
-npx qr-pure "https://example.com" \
-  --error-level H \
-  --margin 2 \
-  --scale 8 \
-  --shape rounded
-
-# Leer desde stdin
-echo "secret-value" | npx qr-pure --stdin --format svg > secret.svg
-
-# Lote desde archivo
-npx qr-pure batch ./data/urls.txt --output-dir ./out --format svg
-```
-
-### API mental del producto
-
-Comandos sugeridos:
-
-```bash
-qr-pure <content>
-qr-pure batch <file>
-qr-pure --stdin
-qr-pure info <content>
-```
-
-### Flags sugeridas
-
-- `--format <terminal|svg|png|json>`
-- `--output <path>`
-- `--output-dir <path>`
-- `--error-level <L|M|Q|H>`
-- `--version <auto|1..40>`
-- `--mask <auto|0..7>`
-- `--mode <auto|numeric|alphanumeric|byte>`
-- `--scale <number>`
-- `--margin <number>`
-- `--dark-color <color>`
-- `--light-color <color>`
-- `--shape <square|rounded|circle|dot>`
-- `--corner-radius <0..1>`
-- `--style <unicode|compact|ascii>`
-- `--invert`
-- `--stdin`
-- `--json`
-
-### Outputs útiles
-
-#### `terminal`
-
-Render directo usando `TerminalRenderer`.
-
-#### `svg`
-
-Exportación directa de string SVG.
-
-#### `png`
-
-No conviene meter esto en el core. Puede resolverse:
-
-- con un wrapper Node usando canvas externo,
-- o en una segunda etapa del CLI.
-
-#### `json`
-
-Muy útil para automatización:
-
-```json
-{
-	"version": 3,
-	"size": 29,
-	"mode": "byte",
-	"maskPattern": 4,
-	"errorCorrectionLevel": "M"
-}
-```
-
-### Dependencias recomendadas
-
-- parsing CLI: `commander` o `cac`
-- color output opcional: `picocolors`
-- para PNG futuro: dependencia separada, no obligatoria
-
-### Complejidad
-
-**Baja**.
-
-### Impacto
-
-**Alto**.
-
-### Recomendación
-
-Debería ser la **primera expansión real** del ecosistema.
+| Feature | Prioridad |
+| --- | --- |
+| `--shape` (module shapes: rounded, circle, dot) | Media |
+| `--corner-radius` | Media |
+| `--version` (QR version manual) | Baja |
+| `--mask` (mask pattern manual) | Baja |
+| `--mode` (encoding mode manual) | Baja |
+| `--json` (metadata output) | Media |
+| `--stdin` (pipe input) | Media |
+| `qr-plus batch <file>` (batch mode) | Media |
+| `qr-plus info <content>` (QR info) | Baja |
+| Scale/margin como valores numéricos directos | Baja |
 
 ---
 
-## 4.2 `qr-pure-react`
+## 6. Propuestas de herramientas hermanas
 
-### Objetivo
+### 6.1 `@qr-plus/react`
+
+#### Objetivo
 
 Crear una capa de integración idiomática para React.
 
-### Por qué tiene sentido
+#### Por qué tiene sentido
 
 El core resuelve generación. Lo que falta en React es DX:
 
@@ -260,7 +213,7 @@ El core resuelve generación. Lo que falta en React es DX:
 - posibilidad de descarga,
 - posibilidad de usar SVG o canvas sin boilerplate.
 
-### Casos de uso
+#### Casos de uso
 
 - landing pages,
 - dashboards,
@@ -270,10 +223,10 @@ El core resuelve generación. Lo que falta en React es DX:
 - shares de apps,
 - paneles de admin.
 
-### API sugerida
+#### API sugerida
 
 ```tsx
-import { QRCode } from "qr-pure-react";
+import { QRCode } from "@qr-plus/react";
 
 <QRCode value="https://example.com" />
 
@@ -289,25 +242,25 @@ import { QRCode } from "qr-pure-react";
 />
 ```
 
-### Componentes posibles
+#### Componentes posibles
 
-#### `<QRCode />`
+##### `<QRCode />`
 
 Componente principal.
 
-#### `<QRCodeSVG />`
+##### `<QRCodeSVG />`
 
 Siempre SVG.
 
-#### `<QRCodeCanvas />`
+##### `<QRCodeCanvas />`
 
 Siempre Canvas.
 
-#### `<QRCodeDownloadButton />`
+##### `<QRCodeDownloadButton />`
 
 Botón auxiliar para exportación.
 
-### Props sugeridas
+#### Props sugeridas
 
 - `value: string`
 - `renderer?: "svg" | "canvas" | "terminal"`
@@ -325,7 +278,7 @@ Botón auxiliar para exportación.
 - `className?: string`
 - `title?: string`
 
-### Features futuras interesantes
+#### Features futuras interesantes
 
 - `downloadable`
 - `fileName`
@@ -333,33 +286,127 @@ Botón auxiliar para exportación.
 - `animate`
 - `onGenerated`
 
-### Riesgos
+#### Riesgos
 
 - no mezclar demasiada lógica visual dentro del paquete,
 - evitar dependencia fuerte con una sola estrategia de styling,
 - no inventar state innecesario.
 
-### Complejidad
+#### Complejidad
 
 **Media**.
 
-### Impacto
+#### Impacto
 
 **Muy alto**.
 
-### Recomendación
+#### Recomendación
 
-Es una gran segunda apuesta después del CLI.
+Es la **primera expansión pendiente** del ecosistema. Debería ser el próximo paquete.
 
 ---
 
-## 4.3 `qr-pure-reader`
+### 6.2 `@qr-plus/wifi`
 
-### Objetivo
+#### Objetivo
+
+Resolver correctamente el formato estándar de QRs para conexión WiFi.
+
+#### Por qué tiene sentido
+
+Es uno de los formatos más usados en el mundo real y evita que cada usuario arme strings a mano.
+
+#### API sugerida
+
+```ts
+import { wifiQR, buildWifiString } from "@qr-plus/wifi";
+
+const result = wifiQR({
+  ssid: "MyNetwork",
+  password: "super-secret",
+  encryption: "WPA",
+  hidden: false,
+});
+
+const content = buildWifiString({
+  ssid: "MyNetwork",
+  password: "super-secret",
+  encryption: "WPA",
+});
+```
+
+#### Valor agregado
+
+- validación de campos,
+- escaping correcto,
+- tipado,
+- helpers listos para usar con `generateQR()` o `SVGRenderer.render()`.
+
+#### Complejidad
+
+**Baja**.
+
+#### Impacto
+
+**Medio**.
+
+#### Recomendación
+
+Gran candidato de corto plazo porque aporta valor con poco esfuerzo.
+
+---
+
+### 6.3 `@qr-plus/vcard`
+
+#### Objetivo
+
+Generar QRs de contacto con formato vCard válido.
+
+#### API sugerida
+
+```ts
+import { vcardQR, buildVCardString } from "@qr-plus/vcard";
+
+const qr = vcardQR({
+  firstName: "John",
+  lastName: "Doe",
+  email: "john@example.com",
+  phone: "+1234567890",
+  organization: "Acme Inc",
+  title: "Engineer",
+  website: "https://example.com",
+});
+```
+
+#### Valor agregado
+
+- formato estándar consistente,
+- orden correcto de campos,
+- sanitización,
+- soporte para campos opcionales,
+- helpers listos para render.
+
+#### Complejidad
+
+**Baja** a **media**.
+
+#### Impacto
+
+**Medio**.
+
+#### Recomendación
+
+Muy buena dupla junto con `@qr-plus/wifi`.
+
+---
+
+### 6.4 `@qr-plus/reader`
+
+#### Objetivo
 
 Expandir el ecosistema hacia la lectura/decodificación de códigos QR.
 
-### Por qué tiene sentido
+#### Por qué tiene sentido
 
 Acá cerrás el ciclo completo:
 
@@ -368,9 +415,9 @@ Acá cerrás el ciclo completo:
 - leer,
 - validar.
 
-Eso transforma `qr-pure` de una librería puntual a una plataforma QR más completa.
+Eso transforma `@qr-plus` de una librería puntual a una plataforma QR más completa.
 
-### Casos de uso
+#### Casos de uso
 
 - escaneo desde webcam,
 - validación de QRs emitidos por la propia librería,
@@ -379,26 +426,26 @@ Eso transforma `qr-pure` de una librería puntual a una plataforma QR más compl
 - check-in de eventos,
 - tools de testing.
 
-### APIs posibles
+#### APIs posibles
 
 ```ts
-import { readQRFromImage, readQRFromCanvas, QRScanner } from "qr-pure-reader";
+import { readQRFromImage, readQRFromCanvas, QRScanner } from "@qr-plus/reader";
 
 const result = await readQRFromImage(file);
 
 const result2 = readQRFromCanvas(canvas);
 
 const scanner = new QRScanner(videoElement, {
-	onScan(data) {
-		console.log(data);
-	},
+  onScan(data) {
+    console.log(data);
+  },
 });
 scanner.start();
 ```
 
-### Dos estrategias posibles
+#### Dos estrategias posibles
 
-#### Estrategia A — wrapper sobre decoder existente
+##### Estrategia A — wrapper sobre decoder existente
 
 Usar algo como `jsQR` internamente.
 
@@ -414,7 +461,7 @@ Usar algo como `jsQR` internamente.
 - dependés de un tercero,
 - diferenciación menor.
 
-#### Estrategia B — decoder propio
+##### Estrategia B — decoder propio
 
 Implementar pipeline propio de lectura.
 
@@ -430,27 +477,27 @@ Implementar pipeline propio de lectura.
 - mucho laburo matemático y de visión,
 - testing bastante más duro.
 
-### Recomendación
+#### Recomendación
 
 Si se encara, conviene arrancar como **wrapper estable sobre `jsQR`** y recién después evaluar decoder propio.
 
-### Complejidad
+#### Complejidad
 
 **Alta**.
 
-### Impacto
+#### Impacto
 
 **Alto**.
 
 ---
 
-## 4.4 `qr-pure-server`
+### 6.5 `@qr-plus/server`
 
-### Objetivo
+#### Objetivo
 
 Ofrecer un microservicio HTTP para generación server-side.
 
-### Por qué tiene sentido
+#### Por qué tiene sentido
 
 Hay muchísimos equipos que no quieren integrar una librería: quieren un endpoint.
 
@@ -461,7 +508,7 @@ Ejemplo real:
 - plataforma de marketing emite assets,
 - sistemas legacy consumen una API.
 
-### Endpoints sugeridos
+#### Endpoints sugeridos
 
 ```http
 GET /qr?data=hello&format=svg
@@ -471,27 +518,27 @@ POST /qr/batch
 GET /health
 ```
 
-### Contrato posible
+#### Contrato posible
 
-#### `POST /qr`
+##### `POST /qr`
 
 ```json
 {
-	"data": "https://example.com",
-	"format": "svg",
-	"errorCorrectionLevel": "H",
-	"moduleShape": "rounded",
-	"scale": 10
+  "data": "https://example.com",
+  "format": "svg",
+  "errorCorrectionLevel": "H",
+  "moduleShape": "rounded",
+  "scale": 10
 }
 ```
 
-### Respuestas posibles
+#### Respuestas posibles
 
 - `image/svg+xml`
 - `application/json`
 - `application/octet-stream`
 
-### Features de plataforma
+#### Features de plataforma
 
 - rate limiting,
 - caching,
@@ -500,33 +547,33 @@ GET /health
 - Docker image,
 - deploy templates para Railway / Fly / Render / Vercel.
 
-### Stack sugerido
+#### Stack sugerido
 
 - `fastify` por performance y tipado,
 - `zod` para validar payloads,
 - `pino` para logs.
 
-### Complejidad
+#### Complejidad
 
 **Media**.
 
-### Impacto
+#### Impacto
 
 **Medio**.
 
-### Recomendación
+#### Recomendación
 
 Tiene sentido si querés abrir un camino B2B o self-hosted.
 
 ---
 
-## 4.5 `qr-pure-pdf`
+### 6.6 `@qr-plus/pdf`
 
-### Objetivo
+#### Objetivo
 
 Resolver generación de documentos PDF que contengan uno o múltiples QRs.
 
-### Casos de uso
+#### Casos de uso
 
 - hojas de etiquetas,
 - credenciales,
@@ -535,25 +582,25 @@ Resolver generación de documentos PDF que contengan uno o múltiples QRs.
 - tickets,
 - inventario y logística.
 
-### API sugerida
+#### API sugerida
 
 ```ts
-import { generateQRSheet, generateInvoicePDF } from "qr-pure-pdf";
+import { generateQRSheet, generateInvoicePDF } from "@qr-plus/pdf";
 
 const pdf = await generateQRSheet({
-	items: [
-		{ value: "SKU-001", label: "Producto 1" },
-		{ value: "SKU-002", label: "Producto 2" },
-	],
-	layout: "avery-5160",
-	qr: {
-		errorCorrectionLevel: "M",
-		moduleShape: "square",
-	},
+  items: [
+    { value: "SKU-001", label: "Producto 1" },
+    { value: "SKU-002", label: "Producto 2" },
+  ],
+  layout: "avery-5160",
+  qr: {
+    errorCorrectionLevel: "M",
+    moduleShape: "square",
+  },
 });
 ```
 
-### Estrategia técnica
+#### Estrategia técnica
 
 No meter PDF en el core. Nunca.
 
@@ -562,126 +609,79 @@ Este paquete debería usar:
 - SVG como formato fuente,
 - y una dependencia específica de PDF.
 
-### Dependencias posibles
+#### Dependencias posibles
 
 - `pdf-lib`
 - `pdfkit`
 
-### Complejidad
+#### Complejidad
 
 **Media**.
 
-### Impacto
+#### Impacto
 
 **Medio**.
 
-### Recomendación
+#### Recomendación
 
 Interesante si aparece demanda real en operaciones, logística o ventas.
 
 ---
 
-## 4.6 `qr-pure-wifi`
+### 6.7 `@qr-plus/design-system`
 
-### Objetivo
+#### Objetivo
 
-Resolver correctamente el formato estándar de QRs para conexión WiFi.
+Ofrecer presets visuales listos para usar sobre los renderers actuales.
 
-### Por qué tiene sentido
+#### Por qué tiene sentido
 
-Es uno de los formatos más usados en el mundo real y evita que cada usuario arme strings a mano.
+Muchos devs quieren "que se vea lindo" pero no saben diseñar un QR custom sin romper legibilidad.
 
-### API sugerida
+#### Ejemplo de uso
 
 ```ts
-import { wifiQR, buildWifiString } from "qr-pure-wifi";
+import { presets } from "@qr-plus/design-system";
+import { SVGRenderer } from "@qr-plus/core";
 
-const result = wifiQR({
-	ssid: "MyNetwork",
-	password: "super-secret",
-	encryption: "WPA",
-	hidden: false,
-});
-
-const content = buildWifiString({
-	ssid: "MyNetwork",
-	password: "super-secret",
-	encryption: "WPA",
-});
+const svg = SVGRenderer.render(matrix, presets.modernRounded);
 ```
 
-### Valor agregado
+#### Posibles presets
 
-- validación de campos,
-- escaping correcto,
-- tipado,
-- helpers listos para usar con `generateQR()` o `renderToSVG()`.
+- `minimal`
+- `modernRounded`
+- `corporate`
+- `playful`
+- `highContrast`
 
-### Complejidad
+#### Valor agregado
+
+- acelera adopción,
+- mejora output visual,
+- sirve como showcase del renderer SVG.
+
+#### Complejidad
 
 **Baja**.
 
-### Impacto
+#### Impacto
 
 **Medio**.
 
-### Recomendación
+#### Recomendación
 
-Gran candidato de corto plazo porque aporta valor con poco esfuerzo.
-
----
-
-## 4.7 `qr-pure-vcard`
-
-### Objetivo
-
-Generar QRs de contacto con formato vCard válido.
-
-### API sugerida
-
-```ts
-import { vcardQR, buildVCardString } from "qr-pure-vcard";
-
-const qr = vcardQR({
-	firstName: "John",
-	lastName: "Doe",
-	email: "john@example.com",
-	phone: "+1234567890",
-	organization: "Acme Inc",
-	title: "Engineer",
-	website: "https://example.com",
-});
-```
-
-### Valor agregado
-
-- formato estándar consistente,
-- orden correcto de campos,
-- sanitización,
-- soporte para campos opcionales,
-- helpers listos para render.
-
-### Complejidad
-
-**Baja** a **media**.
-
-### Impacto
-
-**Medio**.
-
-### Recomendación
-
-Muy buena dupla junto con `qr-pure-wifi`.
+Buen complemento cuando exista más demanda de customización visual.
 
 ---
 
-## 4.8 `qr-pure-analytics`
+### 6.8 `@qr-plus/analytics`
 
-### Objetivo
+#### Objetivo
 
 Ofrecer QRs con tracking y capa analítica.
 
-### Aclaración importante
+#### Aclaración importante
 
 Esto **no** es solo generar el QR. Acá entrás en terreno de producto:
 
@@ -693,7 +693,7 @@ Esto **no** es solo generar el QR. Acá entrás en terreno de producto:
 - fraude,
 - links dinámicos.
 
-### Por qué puede ser valioso
+#### Por qué puede ser valioso
 
 Porque los equipos de marketing no quieren solo un QR. Quieren saber:
 
@@ -702,34 +702,34 @@ Porque los equipos de marketing no quieren solo un QR. Quieren saber:
 - cuándo,
 - si el destino convierte.
 
-### Posible arquitectura
+#### Posible arquitectura
 
 1. generar URL corta/trackeada,
 2. esa URL redirige al destino real,
 3. registrar evento,
 4. mostrar métricas en panel.
 
-### Complejidad
+#### Complejidad
 
 **Alta**.
 
-### Impacto
+#### Impacto
 
 **Alto**, pero mucho más producto que librería.
 
-### Recomendación
+#### Recomendación
 
 No es de corto plazo. Conviene pensarlo recién cuando el core y los paquetes básicos estén consolidados.
 
 ---
 
-## 4.9 `qr-pure-figma`
+### 6.9 `@qr-plus/figma`
 
-### Objetivo
+#### Objetivo
 
-Crear un plugin para diseñadores que use el motor de `qr-pure` dentro de Figma.
+Crear un plugin para diseñadores que use el motor de `@qr-plus` dentro de Figma.
 
-### Casos de uso
+#### Casos de uso
 
 - posters,
 - packaging,
@@ -738,7 +738,7 @@ Crear un plugin para diseñadores que use el motor de `qr-pure` dentro de Figma.
 - credenciales,
 - layouts para impresión.
 
-### Features útiles
+#### Features útiles
 
 - generar QR desde texto o URL,
 - personalizar colores,
@@ -746,7 +746,7 @@ Crear un plugin para diseñadores que use el motor de `qr-pure` dentro de Figma.
 - actualizar el nodo sin recrearlo,
 - presets visuales.
 
-### Valor estratégico
+#### Valor estratégico
 
 Esto abre otro público:
 
@@ -754,27 +754,27 @@ Esto abre otro público:
 - equipos de branding,
 - agencias.
 
-### Complejidad
+#### Complejidad
 
 **Media**.
 
-### Impacto
+#### Impacto
 
 **Medio**.
 
-### Recomendación
+#### Recomendación
 
-Muy interesante como canal de adopción, pero no antes del CLI y React.
+Muy interesante como canal de adopción, pero no antes del wrapper React.
 
 ---
 
-## 4.10 `@qr-pure/secure`
+### 6.10 `@qr-plus/secure`
 
-### Objetivo
+#### Objetivo
 
 Agregar capacidades de firma, verificación y eventualmente cifrado para casos donde el QR representa algo sensible.
 
-### Casos de uso
+#### Casos de uso
 
 - tickets,
 - credenciales,
@@ -782,23 +782,23 @@ Agregar capacidades de firma, verificación y eventualmente cifrado para casos d
 - documentos emitidos,
 - vouchers o cupones antifraude.
 
-### Posible API
+#### Posible API
 
 ```ts
-import { createSignedQR, verifySignedQR } from "@qr-pure/secure";
+import { createSignedQR, verifySignedQR } from "@qr-plus/secure";
 
 const token = createSignedQR({
-	payload: {
-		ticketId: "evt_123",
-		seat: "A-12",
-	},
-	privateKey,
+  payload: {
+    ticketId: "evt_123",
+    seat: "A-12",
+  },
+  privateKey,
 });
 
 const verification = verifySignedQR(token, publicKey);
 ```
 
-### Advertencia importante
+#### Advertencia importante
 
 Esto es delicado. Seguridad mal hecha es peor que no tener seguridad.
 
@@ -809,126 +809,82 @@ Si se hace, hay que hacerlo con:
 - mensajes claros,
 - documentación brutalmente precisa.
 
-### Complejidad
+#### Complejidad
 
 **Alta**.
 
-### Impacto
+#### Impacto
 
 **Nicho**, pero muy valioso en verticales específicos.
 
-### Recomendación
+#### Recomendación
 
 No es prioridad de corto plazo.
 
 ---
 
-## 4.11 `qr-pure-design-system`
-
-### Objetivo
-
-Ofrecer presets visuales listos para usar sobre los renderers actuales.
-
-### Por qué tiene sentido
-
-Muchos devs quieren “que se vea lindo” pero no saben diseñar un QR custom sin romper legibilidad.
-
-### Ejemplo de uso
-
-```ts
-import { presets } from "qr-pure-design-system";
-import { SVGRenderer } from "qr-pure";
-
-const svg = SVGRenderer.render(matrix, presets.modernRounded);
-```
-
-### Posibles presets
-
-- `minimal`
-- `modernRounded`
-- `corporate`
-- `playful`
-- `highContrast`
-
-### Valor agregado
-
-- acelera adopción,
-- mejora output visual,
-- sirve como showcase del renderer SVG.
-
-### Complejidad
-
-**Baja**.
-
-### Impacto
-
-**Medio**.
-
-### Recomendación
-
-Buen complemento cuando exista más demanda de customización visual.
-
----
-
-## 5. Otras integraciones posibles
+## 7. Otras integraciones posibles
 
 Estas no son prioridad, pero vale documentarlas.
 
-### 5.1 `qr-pure-vue`
+### 7.1 `@qr-plus/vue`
 
 - Wrapper idiomático para Vue.
 
-### 5.2 `qr-pure-svelte`
+### 7.2 `@qr-plus/svelte`
 
 - Wrapper idiomático para Svelte.
 
-### 5.3 `qr-pure-solid`
+### 7.3 `@qr-plus/solid`
 
 - Wrapper idiomático para Solid.
 
-### 5.4 `qr-pure-next`
+### 7.4 `@qr-plus/next`
 
 - Helpers específicos para App Router, Server Components y generación edge/server.
 
-### 5.5 `qr-pure-bench`
+### 7.5 `@qr-plus/bench`
 
-- Suite de benchmarks comparando `qr-pure` contra otras librerías del ecosistema.
-
----
-
-## 6. Priorización sugerida
-
-## 6.1 Matriz de valor
-
-| Iniciativa              | Esfuerzo   | Impacto  | Horizonte           | Prioridad |
-| ----------------------- | ---------- | -------- | ------------------- | --------- |
-| `qr-pure-cli`           | Bajo       | Alto     | Corto plazo         | 1         |
-| `qr-pure-react`         | Medio      | Muy alto | Corto plazo         | 2         |
-| `qr-pure-wifi`          | Bajo       | Medio    | Corto plazo         | 3         |
-| `qr-pure-vcard`         | Bajo/Medio | Medio    | Corto plazo         | 4         |
-| `qr-pure-server`        | Medio      | Medio    | Mediano plazo       | 5         |
-| `qr-pure-design-system` | Bajo       | Medio    | Mediano plazo       | 6         |
-| `qr-pure-pdf`           | Medio      | Medio    | Mediano plazo       | 7         |
-| `qr-pure-reader`        | Alto       | Alto     | Mediano/Largo plazo | 8         |
-| `qr-pure-figma`         | Medio      | Medio    | Largo plazo         | 9         |
-| `@qr-pure/secure`       | Alto       | Nicho    | Largo plazo         | 10        |
-| `qr-pure-analytics`     | Alto       | Alto     | Largo plazo         | 11        |
+- Suite de benchmarks comparando `@qr-plus/core` contra otras librerías del ecosistema.
 
 ---
 
-## 7. Roadmap recomendado
+## 8. Priorización sugerida
 
-## Fase A — Expansión inmediata
+### 8.1 Matriz de valor
+
+| Iniciativa | Esfuerzo | Impacto | Horizonte | Prioridad | Estado |
+| --- | --- | --- | --- | --- | --- |
+| `@qr-plus/cli` | Bajo | Alto | — | — | ✅ Completado |
+| `@qr-plus/react` | Medio | Muy alto | Corto plazo | 1 | Pendiente |
+| `@qr-plus/wifi` | Bajo | Medio | Corto plazo | 2 | Pendiente |
+| `@qr-plus/vcard` | Bajo/Medio | Medio | Corto plazo | 3 | Pendiente |
+| `@qr-plus/server` | Medio | Medio | Mediano plazo | 4 | Pendiente |
+| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 5 | Pendiente |
+| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 6 | Pendiente |
+| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 7 | Pendiente |
+| `@qr-plus/figma` | Medio | Medio | Largo plazo | 8 | Pendiente |
+| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 9 | Pendiente |
+| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 10 | Pendiente |
+
+---
+
+## 9. Roadmap recomendado
+
+### Fase A — Expansión inmediata (parcialmente completada)
 
 Objetivo: aumentar adopción con poco esfuerzo.
 
-### Iniciativas
+#### Completado
 
-1. `qr-pure-cli`
-2. `qr-pure-wifi`
-3. `qr-pure-vcard`
+1. ✅ `@qr-plus/cli` — publicado v1.0.0
 
-### Resultado esperado
+#### Pendiente
+
+2. `@qr-plus/wifi`
+3. `@qr-plus/vcard`
+
+#### Resultado esperado
 
 - más casos de uso reales,
 - más facilidad de prueba,
@@ -936,16 +892,16 @@ Objetivo: aumentar adopción con poco esfuerzo.
 
 ---
 
-## Fase B — Integración con frontend
+### Fase B — Integración con frontend
 
 Objetivo: entrar de lleno al ecosistema de apps web.
 
-### Iniciativas
+#### Iniciativas
 
-1. `qr-pure-react`
-2. presets visuales básicos o `qr-pure-design-system`
+1. `@qr-plus/react`
+2. presets visuales básicos o `@qr-plus/design-system`
 
-### Resultado esperado
+#### Resultado esperado
 
 - adopción en frontend,
 - ejemplos más visibles,
@@ -953,16 +909,16 @@ Objetivo: entrar de lleno al ecosistema de apps web.
 
 ---
 
-## Fase C — Plataforma
+### Fase C — Plataforma
 
 Objetivo: habilitar uso server-side y procesos documentales.
 
-### Iniciativas
+#### Iniciativas
 
-1. `qr-pure-server`
-2. `qr-pure-pdf`
+1. `@qr-plus/server`
+2. `@qr-plus/pdf`
 
-### Resultado esperado
+#### Resultado esperado
 
 - utilidad para equipos internos,
 - uso empresarial más claro,
@@ -970,72 +926,74 @@ Objetivo: habilitar uso server-side y procesos documentales.
 
 ---
 
-## Fase D — Expansión avanzada
+### Fase D — Expansión avanzada
 
 Objetivo: convertir el ecosistema en una plataforma más completa.
 
-### Iniciativas
+#### Iniciativas
 
-1. `qr-pure-reader`
-2. `@qr-pure/secure`
-3. `qr-pure-analytics`
-4. `qr-pure-figma`
+1. `@qr-plus/reader`
+2. `@qr-plus/secure`
+3. `@qr-plus/analytics`
+4. `@qr-plus/figma`
 
 ---
 
-## 8. Recomendación ejecutiva
+## 10. Recomendación ejecutiva
 
-Si hubiera que elegir **solo tres movimientos inteligentes** para el futuro próximo, deberían ser estos:
+Si hubiera que elegir **los tres próximos movimientos inteligentes**, deberían ser estos:
 
-### 1. `qr-pure-cli`
+### 1. `@qr-plus/react`
 
-Porque es el mayor retorno por menor esfuerzo.
+Porque maximiza alcance y adopción en el ecosistema web.
 
-### 2. `qr-pure-react`
-
-Porque maximiza alcance y adopción.
-
-### 3. `qr-pure-wifi` + `qr-pure-vcard`
+### 2. `@qr-plus/wifi` + `@qr-plus/vcard`
 
 Porque convierten el motor en soluciones concretas de uso diario.
 
-Eso te arma un ecosistema inicial muy sano:
+### 3. `@qr-plus/cli` v2 (mejoras)
 
-- core sólido,
-- entrada por terminal,
-- entrada por frontend,
-- soluciones concretas de negocio.
+Porque exponer module shapes, stdin y batch en el CLI ya existente es trabajo incremental con buen retorno.
+
+Eso te consolida un ecosistema creciente:
+
+- core sólido y zero-dep,
+- entrada por terminal (ya hecha),
+- entrada por frontend (React),
+- soluciones concretas de negocio (WiFi, vCard).
 
 Y eso, te digo la verdad, YA empieza a parecer una familia de productos y no solo una librería aislada.
 
 ---
 
-## 9. Estado de decisión actual
+## 11. Estado de decisión actual
 
 Al día de hoy, la recomendación estratégica es:
 
-- mantener `qr-pure` como motor central,
-- evitar inflarlo con features ajenas al core,
-- avanzar primero con paquetes satélite de alto impacto y bajo costo,
-- postergar analytics, secure y reader hasta tener más señales de uso real.
+- mantener `@qr-plus/core` como motor central zero-dep,
+- seguir evolucionando `@qr-plus/cli` con features incrementales,
+- avanzar con `@qr-plus/react` como próxima prioridad,
+- complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins,
+- postergar analytics, secure y reader hasta tener más señales de uso real,
+- mantener el paquete `qr-pure` como compat wrapper hasta que la migración de usuarios se complete.
 
 ---
 
-## 10. Próximos pasos sugeridos
+## 12. Próximos pasos sugeridos
 
 Cuando se retome este documento, el orden lógico sería:
 
-1. convertir esta visión en issues o milestones,
-2. definir naming oficial de paquetes,
-3. decidir si será monorepo o repos separados,
-4. arrancar por `qr-pure-cli`.
+1. convertir las propuestas pendientes en issues o milestones en GitHub,
+2. arrancar con `@qr-plus/react` como siguiente paquete,
+3. evaluar si WiFi y vCard pueden ir en paralelo como paquetes simples,
+4. definir una estrategia de mejoras incrementales para el CLI (v1.1, v1.2).
 
 ### Preguntas que conviene resolver antes de implementar
 
-- ¿ecosistema en monorepo o multiprepo?
-- ¿mantener zero-dependency estricto solo en el core?
-- ¿qué paquetes pueden aceptar dependencias externas?
-- ¿qué nivel de soporte se quiere para Node vs browser?
+- ¿`@qr-plus/react` soporta React 19 desde el inicio o también 18?
+- ¿WiFi y vCard deben exponer helpers puros (string builders) además del QR generado?
+- ¿qué nivel de soporte SSR se quiere para el wrapper React?
+- ¿cuándo deprecar formalmente el paquete `qr-pure` compat?
 - ¿qué paquete tiene mejor relación esfuerzo/impacto para el próximo release?
 
 ---
