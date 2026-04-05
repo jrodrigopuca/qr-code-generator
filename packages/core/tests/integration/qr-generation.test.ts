@@ -3,12 +3,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import {
-	generateQR,
-	QRCode,
-	renderToSVG,
-	SVGRenderer,
-} from "../../src";
+import { generateQR, QRCode, renderToSVG, SVGRenderer } from "../../src";
 
 describe("QR Code Generation - Integration", () => {
 	describe("generateQR helper", () => {
