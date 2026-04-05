@@ -3,7 +3,12 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { generateQR, QRCode, renderToSVG, SVGRenderer } from "../../src";
+import {
+	generateQR,
+	QRCode,
+	renderToSVG,
+	SVGRenderer,
+} from "../../src";
 
 describe("QR Code Generation - Integration", () => {
 	describe("generateQR helper", () => {
@@ -176,6 +181,57 @@ describe("QR Code Generation - Integration", () => {
 
 			expect(svg).toContain("#FF0000");
 			expect(svg).toContain("#00FF00");
+		});
+
+		it("debería reenviar moduleShape a SVGRenderer", () => {
+			const svgRounded = renderToSVG("Test", { moduleShape: "rounded" });
+			const svgSquare = renderToSVG("Test", { moduleShape: "square" });
+
+			// Rounded uses individual <rect> with rx/ry, square uses optimized <path>
+			expect(svgRounded).toContain("rx=");
+			expect(svgRounded).toContain("ry=");
+			expect(svgSquare).toContain("<path");
+		});
+
+		it("debería reenviar cornerRadius a SVGRenderer", () => {
+			const svgSmallRadius = renderToSVG("Test", {
+				moduleShape: "rounded",
+				cornerRadius: 0.1,
+				scale: 10,
+			});
+			const svgLargeRadius = renderToSVG("Test", {
+				moduleShape: "rounded",
+				cornerRadius: 0.9,
+				scale: 10,
+			});
+
+			// r = (scale / 2) * cornerRadius → 0.5 vs 4.5
+			expect(svgSmallRadius).toContain('rx="0.5"');
+			expect(svgLargeRadius).toContain('rx="4.5"');
+		});
+
+		it("debería reenviar xmlDeclaration a SVGRenderer", () => {
+			const svgWithXml = renderToSVG("Test", { xmlDeclaration: true });
+			const svgWithoutXml = renderToSVG("Test", { xmlDeclaration: false });
+
+			expect(svgWithXml).toContain("<?xml");
+			expect(svgWithoutXml).not.toContain("<?xml");
+		});
+
+		it("debería reenviar optimizePaths a SVGRenderer", () => {
+			const svgOptimized = renderToSVG("Test", { optimizePaths: true });
+			const svgNotOptimized = renderToSVG("Test", { optimizePaths: false });
+
+			// Optimized uses <path>, non-optimized uses <rect>
+			expect(svgOptimized).toContain("<path");
+			expect(svgNotOptimized).not.toContain("<path");
+			expect(svgNotOptimized).toContain("<rect");
+		});
+
+		it("debería reenviar circle moduleShape a SVGRenderer", () => {
+			const svgCircle = renderToSVG("Test", { moduleShape: "circle" });
+
+			expect(svgCircle).toContain("<circle");
 		});
 	});
 

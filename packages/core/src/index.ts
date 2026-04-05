@@ -84,7 +84,11 @@ export { chunkString, fromBinary, toBinary } from "./utils";
 
 // Import for helper functions
 import { QRCode } from "./QRCode";
-import type { TerminalRenderOptions } from "./renderer";
+import type {
+	ModuleShape,
+	SVGRenderOptions,
+	TerminalRenderOptions,
+} from "./renderer";
 import { CanvasRenderer, SVGRenderer, TerminalRenderer } from "./renderer";
 import type { QRCodeOptions, QRCodeResult, RenderOptions } from "./types";
 
@@ -144,7 +148,13 @@ export function generateQR(
 export function renderToCanvas(
 	canvas: HTMLCanvasElement,
 	content: string,
-	options?: QRCodeOptions & RenderOptions,
+	options?: QRCodeOptions &
+		RenderOptions & {
+			/** Forma de los módulos: 'square' o 'rounded'. Canvas no soporta 'circle'/'dot'. @default 'square' */
+			moduleShape?: Extract<ModuleShape, "square" | "rounded">;
+			/** Radio de esquinas para moduleShape 'rounded' (0-0.5). @default 0.4 */
+			cornerRadius?: number;
+		},
 ): void {
 	const qrOptions: QRCodeOptions = {
 		errorCorrectionLevel: options?.errorCorrectionLevel,
@@ -161,7 +171,17 @@ export function renderToCanvas(
 
 	const qr = new QRCode(content, qrOptions);
 	const result = qr.generate();
-	CanvasRenderer.render(canvas, result.matrix, renderOptions);
+
+	if (options?.moduleShape === "rounded") {
+		CanvasRenderer.renderRounded(
+			canvas,
+			result.matrix,
+			renderOptions,
+			options.cornerRadius,
+		);
+	} else {
+		CanvasRenderer.render(canvas, result.matrix, renderOptions);
+	}
 }
 
 /**
@@ -184,7 +204,7 @@ export function renderToCanvas(
  */
 export function renderToSVG(
 	content: string,
-	options?: QRCodeOptions & RenderOptions,
+	options?: QRCodeOptions & SVGRenderOptions,
 ): string {
 	const qrOptions: QRCodeOptions = {
 		errorCorrectionLevel: options?.errorCorrectionLevel,
@@ -192,11 +212,15 @@ export function renderToSVG(
 		mask: options?.mask,
 	};
 
-	const renderOptions: RenderOptions = {
+	const renderOptions: SVGRenderOptions = {
 		scale: options?.scale,
 		margin: options?.margin,
 		darkColor: options?.darkColor,
 		lightColor: options?.lightColor,
+		moduleShape: options?.moduleShape,
+		cornerRadius: options?.cornerRadius,
+		xmlDeclaration: options?.xmlDeclaration,
+		optimizePaths: options?.optimizePaths,
 	};
 
 	const qr = new QRCode(content, qrOptions);
