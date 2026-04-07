@@ -72,6 +72,9 @@ pnpm --filter @qr-plus/core publish --access public
 # CLI tool
 pnpm --filter @qr-plus/cli publish --access public
 
+# React
+pnpm --filter @qr-plus/react publish --access public
+
 # Compatibility wrapper (deprecated, only if needed)
 pnpm --filter qr-pure publish --access public
 ```
