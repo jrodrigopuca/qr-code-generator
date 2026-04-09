@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-04-07
+
+### Fixed
+
+- **`renderToSVG()` now forwards all SVG-specific options** — type signature changed from `QRCodeOptions & RenderOptions` to `QRCodeOptions & SVGRenderOptions`. Options `moduleShape`, `cornerRadius`, `xmlDeclaration`, and `optimizePaths` are now properly forwarded to `SVGRenderer.render()`. Previously these were silently ignored.
+- **`renderToCanvas()` now supports rounded modules** — added `moduleShape` (square/rounded) and `cornerRadius` options. When `moduleShape === "rounded"`, calls `CanvasRenderer.renderRounded()` instead of `CanvasRenderer.render()`. Previously there was no way to use rounded modules via the convenience function.
+
+### Added
+
+- 5 integration tests verifying convenience functions forward renderer-specific options (moduleShape, cornerRadius, xmlDeclaration, optimizePaths, circle shape)
+
+---
+
 ## [1.0.0] - 2026-03-31
 
 ### Changed
@@ -168,16 +181,20 @@ Original implementation, never published to npm.
 
 ## Version History Summary
 
-| Version | Date     | Highlights                                |
-| ------- | -------- | ----------------------------------------- |
-| 3.0.0   | Mar 2026 | Monorepo migration (pnpm + Turborepo)     |
-| 2.1.0   | Feb 2026 | TypeDoc API docs, GitHub Pages deployment |
-| 2.0.5   | Feb 2026 | First npm release, complete rewrite       |
-| 1.x     | Mar 2020 | Original implementation (unpublished)     |
+| Version              | Date     | Highlights                                |
+| -------------------- | -------- | ----------------------------------------- |
+| 1.1.0                | Apr 2026 | Fix convenience functions option forwarding |
+| 1.0.0 (@qr-plus/core) | Mar 2026 | Rename to @qr-plus scope                  |
+| 3.0.0 (qr-pure)     | Mar 2026 | Monorepo migration (pnpm + Turborepo)     |
+| 2.1.0                | Feb 2026 | TypeDoc API docs, GitHub Pages deployment |
+| 2.0.5                | Feb 2026 | First npm release, complete rewrite       |
+| 1.x                  | Mar 2020 | Original implementation (unpublished)     |
 
 ---
 
-[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v3.0.0...v1.0.0
 [3.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.0.5...v2.1.0
 [2.0.5]: https://github.com/jrodrigopuca/qr-code-generator/releases/tag/v2.0.5

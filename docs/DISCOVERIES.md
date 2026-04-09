@@ -1,6 +1,6 @@
 # DISCOVERIES — Hallazgos durante la implementación de `@qr-plus/react`
 
-> Fecha: 2026-04-05
+> Fecha: 2026-04-05 (actualizado: 2026-04-07)
 > Contexto: Implementación del paquete `@qr-plus/react` (componentes + hook para React 19)
 
 ---
@@ -11,7 +11,9 @@ Este documento registra descubrimientos técnicos que surgieron al construir `@q
 
 ---
 
-## 1. 🐛 BUG: Funciones de conveniencia del core no forwardean opciones de renderer
+## 1. ~~🐛 BUG~~ ✅ FIXED: Funciones de conveniencia del core no forwardeaban opciones de renderer
+
+> **Resuelto en `@qr-plus/core` v1.1.0** — `renderToSVG()` ahora acepta `SVGRenderOptions` y forwardea `moduleShape`, `cornerRadius`, `xmlDeclaration`, `optimizePaths`. `renderToCanvas()` acepta `moduleShape` (square/rounded) y `cornerRadius`, llamando a `CanvasRenderer.renderRounded()` cuando corresponde. 5 tests agregados.
 
 ### Qué pasa
 
@@ -91,7 +93,7 @@ En `@qr-plus/react`, se usa `SVGRenderer.render()` y `CanvasRenderer.render()`/`
 
 ### Issue
 
-Pendiente de creación en GitHub.
+Resuelto en `@qr-plus/core` v1.1.0. No se creó issue en GitHub — fue corregido directamente.
 
 ---
 
@@ -191,7 +193,7 @@ const svgDataURL = SVGRenderer.toDataURL(matrix, svgOptions);
 
 | # | Hallazgo | Tipo | Acción |
 |---|---|---|---|
-| 1 | Funciones de conveniencia no forwardean opciones | Bug | Fix en core + tests |
+| 1 | ~~Funciones de conveniencia no forwardean opciones~~ | ~~Bug~~ | ✅ Fixed en core v1.1.0 |
 | 2 | Canvas shapes limitados vs SVG | Limitación conocida | Documentar + considerar API unificada |
 | 3 | Mapeo size→scale post-generación | Patrón de diseño | Documentar para wrappers futuros |
 | 4 | PNG download sin deps extra | Descubrimiento positivo | — |

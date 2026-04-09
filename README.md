@@ -9,12 +9,38 @@ Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator 
 
 ## Packages
 
-| Package                            | Description                                               | Version                                                                                           |
-| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [`@qr-plus/core`](./packages/core) | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core) |
-| [`@qr-plus/cli`](./packages/cli)   | CLI tool for generating QR codes from the terminal        | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)   |
+| Package                              | Description                                               | Version                                                                                              |
+| ------------------------------------ | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [`@qr-plus/core`](./packages/core)   | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core)    |
+| [`@qr-plus/react`](./packages/react) | React components and hooks — SVG-first, fully typed        | [![npm](https://img.shields.io/npm/v/@qr-plus/react)](https://www.npmjs.com/package/@qr-plus/react)  |
+| [`@qr-plus/cli`](./packages/cli)     | CLI tool for generating QR codes from the terminal         | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)      |
 
 ## Quick Start
+
+### React
+
+```bash
+npm install @qr-plus/react
+```
+
+```tsx
+import { QRCode } from "@qr-plus/react";
+
+// Simple usage
+<QRCode value="https://example.com" />
+
+// With options
+<QRCode
+  value="https://example.com"
+  size={300}
+  errorCorrectionLevel="H"
+  moduleShape="rounded"
+  cornerRadius={0.3}
+  darkColor="#1a1a1a"
+/>
+```
+
+Also available: `<QRCodeCanvas />`, `<QRCodeDownload />`, and `useQRCode()` hook. See the [React package README](./packages/react/README.md).
 
 ### CLI
 
@@ -83,6 +109,7 @@ pnpm run docs           # Generate API docs
 qr-plus/
 ├── packages/
 │   ├── core/          ← @qr-plus/core (published to npm)
+│   ├── react/         ← @qr-plus/react (published to npm)
 │   ├── cli/           ← @qr-plus/cli (published to npm)
 │   └── e2e-tests/     ← E2E test suite
 ├── docs/              ← Ecosystem documentation

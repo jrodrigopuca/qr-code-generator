@@ -1,23 +1,23 @@
-# QR-Pure — Estado del Proyecto
+# @qr-plus — Estado del Proyecto
 
-> Documento generado: Marzo 2026  
-> Versión actual: **2.1.0**  
-> Estado: **Producción** (publicado en npm)
+> Documento generado: Marzo 2026 (actualizado: Abril 2026)
+> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0**
+> Estado: **Producción** (publicados en npm)
 
 ---
 
 ## Resumen Ejecutivo
 
-**qr-pure** es un generador de códigos QR escrito en TypeScript, sin dependencias para la funcionalidad core. Implementa el estándar ISO/IEC 18004 completo (versiones 1-40) y está publicado en npm.
+**@qr-plus** es un ecosistema de generación de códigos QR escrito en TypeScript. El core (`@qr-plus/core`) no tiene dependencias runtime e implementa el estándar ISO/IEC 18004 completo (versiones 1-40).
 
-| Métrica              | Valor                       |
-| -------------------- | --------------------------- |
-| Versión npm          | 2.1.0                       |
-| Dependencias runtime | 0                           |
-| Tests                | 352+ unit/integration + E2E |
-| Cobertura global     | ~96% statements             |
-| Build                | Dual CJS + ESM con tipos    |
-| Licencia             | MIT                         |
+| Métrica              | Valor                                         |
+| -------------------- | --------------------------------------------- |
+| Paquetes publicados  | 3 (`core`, `react`, `cli`)                    |
+| Dependencias runtime | 0 (core), 0 peer-only (react), 1 (cli)       |
+| Tests                | 446 (357 core + 48 react + 41 e2e)            |
+| Cobertura global     | ~96% statements (core)                        |
+| Build                | Dual CJS + ESM con tipos (tsup)               |
+| Licencia             | MIT                                           |
 
 ---
 
@@ -50,15 +50,15 @@
 
 | Aspecto              | Estado | Detalle                      |
 | -------------------- | ------ | ---------------------------- |
-| Unit tests           | ✅     | ~320 tests                   |
-| Integration tests    | ✅     | ~32 tests                    |
+| Unit tests           | ✅     | ~320 tests (core)            |
+| Integration tests    | ✅     | ~37 tests (core)             |
+| React tests          | ✅     | 48 tests                     |
 | E2E tests            | ✅     | 41 tests con jsQR            |
 | Cobertura statements | ✅     | 95.81%                       |
 | Cobertura branches   | ✅     | 90.88%                       |
 | Cobertura functions  | ✅     | 96.61%                       |
 | TypeScript strict    | ✅     | `strict: true`               |
-| ESLint               | ✅     | Configurado                  |
-| Prettier             | ✅     | Configurado                  |
+| Biome                | ✅     | Linting + formatting         |
 | JSDoc                | ✅     | 100% API pública documentada |
 
 ### CI/CD (100% completado)
@@ -110,52 +110,55 @@ GaloisField             |     77%    |    72%   |  77%
 ## Arquitectura
 
 ```
-src/
-├── index.ts              # Entry point + helper functions
-├── QRCode.ts             # Clase principal (orquestador)
-├── errors.ts             # Custom errors tipados
-├── types/                # Interfaces y tipos
-├── encoder/              # Numeric, Alphanumeric, Byte, ModeDetector
-├── correction/           # GaloisField, ReedSolomon
-├── patterns/             # Finder, Alignment, Timing, FormatInfo
-├── mask/                 # MaskEvaluator (8 patrones + scoring)
-├── renderer/             # Canvas, SVG, Terminal
-├── constants/            # Tablas del estándar ISO
-└── utils/                # Utilidades binarias
+packages/
+├── core/                  # @qr-plus/core — motor QR zero-dep
+│   └── src/
+│       ├── index.ts       # Entry point + helper functions
+│       ├── QRCode.ts      # Clase principal (orquestador)
+│       ├── errors.ts      # Custom errors tipados
+│       ├── types/         # Interfaces y tipos
+│       ├── encoder/       # Numeric, Alphanumeric, Byte, ModeDetector
+│       ├── correction/    # GaloisField, ReedSolomon
+│       ├── patterns/      # Finder, Alignment, Timing, FormatInfo
+│       ├── mask/          # MaskEvaluator (8 patrones + scoring)
+│       ├── renderer/      # Canvas, SVG, Terminal
+│       ├── constants/     # Tablas del estándar ISO
+│       └── utils/         # Utilidades binarias
+├── react/                 # @qr-plus/react — React 19 components + hook
+│   └── src/
+│       ├── types.ts       # Shared types
+│       ├── useQRCode.ts   # Hook principal
+│       ├── QRCode.tsx     # SVG component
+│       ├── QRCodeCanvas.tsx # Canvas component
+│       ├── QRCodeDownload.tsx # Download button
+│       └── index.ts       # Public API
+├── cli/                   # @qr-plus/cli — terminal tool
+│   └── src/
+│       └── index.ts       # CLI with commander
+└── e2e-tests/             # E2E verification with jsQR
 ```
 
 ---
 
 ## Distribución
 
-### npm Package
+### npm Packages
 
-```json
-{
-	"name": "qr-pure",
-	"version": "2.1.0",
-	"main": "dist/index.js", // CommonJS
-	"module": "dist/index.mjs", // ES Module
-	"types": "dist/index.d.ts" // TypeScript declarations
-}
-```
+| Package | Version | Peer deps |
+| --- | --- | --- |
+| `@qr-plus/core` | 1.1.0 | — |
+| `@qr-plus/react` | 1.0.0 | react ^19, react-dom ^19 |
+| `@qr-plus/cli` | 1.0.0 | — |
+| `qr-pure` | 3.0.0 | — (deprecated compat wrapper) |
 
-**Instalación:**
-
-```bash
-npm install qr-pure
-```
-
-**Unpacked size:** 889.2 kB (incluye sourcemaps)
-
-### Build Output
+### Build Output (por paquete)
 
 ```
 dist/
-├── index.js       # CJS
-├── index.mjs      # ESM
-├── index.d.ts     # Tipos CJS
-├── index.d.mts    # Tipos ESM
+├── index.js       # ESM (react, cli) / CJS (core)
+├── index.cjs      # CJS
+├── index.d.ts     # TypeScript declarations
+├── index.d.cts    # CTS declarations
 └── *.map          # Source maps
 ```
 
@@ -165,13 +168,14 @@ dist/
 
 ### Alta prioridad
 
-- [ ] CHANGELOG.md con historial de versiones
-- [ ] CONTRIBUTING.md con guía de contribución
+- [ ] CHANGELOG.md con historial de versiones (react, cli)
 - [ ] CI multi-versión Node (18, 20, 22)
 
 ### Media prioridad
 
-- [ ] CLI tool (`npx qr-pure "text"`)
+- [ ] `@qr-plus/wifi` — helpers para QR de conexión WiFi
+- [ ] `@qr-plus/vcard` — helpers para QR de contacto
+- [ ] CLI v1.1: `--shape`, `--corner-radius`
 - [ ] Embedding de logo en el centro del QR
 - [ ] Bundle size tracking con size-limit
 
@@ -188,38 +192,42 @@ dist/
 ## Scripts Disponibles
 
 ```bash
-npm run build          # Build dual CJS + ESM
-npm run typecheck      # Verificación de tipos
-npm run test           # Tests unitarios + integración
-npm run test:coverage  # Tests con cobertura
-npm run lint           # ESLint
-npm run format         # Prettier
-npm run docs           # Generar API docs (TypeDoc)
-npm run demo:node      # Demo en Node.js
-npm run demo:browser   # Demo interactiva (Vite)
+pnpm run build          # Build all packages (Turborepo)
+pnpm run test           # Run all tests (core + react + e2e)
+pnpm run typecheck      # Type check all packages
+pnpm run check          # Biome lint + format check
+pnpm run docs           # Generate API docs (TypeDoc)
 ```
 
 ---
 
 ## Enlaces
 
-| Recurso  | URL                                                      |
-| -------- | -------------------------------------------------------- |
-| npm      | https://www.npmjs.com/package/qr-pure                    |
-| GitHub   | https://github.com/jrodrigopuca/qr-code-generator        |
-| API Docs | https://jrodrigopuca.github.io/qr-code-generator/        |
-| Issues   | https://github.com/jrodrigopuca/qr-code-generator/issues |
+| Recurso      | URL                                                      |
+| ------------ | -------------------------------------------------------- |
+| npm (core)   | https://www.npmjs.com/package/@qr-plus/core              |
+| npm (react)  | https://www.npmjs.com/package/@qr-plus/react             |
+| npm (cli)    | https://www.npmjs.com/package/@qr-plus/cli               |
+| GitHub       | https://github.com/jrodrigopuca/qr-code-generator        |
+| API Docs     | https://jrodrigopuca.github.io/qr-code-generator/        |
+| Issues       | https://github.com/jrodrigopuca/qr-code-generator/issues |
 
 ---
 
 ## Historial de Versiones Recientes
 
-| Versión | Fecha    | Cambios principales                                        |
-| ------- | -------- | ---------------------------------------------------------- |
-| 2.1.0   | Feb 2026 | TypeDoc API docs, GitHub Pages deployment                  |
-| 2.0.x   | Ene 2026 | Module shapes en SVG, TerminalRenderer, demos interactivas |
-| 1.x     | -        | Desarrollo inicial, core QR generation                     |
+| Paquete | Versión | Fecha    | Cambios principales                                        |
+| ------- | ------- | -------- | ---------------------------------------------------------- |
+| core    | 1.1.0   | Apr 2026 | Fix convenience functions option forwarding                |
+| react   | 1.0.0   | Apr 2026 | Initial release — components, hook, SVG-first              |
+| core    | 1.0.0   | Mar 2026 | Rename from qr-pure to @qr-plus/core                      |
+| cli     | 1.0.0   | Mar 2026 | Initial release — terminal, SVG, PNG output                |
+| core    | 3.0.0*  | Mar 2026 | Monorepo migration (as qr-pure)                            |
+| core    | 2.1.0*  | Feb 2026 | TypeDoc API docs, GitHub Pages deployment                  |
+| core    | 2.0.5*  | Feb 2026 | First npm release as qr-pure, complete rewrite             |
+
+*Versions 2.x-3.x were published under the `qr-pure` package name.
 
 ---
 
-_Última actualización: Marzo 2026_
+_Última actualización: Abril 2026_

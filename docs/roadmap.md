@@ -1,10 +1,18 @@
 # Roadmap
 
-Estado actual del proyecto y próximos pasos para publicar `qr-pure` en npm.
+Estado actual del proyecto y próximos pasos.
 
 ---
 
-## Estado Actual (v2.1.0)
+## Estado Actual
+
+### Paquetes publicados
+
+| Paquete | Versión | Fecha |
+| --- | --- | --- |
+| `@qr-plus/core` | 1.1.0 | Apr 2026 |
+| `@qr-plus/react` | 1.0.0 | Apr 2026 |
+| `@qr-plus/cli` | 1.0.0 | Mar 2026 |
 
 ### Implementado
 
@@ -13,14 +21,15 @@ Estado actual del proyecto y próximos pasos para publicar `qr-pure` en npm.
 - **Matriz QR**: Finder, Alignment, Timing, Dark module, Format info, Version info (v≥7)
 - **Máscaras**: 8 patrones + selección automática con scoring de penalización
 - **Renderers**: Canvas (`render`, `toDataURL`, `toBlob`), SVG (rects + optimized path + module shapes) y Terminal (unicode, compact, ascii)
-- **Tests**: 352 unit/integration + E2E con jsQR
+- **Tests**: 446 (357 core + 48 react + 41 e2e)
 - **CI**: GitHub Actions (typecheck, lint, test, coverage, build, E2E, docs → GitHub Pages)
 - **Demo**: Demo browser interactiva (Vite) + script Node.js
-- **DX**: ESLint, Prettier, JSDoc en todo el código fuente, custom errors, TypeDoc API docs
+- **DX**: Biome (lint + format), JSDoc en todo el código fuente, custom errors, TypeDoc API docs
 - **Build dual CJS + ESM**: tsup configurado, genera ambos formatos con tipos
-- **VERSION sincronizada**: constante `VERSION` alineada con `package.json`
-- **Source maps**: habilitados en build
-- **Publicado en npm**: primer `npm publish` realizado ✅
+- **Monorepo**: pnpm workspaces + Turborepo
+- **React wrapper**: Componentes (`<QRCode />`, `<QRCodeCanvas />`, `<QRCodeDownload />`), hook (`useQRCode()`), 48 tests
+- **CLI**: Terminal, SVG, PNG output con zero-dep PNG encoder
+- **Publicado en npm**: core, react, cli ✅
 
 ---
 
@@ -248,7 +257,7 @@ Ideas que requieren investigación o cambios más significativos.
 | ECI (Extended Channel Interpretation) | Alta        | Permite declarar charset explícito                            |
 | Structured Append                     | Alta        | Dividir datos en múltiples QR enlazados                       |
 | Micro QR                              | Alta        | Estándar ISO/IEC 18004 Annex I                                |
-| CLI tool (`npx qr-pure "text"`)       | Baja        | Usar bin field en package.json + terminal renderer            |
+| ~~CLI tool (`npx qr-pure "text"`)~~   | ~~Baja~~    | ✅ Completado como `@qr-plus/cli`                             |
 | Bundle size tracking                  | Baja        | Integrar [size-limit](https://github.com/ai/size-limit) en CI |
 | Benchmarks vs otras librerías         | Media       | Comparar con qrcode, qr-image, etc.                           |
 
@@ -258,8 +267,8 @@ Ideas que requieren investigación o cambios más significativos.
 
 ```
 ~~Publicar (Fase 1)  ████████████████████  Crítico — ✅ COMPLETADO~~
-Calidad (Fase 2)   ███████████████░░░░░  Alta — inmediatamente después
-Features (Fase 3)  ██████████░░░░░░░░░░  Media — incrementan adopción
-Docs (Fase 4)      ████████░░░░░░░░░░░░  Media — incrementan confianza
+Calidad (Fase 2)   ██████████████░░░░░░  Alta — en progreso
+Features (Fase 3)  █████████████░░░░░░░  Media — CLI, React, module shapes DONE
+Docs (Fase 4)      █████████░░░░░░░░░░░  Media — TypeDoc done, CHANGELOG parcial
 Avanzado (Fase 5)  ████░░░░░░░░░░░░░░░░  Baja — según demanda
 ```

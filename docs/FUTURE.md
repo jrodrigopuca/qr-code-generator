@@ -1,6 +1,6 @@
 # FUTURE — Ecosistema y expansión de `@qr-plus`
 
-> Última actualización: 2026-04-05
+> Última actualización: 2026-04-07
 > Estado: documento estratégico para evolución del proyecto
 
 ---
@@ -129,7 +129,8 @@ Conviene priorizar lo que cumpla al menos uno de estos objetivos:
    ┌──────────────┐        ┌──────────────┐        ┌──────────────┐
    │ @qr-plus/cli │        │ @qr-plus/    │        │ @qr-plus/    │
    │   ✅ DONE     │        │   react      │        │   server     │
-   └──────────────┘        └──────────────┘        └──────────────┘
+   └──────────────┘        │   ✅ DONE     │        └──────────────┘
+                           └──────────────┘
           │                        │                        │
           ├──────────────┐         │         ┌──────────────┤
           ▼              ▼         ▼         ▼              ▼
@@ -194,115 +195,57 @@ Estas features estaban en la propuesta original y siguen siendo válidas para un
 
 ---
 
+### 5.2 `@qr-plus/react` — ✅ Completado
+
+**Estado: publicado en npm v1.0.0**
+
+El React wrapper fue la segunda expansión del ecosistema y la de mayor impacto potencial.
+
+#### Decisiones de diseño
+
+- **React 19 only** — peer dependency `react ^19.0.0`. No `forwardRef` (ref como prop), no `useMemo`/`useCallback` manual (React Compiler).
+- **SVG-first** — `<QRCode />` renderiza SVG por defecto. Canvas es opt-in vía `<QRCodeCanvas />`.
+- **Usa renderers directamente** — no usa las convenience functions (`renderToSVG`/`renderToCanvas`) porque necesita acceso a la matrix para caching, `toDataURL()`, y cálculo de `scale` a partir de `size`.
+- **PNG download sin dependencias extra** — pipeline client-side: SVG → Blob → Image → Canvas offscreen → `canvas.toBlob("image/png")`.
+
+#### Lo implementado
+
+| Feature | Estado |
+| --- | --- |
+| `<QRCode />` — SVG component | ✅ |
+| `<QRCodeCanvas />` — Canvas component | ✅ |
+| `<QRCodeDownload />` — Download button | ✅ |
+| `useQRCode()` hook | ✅ |
+| Module shapes (square, rounded, circle, dot) | ✅ |
+| Corner radius | ✅ |
+| Custom colors | ✅ |
+| Size → scale mapping (post-generation) | ✅ |
+| SVG data URL output | ✅ |
+| SVG download | ✅ |
+| PNG download (client-side) | ✅ |
+| Error handling | ✅ |
+| Full TypeScript types | ✅ |
+| 48 unit tests | ✅ |
+| README con documentación completa | ✅ |
+
+#### Lo pendiente de React (mejoras futuras v2)
+
+| Feature | Prioridad |
+| --- | --- |
+| Logo/image overlay en el centro | Media |
+| Animation support | Baja |
+| `onGenerated` callback | Baja |
+| React 18 compat (si hay demanda) | Baja |
+
+---
+
 ## 6. Propuestas de herramientas hermanas
 
-### 6.1 `@qr-plus/react`
+### 6.1 ~~`@qr-plus/react`~~ — ✅ Implementado
 
-#### Objetivo
-
-Crear una capa de integración idiomática para React.
-
-#### Por qué tiene sentido
-
-El core resuelve generación. Lo que falta en React es DX:
-
-- props limpias,
-- rerender controlado,
-- componentes listos,
-- integración con SSR/CSR,
-- posibilidad de descarga,
-- posibilidad de usar SVG o canvas sin boilerplate.
-
-#### Casos de uso
-
-- landing pages,
-- dashboards,
-- invitaciones,
-- pagos,
-- onboarding WiFi,
-- shares de apps,
-- paneles de admin.
-
-#### API sugerida
-
-```tsx
-import { QRCode } from "@qr-plus/react";
-
-<QRCode value="https://example.com" />
-
-<QRCode
-  value="https://example.com"
-  renderer="svg"
-  size={240}
-  errorCorrectionLevel="H"
-  moduleShape="rounded"
-  cornerRadius={0.3}
-  darkColor="#111827"
-  lightColor="#ffffff"
-/>
-```
-
-#### Componentes posibles
-
-##### `<QRCode />`
-
-Componente principal.
-
-##### `<QRCodeSVG />`
-
-Siempre SVG.
-
-##### `<QRCodeCanvas />`
-
-Siempre Canvas.
-
-##### `<QRCodeDownloadButton />`
-
-Botón auxiliar para exportación.
-
-#### Props sugeridas
-
-- `value: string`
-- `renderer?: "svg" | "canvas" | "terminal"`
-- `size?: number`
-- `scale?: number`
-- `margin?: number`
-- `errorCorrectionLevel?: "L" | "M" | "Q" | "H"`
-- `version?: number | "auto"`
-- `mask?: number | "auto"`
-- `mode?: "auto" | "numeric" | "alphanumeric" | "byte"`
-- `moduleShape?: "square" | "rounded" | "circle" | "dot"`
-- `cornerRadius?: number`
-- `darkColor?: string`
-- `lightColor?: string`
-- `className?: string`
-- `title?: string`
-
-#### Features futuras interesantes
-
-- `downloadable`
-- `fileName`
-- `logo`
-- `animate`
-- `onGenerated`
-
-#### Riesgos
-
-- no mezclar demasiada lógica visual dentro del paquete,
-- evitar dependencia fuerte con una sola estrategia de styling,
-- no inventar state innecesario.
-
-#### Complejidad
-
-**Media**.
-
-#### Impacto
-
-**Muy alto**.
-
-#### Recomendación
-
-Es la **primera expansión pendiente** del ecosistema. Debería ser el próximo paquete.
+> Ver sección 5.2. Publicado como `@qr-plus/react` v1.0.0 en npm.
+> La propuesta original se cumplió con ajustes: React 19 only (no 18), SVG-first (no `renderer` prop),
+> componentes separados en vez de prop-switching, hook con download integrado.
 
 ---
 
@@ -856,16 +799,16 @@ Estas no son prioridad, pero vale documentarlas.
 | Iniciativa | Esfuerzo | Impacto | Horizonte | Prioridad | Estado |
 | --- | --- | --- | --- | --- | --- |
 | `@qr-plus/cli` | Bajo | Alto | — | — | ✅ Completado |
-| `@qr-plus/react` | Medio | Muy alto | Corto plazo | 1 | Pendiente |
-| `@qr-plus/wifi` | Bajo | Medio | Corto plazo | 2 | Pendiente |
-| `@qr-plus/vcard` | Bajo/Medio | Medio | Corto plazo | 3 | Pendiente |
-| `@qr-plus/server` | Medio | Medio | Mediano plazo | 4 | Pendiente |
-| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 5 | Pendiente |
-| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 6 | Pendiente |
-| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 7 | Pendiente |
-| `@qr-plus/figma` | Medio | Medio | Largo plazo | 8 | Pendiente |
-| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 9 | Pendiente |
-| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 10 | Pendiente |
+| `@qr-plus/react` | Medio | Muy alto | — | — | ✅ Completado |
+| `@qr-plus/wifi` | Bajo | Medio | Corto plazo | 1 | Pendiente |
+| `@qr-plus/vcard` | Bajo/Medio | Medio | Corto plazo | 2 | Pendiente |
+| `@qr-plus/server` | Medio | Medio | Mediano plazo | 3 | Pendiente |
+| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 4 | Pendiente |
+| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 5 | Pendiente |
+| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 6 | Pendiente |
+| `@qr-plus/figma` | Medio | Medio | Largo plazo | 7 | Pendiente |
+| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 8 | Pendiente |
+| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 9 | Pendiente |
 
 ---
 
@@ -892,20 +835,17 @@ Objetivo: aumentar adopción con poco esfuerzo.
 
 ---
 
-### Fase B — Integración con frontend
+### Fase B — Integración con frontend (completada)
 
 Objetivo: entrar de lleno al ecosistema de apps web.
 
-#### Iniciativas
+#### Completado
 
-1. `@qr-plus/react`
+1. ✅ `@qr-plus/react` — publicado v1.0.0
+
+#### Pendiente
+
 2. presets visuales básicos o `@qr-plus/design-system`
-
-#### Resultado esperado
-
-- adopción en frontend,
-- ejemplos más visibles,
-- más comunidad alrededor del proyecto.
 
 ---
 
@@ -943,17 +883,17 @@ Objetivo: convertir el ecosistema en una plataforma más completa.
 
 Si hubiera que elegir **los tres próximos movimientos inteligentes**, deberían ser estos:
 
-### 1. `@qr-plus/react`
+### 1. `@qr-plus/wifi` + `@qr-plus/vcard`
 
-Porque maximiza alcance y adopción en el ecosistema web.
+Porque convierten el motor en soluciones concretas de uso diario. Quick wins con alto valor percibido.
 
-### 2. `@qr-plus/wifi` + `@qr-plus/vcard`
+### 2. `@qr-plus/cli` v2 (mejoras)
 
-Porque convierten el motor en soluciones concretas de uso diario.
+Porque exponer module shapes (`--shape`, `--corner-radius`), stdin y batch en el CLI ya existente es trabajo incremental con buen retorno.
 
-### 3. `@qr-plus/cli` v2 (mejoras)
+### 3. `@qr-plus/design-system`
 
-Porque exponer module shapes, stdin y batch en el CLI ya existente es trabajo incremental con buen retorno.
+Presets visuales listos para usar. Complementa React y el CLI, y sirve como showcase del renderer SVG.
 
 Eso te consolida un ecosistema creciente:
 
@@ -971,8 +911,8 @@ Y eso, te digo la verdad, YA empieza a parecer una familia de productos y no sol
 Al día de hoy, la recomendación estratégica es:
 
 - mantener `@qr-plus/core` como motor central zero-dep,
-- seguir evolucionando `@qr-plus/cli` con features incrementales,
-- avanzar con `@qr-plus/react` como próxima prioridad,
+- seguir evolucionando `@qr-plus/cli` con features incrementales (shapes, stdin, batch),
+- ~~avanzar con `@qr-plus/react` como próxima prioridad~~ ✅ Completado v1.0.0,
 - complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins,
 - postergar analytics, secure y reader hasta tener más señales de uso real,
 - mantener el paquete `qr-pure` como compat wrapper hasta que la migración de usuarios se complete.
@@ -984,15 +924,13 @@ Al día de hoy, la recomendación estratégica es:
 Cuando se retome este documento, el orden lógico sería:
 
 1. convertir las propuestas pendientes en issues o milestones en GitHub,
-2. arrancar con `@qr-plus/react` como siguiente paquete,
-3. evaluar si WiFi y vCard pueden ir en paralelo como paquetes simples,
-4. definir una estrategia de mejoras incrementales para el CLI (v1.1, v1.2).
+2. arrancar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins,
+3. agregar `--shape` y `--corner-radius` al CLI (v1.1),
+4. evaluar `@qr-plus/design-system` como complemento visual.
 
 ### Preguntas que conviene resolver antes de implementar
 
-- ¿`@qr-plus/react` soporta React 19 desde el inicio o también 18?
 - ¿WiFi y vCard deben exponer helpers puros (string builders) además del QR generado?
-- ¿qué nivel de soporte SSR se quiere para el wrapper React?
 - ¿cuándo deprecar formalmente el paquete `qr-pure` compat?
 - ¿qué paquete tiene mejor relación esfuerzo/impacto para el próximo release?
 
