@@ -1,0 +1,59 @@
+{
+	"name": "@qr-plus/vcard",
+	"version": "1.0.0",
+	"description": "vCard QR code string builder with validation. Generates standard-compliant vCard 3.0/4.0 content for QR code encoding.",
+	"type": "module",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		}
+	},
+	"files": ["dist", "README.md", "LICENSE"],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"prepublishOnly": "pnpm run build"
+	},
+	"keywords": [
+		"qr",
+		"qrcode",
+		"vcard",
+		"qr-code",
+		"contact",
+		"vcf",
+		"generator",
+		"typescript"
+	],
+	"author": "JRodrigoPuca",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/jrodrigopuca/qr-code-generator.git",
+		"directory": "packages/vcard"
+	},
+	"bugs": {
+		"url": "https://github.com/jrodrigopuca/qr-code-generator/issues"
+	},
+	"homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/vcard#readme",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"devDependencies": {
+		"tsup": "^8.5.1",
+		"typescript": "^6.0.2",
+		"vitest": "^4.0.18"
+	}
+}

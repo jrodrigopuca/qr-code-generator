@@ -1,6 +1,6 @@
 # FUTURE — Ecosistema y expansión de `@qr-plus`
 
-> Última actualización: 2026-04-07
+> Última actualización: 2026-04-09
 > Estado: documento estratégico para evolución del proyecto
 
 ---
@@ -134,10 +134,11 @@ Conviene priorizar lo que cumpla al menos uno de estos objetivos:
           │                        │                        │
           ├──────────────┐         │         ┌──────────────┤
           ▼              ▼         ▼         ▼              ▼
-   ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-   │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │
-   │   wifi       │ │   vcard      │ │   pdf        │ │   reader     │
-   └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+    │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │ │ @qr-plus/    │
+    │   wifi       │ │   vcard      │ │   pdf        │ │   reader     │
+    │   ✅ DONE     │ │   ✅ DONE     │ └──────────────┘ └──────────────┘
+    └──────────────┘ └──────────────┘
                                                            │
                                                            ▼
                                                     ┌──────────────┐
@@ -239,6 +240,65 @@ El React wrapper fue la segunda expansión del ecosistema y la de mayor impacto 
 
 ---
 
+### 5.3 `@qr-plus/wifi` — ✅ Completado
+
+**Estado: publicado en npm v1.0.0**
+
+WiFi QR string builder — genera strings en formato ZXing estándar para conexión WiFi.
+
+#### Decisiones de diseño
+
+- **Pure string builder** — no depende de `@qr-plus/core`. Genera el content string que el usuario pasa a `generateQR()` o `renderToSVG()`.
+- **Zero runtime dependencies** — misma filosofía que core.
+- **Validation-first** — valida SSID, password requirements por tipo de encripción, y escapa caracteres especiales (`\;,":`) según spec ZXing.
+
+#### Lo implementado
+
+| Feature | Estado |
+| --- | --- |
+| `buildWifiString()` | ✅ |
+| Encryption types (WPA, WEP, NONE) | ✅ |
+| Hidden network support | ✅ |
+| Special character escaping (ZXing spec) | ✅ |
+| `WifiError` with typed error codes | ✅ |
+| Constants: `WIFI_ENCRYPTION` | ✅ |
+| Full TypeScript types | ✅ |
+| 32 unit tests | ✅ |
+| README con documentación completa | ✅ |
+
+---
+
+### 5.4 `@qr-plus/vcard` — ✅ Completado
+
+**Estado: publicado en npm v1.0.0**
+
+vCard QR string builder — genera strings vCard 3.0/4.0 válidos para contactos.
+
+#### Decisiones de diseño
+
+- **Pure string builder** — no depende de `@qr-plus/core`. Genera el content string que el usuario pasa a `generateQR()` o `renderToSVG()`.
+- **Zero runtime dependencies** — misma filosofía que core.
+- **vCard 3.0 default** — por ser el formato más compacto y con mejor soporte en lectores QR.
+- **Flexible phone/email** — acepta string simple o array de `PhoneEntry[]`/`EmailEntry[]` con tipos (HOME, WORK, CELL, etc.).
+- **Full address support** — `VCardAddress` con street, city, region, postalCode, country.
+
+#### Lo implementado
+
+| Feature | Estado |
+| --- | --- |
+| `buildVCardString()` | ✅ |
+| vCard 3.0 (default) and 4.0 support | ✅ |
+| Single string or typed arrays for phone/email | ✅ |
+| Full address support (`VCardAddress`) | ✅ |
+| vCard special character escaping (`\;,\n`) | ✅ |
+| `VCardError` with typed error codes | ✅ |
+| Constants: `VCARD_VERSION`, `PHONE_TYPE`, `EMAIL_TYPE` | ✅ |
+| Full TypeScript types | ✅ |
+| 45 unit tests | ✅ |
+| README con documentación completa | ✅ |
+
+---
+
 ## 6. Propuestas de herramientas hermanas
 
 ### 6.1 ~~`@qr-plus/react`~~ — ✅ Implementado
@@ -249,97 +309,21 @@ El React wrapper fue la segunda expansión del ecosistema y la de mayor impacto 
 
 ---
 
-### 6.2 `@qr-plus/wifi`
+### 6.2 ~~`@qr-plus/wifi`~~ — ✅ Implementado
 
-#### Objetivo
-
-Resolver correctamente el formato estándar de QRs para conexión WiFi.
-
-#### Por qué tiene sentido
-
-Es uno de los formatos más usados en el mundo real y evita que cada usuario arme strings a mano.
-
-#### API sugerida
-
-```ts
-import { wifiQR, buildWifiString } from "@qr-plus/wifi";
-
-const result = wifiQR({
-  ssid: "MyNetwork",
-  password: "super-secret",
-  encryption: "WPA",
-  hidden: false,
-});
-
-const content = buildWifiString({
-  ssid: "MyNetwork",
-  password: "super-secret",
-  encryption: "WPA",
-});
-```
-
-#### Valor agregado
-
-- validación de campos,
-- escaping correcto,
-- tipado,
-- helpers listos para usar con `generateQR()` o `SVGRenderer.render()`.
-
-#### Complejidad
-
-**Baja**.
-
-#### Impacto
-
-**Medio**.
-
-#### Recomendación
-
-Gran candidato de corto plazo porque aporta valor con poco esfuerzo.
+> Ver sección 5.3. Publicado como `@qr-plus/wifi` v1.0.0 en npm.
+> La propuesta original se cumplió con ajustes: API es `buildWifiString()` (pure string builder),
+> no incluye `wifiQR()` helper (el usuario compone con core directamente).
+> Zero runtime dependencies, 32 tests, validación y escaping completos.
 
 ---
 
-### 6.3 `@qr-plus/vcard`
+### 6.3 ~~`@qr-plus/vcard`~~ — ✅ Implementado
 
-#### Objetivo
-
-Generar QRs de contacto con formato vCard válido.
-
-#### API sugerida
-
-```ts
-import { vcardQR, buildVCardString } from "@qr-plus/vcard";
-
-const qr = vcardQR({
-  firstName: "John",
-  lastName: "Doe",
-  email: "john@example.com",
-  phone: "+1234567890",
-  organization: "Acme Inc",
-  title: "Engineer",
-  website: "https://example.com",
-});
-```
-
-#### Valor agregado
-
-- formato estándar consistente,
-- orden correcto de campos,
-- sanitización,
-- soporte para campos opcionales,
-- helpers listos para render.
-
-#### Complejidad
-
-**Baja** a **media**.
-
-#### Impacto
-
-**Medio**.
-
-#### Recomendación
-
-Muy buena dupla junto con `@qr-plus/wifi`.
+> Ver sección 5.4. Publicado como `@qr-plus/vcard` v1.0.0 en npm.
+> La propuesta original se cumplió con mejoras: soporte para arrays tipados de phone/email,
+> address completo, vCard 3.0 y 4.0, pure string builder pattern.
+> Zero runtime dependencies, 45 tests, validación y escaping completos.
 
 ---
 
@@ -800,32 +784,29 @@ Estas no son prioridad, pero vale documentarlas.
 | --- | --- | --- | --- | --- | --- |
 | `@qr-plus/cli` | Bajo | Alto | — | — | ✅ Completado |
 | `@qr-plus/react` | Medio | Muy alto | — | — | ✅ Completado |
-| `@qr-plus/wifi` | Bajo | Medio | Corto plazo | 1 | Pendiente |
-| `@qr-plus/vcard` | Bajo/Medio | Medio | Corto plazo | 2 | Pendiente |
-| `@qr-plus/server` | Medio | Medio | Mediano plazo | 3 | Pendiente |
-| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 4 | Pendiente |
-| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 5 | Pendiente |
-| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 6 | Pendiente |
-| `@qr-plus/figma` | Medio | Medio | Largo plazo | 7 | Pendiente |
-| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 8 | Pendiente |
-| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 9 | Pendiente |
+| `@qr-plus/wifi` | Bajo | Medio | — | — | ✅ Completado |
+| `@qr-plus/vcard` | Bajo/Medio | Medio | — | — | ✅ Completado |
+| `@qr-plus/server` | Medio | Medio | Mediano plazo | 1 | Pendiente |
+| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 2 | Pendiente |
+| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 3 | Pendiente |
+| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 4 | Pendiente |
+| `@qr-plus/figma` | Medio | Medio | Largo plazo | 5 | Pendiente |
+| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 6 | Pendiente |
+| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 7 | Pendiente |
 
 ---
 
 ## 9. Roadmap recomendado
 
-### Fase A — Expansión inmediata (parcialmente completada)
+### Fase A — Expansión inmediata (✅ completada)
 
 Objetivo: aumentar adopción con poco esfuerzo.
 
 #### Completado
 
 1. ✅ `@qr-plus/cli` — publicado v1.0.0
-
-#### Pendiente
-
-2. `@qr-plus/wifi`
-3. `@qr-plus/vcard`
+2. ✅ `@qr-plus/wifi` — publicado v1.0.0
+3. ✅ `@qr-plus/vcard` — publicado v1.0.0
 
 #### Resultado esperado
 
@@ -883,9 +864,9 @@ Objetivo: convertir el ecosistema en una plataforma más completa.
 
 Si hubiera que elegir **los tres próximos movimientos inteligentes**, deberían ser estos:
 
-### 1. `@qr-plus/wifi` + `@qr-plus/vcard`
+### 1. ~~`@qr-plus/wifi` + `@qr-plus/vcard`~~ ✅ Completado
 
-Porque convierten el motor en soluciones concretas de uso diario. Quick wins con alto valor percibido.
+Ambos publicados como v1.0.0. Quick wins resueltos.
 
 ### 2. `@qr-plus/cli` v2 (mejoras)
 
@@ -913,7 +894,8 @@ Al día de hoy, la recomendación estratégica es:
 - mantener `@qr-plus/core` como motor central zero-dep,
 - seguir evolucionando `@qr-plus/cli` con features incrementales (shapes, stdin, batch),
 - ~~avanzar con `@qr-plus/react` como próxima prioridad~~ ✅ Completado v1.0.0,
-- complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins,
+- ~~complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins~~ ✅ Completados v1.0.0,
+- avanzar con `@qr-plus/design-system` como próxima prioridad,
 - postergar analytics, secure y reader hasta tener más señales de uso real,
 - mantener el paquete `qr-pure` como compat wrapper hasta que la migración de usuarios se complete.
 
@@ -923,14 +905,13 @@ Al día de hoy, la recomendación estratégica es:
 
 Cuando se retome este documento, el orden lógico sería:
 
-1. convertir las propuestas pendientes en issues o milestones en GitHub,
-2. arrancar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins,
-3. agregar `--shape` y `--corner-radius` al CLI (v1.1),
-4. evaluar `@qr-plus/design-system` como complemento visual.
+1. agregar `--shape` y `--corner-radius` al CLI (v1.1),
+2. evaluar `@qr-plus/design-system` como complemento visual,
+3. convertir las propuestas pendientes en issues o milestones en GitHub,
+4. evaluar `@qr-plus/server` si hay demanda de uso server-side.
 
 ### Preguntas que conviene resolver antes de implementar
 
-- ¿WiFi y vCard deben exponer helpers puros (string builders) además del QR generado?
 - ¿cuándo deprecar formalmente el paquete `qr-pure` compat?
 - ¿qué paquete tiene mejor relación esfuerzo/impacto para el próximo release?
 

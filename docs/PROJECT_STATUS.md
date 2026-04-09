@@ -1,7 +1,7 @@
 # @qr-plus — Estado del Proyecto
 
 > Documento generado: Marzo 2026 (actualizado: Abril 2026)
-> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0**
+> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0**
 > Estado: **Producción** (publicados en npm)
 
 ---
@@ -10,14 +10,14 @@
 
 **@qr-plus** es un ecosistema de generación de códigos QR escrito en TypeScript. El core (`@qr-plus/core`) no tiene dependencias runtime e implementa el estándar ISO/IEC 18004 completo (versiones 1-40).
 
-| Métrica              | Valor                                         |
-| -------------------- | --------------------------------------------- |
-| Paquetes publicados  | 3 (`core`, `react`, `cli`)                    |
-| Dependencias runtime | 0 (core), 0 peer-only (react), 1 (cli)       |
-| Tests                | 446 (357 core + 48 react + 41 e2e)            |
-| Cobertura global     | ~96% statements (core)                        |
-| Build                | Dual CJS + ESM con tipos (tsup)               |
-| Licencia             | MIT                                           |
+| Métrica              | Valor                                                   |
+| -------------------- | ------------------------------------------------------- |
+| Paquetes publicados  | 5 (`core`, `react`, `cli`, `wifi`, `vcard`)             |
+| Dependencias runtime | 0 (core, wifi, vcard), 0 peer-only (react), 1 (cli)    |
+| Tests                | 523 (357 core + 48 react + 32 wifi + 45 vcard + 41 e2e)|
+| Cobertura global     | ~96% statements (core)                                  |
+| Build                | Dual CJS + ESM con tipos (tsup)                         |
+| Licencia             | MIT                                                     |
 
 ---
 
@@ -53,6 +53,8 @@
 | Unit tests           | ✅     | ~320 tests (core)            |
 | Integration tests    | ✅     | ~37 tests (core)             |
 | React tests          | ✅     | 48 tests                     |
+| WiFi tests           | ✅     | 32 tests                     |
+| vCard tests          | ✅     | 45 tests                     |
 | E2E tests            | ✅     | 41 tests con jsQR            |
 | Cobertura statements | ✅     | 95.81%                       |
 | Cobertura branches   | ✅     | 90.88%                       |
@@ -135,6 +137,18 @@ packages/
 ├── cli/                   # @qr-plus/cli — terminal tool
 │   └── src/
 │       └── index.ts       # CLI with commander
+├── wifi/                  # @qr-plus/wifi — WiFi QR string builder
+│   └── src/
+│       ├── types.ts       # WifiConfig, WifiEncryption
+│       ├── errors.ts      # WifiError
+│       ├── builder.ts     # buildWifiString()
+│       └── index.ts       # Public API
+├── vcard/                 # @qr-plus/vcard — vCard QR string builder
+│   └── src/
+│       ├── types.ts       # VCardConfig, PhoneEntry, EmailEntry
+│       ├── errors.ts      # VCardError
+│       ├── builder.ts     # buildVCardString()
+│       └── index.ts       # Public API
 └── e2e-tests/             # E2E verification with jsQR
 ```
 
@@ -149,6 +163,8 @@ packages/
 | `@qr-plus/core` | 1.1.0 | — |
 | `@qr-plus/react` | 1.0.0 | react ^19, react-dom ^19 |
 | `@qr-plus/cli` | 1.0.0 | — |
+| `@qr-plus/wifi` | 1.0.0 | — |
+| `@qr-plus/vcard` | 1.0.0 | — |
 | `qr-pure` | 3.0.0 | — (deprecated compat wrapper) |
 
 ### Build Output (por paquete)
@@ -173,9 +189,8 @@ dist/
 
 ### Media prioridad
 
-- [ ] `@qr-plus/wifi` — helpers para QR de conexión WiFi
-- [ ] `@qr-plus/vcard` — helpers para QR de contacto
 - [ ] CLI v1.1: `--shape`, `--corner-radius`
+- [ ] `@qr-plus/design-system` — presets visuales
 - [ ] Embedding de logo en el centro del QR
 - [ ] Bundle size tracking con size-limit
 
@@ -208,6 +223,8 @@ pnpm run docs           # Generate API docs (TypeDoc)
 | npm (core)   | https://www.npmjs.com/package/@qr-plus/core              |
 | npm (react)  | https://www.npmjs.com/package/@qr-plus/react             |
 | npm (cli)    | https://www.npmjs.com/package/@qr-plus/cli               |
+| npm (wifi)   | https://www.npmjs.com/package/@qr-plus/wifi              |
+| npm (vcard)  | https://www.npmjs.com/package/@qr-plus/vcard             |
 | GitHub       | https://github.com/jrodrigopuca/qr-code-generator        |
 | API Docs     | https://jrodrigopuca.github.io/qr-code-generator/        |
 | Issues       | https://github.com/jrodrigopuca/qr-code-generator/issues |
@@ -218,6 +235,8 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 | Paquete | Versión | Fecha    | Cambios principales                                        |
 | ------- | ------- | -------- | ---------------------------------------------------------- |
+| wifi    | 1.0.0   | Apr 2026 | Initial release — WiFi QR string builder                   |
+| vcard   | 1.0.0   | Apr 2026 | Initial release — vCard QR string builder                  |
 | core    | 1.1.0   | Apr 2026 | Fix convenience functions option forwarding                |
 | react   | 1.0.0   | Apr 2026 | Initial release — components, hook, SVG-first              |
 | core    | 1.0.0   | Mar 2026 | Rename from qr-pure to @qr-plus/core                      |

@@ -46,6 +46,13 @@
 		}
 	},
 	"files": {
-		"includes": ["packages/core/src/**", "packages/core/tests/**"]
+		"includes": [
+			"packages/core/src/**",
+			"packages/core/tests/**",
+			"packages/wifi/src/**",
+			"packages/wifi/tests/**",
+			"packages/vcard/src/**",
+			"packages/vcard/tests/**"
+		]
 	}
 }

@@ -14,6 +14,8 @@ Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator 
 | [`@qr-plus/core`](./packages/core)   | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core)    |
 | [`@qr-plus/react`](./packages/react) | React components and hooks — SVG-first, fully typed        | [![npm](https://img.shields.io/npm/v/@qr-plus/react)](https://www.npmjs.com/package/@qr-plus/react)  |
 | [`@qr-plus/cli`](./packages/cli)     | CLI tool for generating QR codes from the terminal         | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)      |
+| [`@qr-plus/wifi`](./packages/wifi)   | WiFi QR code string builder with validation                | [![npm](https://img.shields.io/npm/v/@qr-plus/wifi)](https://www.npmjs.com/package/@qr-plus/wifi)    |
+| [`@qr-plus/vcard`](./packages/vcard) | vCard QR code string builder with validation               | [![npm](https://img.shields.io/npm/v/@qr-plus/vcard)](https://www.npmjs.com/package/@qr-plus/vcard)  |
 
 ## Quick Start
 
@@ -77,6 +79,36 @@ console.log(renderToTerminal("Hello World"));
 
 For full API documentation, see the [core package README](./packages/core/README.md).
 
+### WiFi & vCard
+
+Generate WiFi or contact QR codes with proper formatting and validation:
+
+```bash
+npm install @qr-plus/wifi @qr-plus/vcard
+```
+
+```typescript
+import { buildWifiString } from "@qr-plus/wifi";
+import { buildVCardString } from "@qr-plus/vcard";
+import { renderToSVG } from "@qr-plus/core";
+
+// WiFi QR
+const wifiSvg = renderToSVG(buildWifiString({
+  ssid: "GuestNetwork",
+  password: "welcome123",
+}));
+
+// Contact QR
+const vcardSvg = renderToSVG(buildVCardString({
+  firstName: "John",
+  lastName: "Doe",
+  phone: "+1234567890",
+  email: "john@example.com",
+}));
+```
+
+See the [WiFi README](./packages/wifi/README.md) and [vCard README](./packages/vcard/README.md) for full API docs.
+
 ## Development
 
 This project uses [pnpm](https://pnpm.io/) workspaces and [Turborepo](https://turbo.build/) for monorepo orchestration.
@@ -111,6 +143,8 @@ qr-plus/
 │   ├── core/          ← @qr-plus/core (published to npm)
 │   ├── react/         ← @qr-plus/react (published to npm)
 │   ├── cli/           ← @qr-plus/cli (published to npm)
+│   ├── wifi/          ← @qr-plus/wifi (published to npm)
+│   ├── vcard/         ← @qr-plus/vcard (published to npm)
 │   └── e2e-tests/     ← E2E test suite
 ├── docs/              ← Ecosystem documentation
 ├── turbo.json         ← Turborepo pipeline
