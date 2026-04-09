@@ -75,6 +75,13 @@ pnpm --filter @qr-plus/cli publish --access public
 # React
 pnpm --filter @qr-plus/react publish --access public
 
+# Wifi
+pnpm --filter @qr-plus/wifi publish --access public
+
+# VCard
+pnpm --filter @qr-plus/vcard publish --access public
+
+
 # Compatibility wrapper (deprecated, only if needed)
 pnpm --filter qr-pure publish --access public
 ```
