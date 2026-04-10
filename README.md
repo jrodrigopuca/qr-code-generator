@@ -16,6 +16,7 @@ Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator 
 | [`@qr-plus/cli`](./packages/cli)     | CLI tool for generating QR codes from the terminal         | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)      |
 | [`@qr-plus/wifi`](./packages/wifi)   | WiFi QR code string builder with validation                | [![npm](https://img.shields.io/npm/v/@qr-plus/wifi)](https://www.npmjs.com/package/@qr-plus/wifi)    |
 | [`@qr-plus/vcard`](./packages/vcard) | vCard QR code string builder with validation               | [![npm](https://img.shields.io/npm/v/@qr-plus/vcard)](https://www.npmjs.com/package/@qr-plus/vcard)  |
+| [`@qr-plus/compress`](./packages/compress) | QR-optimized compression (DEFLATE + Base45)           | [![npm](https://img.shields.io/npm/v/@qr-plus/compress)](https://www.npmjs.com/package/@qr-plus/compress) |
 
 ## Quick Start
 
@@ -109,6 +110,28 @@ const vcardSvg = renderToSVG(buildVCardString({
 
 See the [WiFi README](./packages/wifi/README.md) and [vCard README](./packages/vcard/README.md) for full API docs.
 
+### Compression
+
+Fit more data in a single QR code with DEFLATE + Base45 compression:
+
+```bash
+npm install @qr-plus/compress
+```
+
+```typescript
+import { compress, decompress } from "@qr-plus/compress";
+import { renderToSVG } from "@qr-plus/core";
+
+// Compress large payloads for QR
+const result = await compress({ data: largeJsonString });
+const svg = renderToSVG(result.data); // QR-ready alphanumeric string
+
+// Decompress on the other end
+const original = await decompress(result.data);
+```
+
+See the [Compress README](./packages/compress/README.md) for full API docs.
+
 ## Development
 
 This project uses [pnpm](https://pnpm.io/) workspaces and [Turborepo](https://turbo.build/) for monorepo orchestration.
@@ -145,6 +168,7 @@ qr-plus/
 │   ├── cli/           ← @qr-plus/cli (published to npm)
 │   ├── wifi/          ← @qr-plus/wifi (published to npm)
 │   ├── vcard/         ← @qr-plus/vcard (published to npm)
+│   ├── compress/      ← @qr-plus/compress (published to npm)
 │   └── e2e-tests/     ← E2E test suite
 ├── docs/              ← Ecosystem documentation
 ├── turbo.json         ← Turborepo pipeline

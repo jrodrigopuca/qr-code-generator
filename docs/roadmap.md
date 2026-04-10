@@ -15,6 +15,7 @@ Estado actual del proyecto y próximos pasos.
 | `@qr-plus/cli` | 1.0.0 | Mar 2026 |
 | `@qr-plus/wifi` | 1.0.0 | Apr 2026 |
 | `@qr-plus/vcard` | 1.0.0 | Apr 2026 |
+| `@qr-plus/compress` | 1.0.0 | Apr 2026 |
 
 ### Implementado
 
@@ -23,7 +24,7 @@ Estado actual del proyecto y próximos pasos.
 - **Matriz QR**: Finder, Alignment, Timing, Dark module, Format info, Version info (v≥7)
 - **Máscaras**: 8 patrones + selección automática con scoring de penalización
 - **Renderers**: Canvas (`render`, `toDataURL`, `toBlob`), SVG (rects + optimized path + module shapes) y Terminal (unicode, compact, ascii)
-- **Tests**: 523 (357 core + 48 react + 32 wifi + 45 vcard + 41 e2e)
+- **Tests**: 588 (357 core + 48 react + 32 wifi + 45 vcard + 65 compress + 41 e2e)
 - **CI**: GitHub Actions (typecheck, lint, test, coverage, build, E2E, docs → GitHub Pages)
 - **Demo**: Demo browser interactiva (Vite) + script Node.js
 - **DX**: Biome (lint + format), JSDoc en todo el código fuente, custom errors, TypeDoc API docs
@@ -33,7 +34,8 @@ Estado actual del proyecto y próximos pasos.
 - **CLI**: Terminal, SVG, PNG output con zero-dep PNG encoder
 - **WiFi**: String builder con validación, escaping de caracteres especiales, 32 tests
 - **vCard**: String builder vCard 3.0/4.0, múltiples teléfonos/emails, address, 45 tests
-- **Publicado en npm**: core, react, cli, wifi, vcard ✅
+- **Compress**: DEFLATE + Base45 (RFC 9285) compression, QR-alphanumeric output, async API, 65 tests
+- **Publicado en npm**: core, react, cli, wifi, vcard, compress ✅
 
 ---
 

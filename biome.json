@@ -47,12 +47,14 @@
 	},
 	"files": {
 		"includes": [
+			"packages/compress/src/**",
+			"packages/compress/tests/**",
 			"packages/core/src/**",
 			"packages/core/tests/**",
-			"packages/wifi/src/**",
-			"packages/wifi/tests/**",
 			"packages/vcard/src/**",
-			"packages/vcard/tests/**"
+			"packages/vcard/tests/**",
+			"packages/wifi/src/**",
+			"packages/wifi/tests/**"
 		]
 	}
 }

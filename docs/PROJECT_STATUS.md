@@ -1,7 +1,7 @@
 # @qr-plus — Estado del Proyecto
 
 > Documento generado: Marzo 2026 (actualizado: Abril 2026)
-> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0**
+> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
 > Estado: **Producción** (publicados en npm)
 
 ---
@@ -12,9 +12,9 @@
 
 | Métrica              | Valor                                                   |
 | -------------------- | ------------------------------------------------------- |
-| Paquetes publicados  | 5 (`core`, `react`, `cli`, `wifi`, `vcard`)             |
-| Dependencias runtime | 0 (core, wifi, vcard), 0 peer-only (react), 1 (cli)    |
-| Tests                | 523 (357 core + 48 react + 32 wifi + 45 vcard + 41 e2e)|
+| Paquetes publicados  | 6 (`core`, `react`, `cli`, `wifi`, `vcard`, `compress`) |
+| Dependencias runtime | 0 (core, wifi, vcard, compress), 0 peer-only (react), 1 (cli) |
+| Tests                | 588 (357 core + 48 react + 32 wifi + 45 vcard + 65 compress + 41 e2e) |
 | Cobertura global     | ~96% statements (core)                                  |
 | Build                | Dual CJS + ESM con tipos (tsup)                         |
 | Licencia             | MIT                                                     |
@@ -55,6 +55,7 @@
 | React tests          | ✅     | 48 tests                     |
 | WiFi tests           | ✅     | 32 tests                     |
 | vCard tests          | ✅     | 45 tests                     |
+| Compress tests       | ✅     | 65 tests                     |
 | E2E tests            | ✅     | 41 tests con jsQR            |
 | Cobertura statements | ✅     | 95.81%                       |
 | Cobertura branches   | ✅     | 90.88%                       |
@@ -149,6 +150,14 @@ packages/
 │       ├── errors.ts      # VCardError
 │       ├── builder.ts     # buildVCardString()
 │       └── index.ts       # Public API
+├── compress/              # @qr-plus/compress — QR-optimized compression
+│   └── src/
+│       ├── types.ts       # CompressConfig, CompressResult, constants
+│       ├── errors.ts      # CompressError
+│       ├── base45.ts      # Base45 codec (RFC 9285)
+│       ├── deflate.ts     # DEFLATE adapter (Node zlib / Web Streams)
+│       ├── compress.ts    # compress(), decompress()
+│       └── index.ts       # Public API
 └── e2e-tests/             # E2E verification with jsQR
 ```
 
@@ -165,6 +174,7 @@ packages/
 | `@qr-plus/cli` | 1.0.0 | — |
 | `@qr-plus/wifi` | 1.0.0 | — |
 | `@qr-plus/vcard` | 1.0.0 | — |
+| `@qr-plus/compress` | 1.0.0 | — |
 | `qr-pure` | 3.0.0 | — (deprecated compat wrapper) |
 
 ### Build Output (por paquete)
@@ -225,6 +235,7 @@ pnpm run docs           # Generate API docs (TypeDoc)
 | npm (cli)    | https://www.npmjs.com/package/@qr-plus/cli               |
 | npm (wifi)   | https://www.npmjs.com/package/@qr-plus/wifi              |
 | npm (vcard)  | https://www.npmjs.com/package/@qr-plus/vcard             |
+| npm (compress)| https://www.npmjs.com/package/@qr-plus/compress         |
 | GitHub       | https://github.com/jrodrigopuca/qr-code-generator        |
 | API Docs     | https://jrodrigopuca.github.io/qr-code-generator/        |
 | Issues       | https://github.com/jrodrigopuca/qr-code-generator/issues |
@@ -233,10 +244,11 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 ## Historial de Versiones Recientes
 
-| Paquete | Versión | Fecha    | Cambios principales                                        |
-| ------- | ------- | -------- | ---------------------------------------------------------- |
-| wifi    | 1.0.0   | Apr 2026 | Initial release — WiFi QR string builder                   |
-| vcard   | 1.0.0   | Apr 2026 | Initial release — vCard QR string builder                  |
+| Paquete  | Versión | Fecha    | Cambios principales                                        |
+| -------- | ------- | -------- | ---------------------------------------------------------- |
+| compress | 1.0.0   | Apr 2026 | Initial release — DEFLATE + Base45 QR compression          |
+| wifi     | 1.0.0   | Apr 2026 | Initial release — WiFi QR string builder                   |
+| vcard    | 1.0.0   | Apr 2026 | Initial release — vCard QR string builder                  |
 | core    | 1.1.0   | Apr 2026 | Fix convenience functions option forwarding                |
 | react   | 1.0.0   | Apr 2026 | Initial release — components, hook, SVG-first              |
 | core    | 1.0.0   | Mar 2026 | Rename from qr-pure to @qr-plus/core                      |

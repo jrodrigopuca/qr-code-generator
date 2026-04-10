@@ -139,12 +139,13 @@ Conviene priorizar lo que cumpla al menos uno de estos objetivos:
     │   wifi       │ │   vcard      │ │   pdf        │ │   reader     │
     │   ✅ DONE     │ │   ✅ DONE     │ └──────────────┘ └──────────────┘
     └──────────────┘ └──────────────┘
-                                                           │
-                                                           ▼
-                                                    ┌──────────────┐
-                                                    │ @qr-plus/    │
-                                                    │   secure     │
-                                                    └──────────────┘
+          │                                                 │
+          ▼                                                 ▼
+    ┌──────────────┐                                 ┌──────────────┐
+    │ @qr-plus/    │                                 │ @qr-plus/    │
+    │   compress   │                                 │   secure     │
+    │   ✅ DONE     │                                 └──────────────┘
+    └──────────────┘
 ```
 
 ---
@@ -296,6 +297,45 @@ vCard QR string builder — genera strings vCard 3.0/4.0 válidos para contactos
 | Full TypeScript types | ✅ |
 | 45 unit tests | ✅ |
 | README con documentación completa | ✅ |
+
+---
+
+### 5.5 `@qr-plus/compress` — ✅ Completado
+
+**Estado: v1.0.0**
+
+QR-optimized text compression — maximizes data capacity in a single QR code using DEFLATE + Base45 (RFC 9285).
+
+#### Decisiones de diseño
+
+- **DEFLATE + Base45 pipeline** — raw DEFLATE compression (RFC 1951) followed by Base45 encoding (RFC 9285). All output characters belong to the QR alphanumeric charset.
+- **QR-alphanumeric output** — By encoding to Base45 (5.5 bits/char in QR alphanumeric mode vs 8 bits/char in byte mode), we get ~46% more capacity: **4,296 chars** instead of 2,953 bytes.
+- **Self-describing header** — Format `QP1:DF:B45:<data>` includes protocol version, algorithm, and encoding. Enables future extensibility (new algorithms/encodings) while maintaining backward compatibility.
+- **Environment-adaptive** — Prefers Node.js `zlib` callback API (reliable error handling) over Web Streams API. Falls back to `CompressionStream`/`DecompressionStream` for browsers.
+- **Async API** — `compress()` and `decompress()` return Promises. Both zlib and Web Streams are inherently async.
+- **Zero runtime dependencies** — Same philosophy as core, wifi, vcard.
+
+#### Lo implementado
+
+| Feature | Estado |
+| --- | --- |
+| `compress()` → QR-ready string with header | ✅ |
+| `decompress()` → original string | ✅ |
+| Base45 codec (RFC 9285) | ✅ |
+| DEFLATE raw adapter (Node zlib + Web Streams) | ✅ |
+| Self-describing header (`QP1:DF:B45:`) | ✅ |
+| Capacity validation (4,296 char limit) | ✅ |
+| `CompressResult` with ratio metadata | ✅ |
+| `CompressError` with typed error codes (7 codes) | ✅ |
+| Constants: `COMPRESS_ALGORITHM`, `COMPRESS_ENCODING`, `PROTOCOL_VERSION`, `QR_ALPHANUMERIC_CAPACITY` | ✅ |
+| Full TypeScript types | ✅ |
+| 65 unit + integration tests | ✅ |
+| README con documentación completa | ✅ |
+
+#### Descubrimientos técnicos
+
+1. **Node.js `DecompressionStream` unhandled rejections** — Corrupted data passed to `DecompressionStream` causes unhandled rejections from stream internals that can't be caught by try/catch. Solution: prefer Node.js `zlib` callback-based API.
+2. **Header parsing** — The colon separator (`:`) is part of the Base45 charset, so header parsing must use positional limited split (find first 3 colons), not `split(":")`.
 
 ---
 
@@ -786,6 +826,7 @@ Estas no son prioridad, pero vale documentarlas.
 | `@qr-plus/react` | Medio | Muy alto | — | — | ✅ Completado |
 | `@qr-plus/wifi` | Bajo | Medio | — | — | ✅ Completado |
 | `@qr-plus/vcard` | Bajo/Medio | Medio | — | — | ✅ Completado |
+| `@qr-plus/compress` | Medio | Alto | — | — | ✅ Completado |
 | `@qr-plus/server` | Medio | Medio | Mediano plazo | 1 | Pendiente |
 | `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 2 | Pendiente |
 | `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 3 | Pendiente |
@@ -807,6 +848,7 @@ Objetivo: aumentar adopción con poco esfuerzo.
 1. ✅ `@qr-plus/cli` — publicado v1.0.0
 2. ✅ `@qr-plus/wifi` — publicado v1.0.0
 3. ✅ `@qr-plus/vcard` — publicado v1.0.0
+4. ✅ `@qr-plus/compress` — v1.0.0
 
 #### Resultado esperado
 
@@ -864,9 +906,9 @@ Objetivo: convertir el ecosistema en una plataforma más completa.
 
 Si hubiera que elegir **los tres próximos movimientos inteligentes**, deberían ser estos:
 
-### 1. ~~`@qr-plus/wifi` + `@qr-plus/vcard`~~ ✅ Completado
+### 1. ~~`@qr-plus/wifi` + `@qr-plus/vcard` + `@qr-plus/compress`~~ ✅ Completado
 
-Ambos publicados como v1.0.0. Quick wins resueltos.
+Todos publicados como v1.0.0. Quick wins resueltos + compression como capacity multiplier.
 
 ### 2. `@qr-plus/cli` v2 (mejoras)
 
@@ -881,7 +923,8 @@ Eso te consolida un ecosistema creciente:
 - core sólido y zero-dep,
 - entrada por terminal (ya hecha),
 - entrada por frontend (React),
-- soluciones concretas de negocio (WiFi, vCard).
+- soluciones concretas de negocio (WiFi, vCard),
+- maximización de capacidad (compress).
 
 Y eso, te digo la verdad, YA empieza a parecer una familia de productos y no solo una librería aislada.
 
@@ -895,6 +938,7 @@ Al día de hoy, la recomendación estratégica es:
 - seguir evolucionando `@qr-plus/cli` con features incrementales (shapes, stdin, batch),
 - ~~avanzar con `@qr-plus/react` como próxima prioridad~~ ✅ Completado v1.0.0,
 - ~~complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins~~ ✅ Completados v1.0.0,
+- ~~`@qr-plus/compress` para maximizar capacidad QR~~ ✅ Completado v1.0.0,
 - avanzar con `@qr-plus/design-system` como próxima prioridad,
 - postergar analytics, secure y reader hasta tener más señales de uso real,
 - mantener el paquete `qr-pure` como compat wrapper hasta que la migración de usuarios se complete.
