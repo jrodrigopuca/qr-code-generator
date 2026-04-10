@@ -53,6 +53,8 @@
 			"packages/core/tests/**",
 			"packages/vcard/src/**",
 			"packages/vcard/tests/**",
+			"packages/vue/src/**",
+			"packages/vue/tests/**",
 			"packages/wifi/src/**",
 			"packages/wifi/tests/**"
 		]

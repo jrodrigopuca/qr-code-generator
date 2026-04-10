@@ -13,6 +13,7 @@ Monorepo for the **@qr-plus** ecosystem — a zero-dependency QR code generator 
 | ------------------------------------ | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | [`@qr-plus/core`](./packages/core)   | Core QR code generator — zero dependencies, ISO/IEC 18004 | [![npm](https://img.shields.io/npm/v/@qr-plus/core)](https://www.npmjs.com/package/@qr-plus/core)    |
 | [`@qr-plus/react`](./packages/react) | React components and hooks — SVG-first, fully typed        | [![npm](https://img.shields.io/npm/v/@qr-plus/react)](https://www.npmjs.com/package/@qr-plus/react)  |
+| [`@qr-plus/vue`](./packages/vue)     | Vue 3 components and composables — SVG-first, fully typed  | [![npm](https://img.shields.io/npm/v/@qr-plus/vue)](https://www.npmjs.com/package/@qr-plus/vue)      |
 | [`@qr-plus/cli`](./packages/cli)     | CLI tool for generating QR codes from the terminal         | [![npm](https://img.shields.io/npm/v/@qr-plus/cli)](https://www.npmjs.com/package/@qr-plus/cli)      |
 | [`@qr-plus/wifi`](./packages/wifi)   | WiFi QR code string builder with validation                | [![npm](https://img.shields.io/npm/v/@qr-plus/wifi)](https://www.npmjs.com/package/@qr-plus/wifi)    |
 | [`@qr-plus/vcard`](./packages/vcard) | vCard QR code string builder with validation               | [![npm](https://img.shields.io/npm/v/@qr-plus/vcard)](https://www.npmjs.com/package/@qr-plus/vcard)  |
@@ -44,6 +45,35 @@ import { QRCode } from "@qr-plus/react";
 ```
 
 Also available: `<QRCodeCanvas />`, `<QRCodeDownload />`, and `useQRCode()` hook. See the [React package README](./packages/react/README.md).
+
+### Vue
+
+```bash
+npm install @qr-plus/vue
+```
+
+```vue
+<script setup>
+import { QRCode } from "@qr-plus/vue";
+</script>
+
+<template>
+  <!-- Simple usage -->
+  <QRCode value="https://example.com" />
+
+  <!-- With options -->
+  <QRCode
+    value="https://example.com"
+    :size="300"
+    error-correction-level="H"
+    module-shape="rounded"
+    :corner-radius="0.3"
+    dark-color="#1a1a1a"
+  />
+</template>
+```
+
+Also available: `<QRCodeCanvas />`, `<QRCodeDownload />`, and `useQRCode()` composable. See the [Vue package README](./packages/vue/README.md).
 
 ### CLI
 
@@ -165,6 +195,7 @@ qr-plus/
 ├── packages/
 │   ├── core/          ← @qr-plus/core (published to npm)
 │   ├── react/         ← @qr-plus/react (published to npm)
+│   ├── vue/           ← @qr-plus/vue (published to npm)
 │   ├── cli/           ← @qr-plus/cli (published to npm)
 │   ├── wifi/          ← @qr-plus/wifi (published to npm)
 │   ├── vcard/         ← @qr-plus/vcard (published to npm)

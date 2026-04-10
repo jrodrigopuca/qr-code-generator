@@ -139,13 +139,13 @@ Conviene priorizar lo que cumpla al menos uno de estos objetivos:
     │   wifi       │ │   vcard      │ │   pdf        │ │   reader     │
     │   ✅ DONE     │ │   ✅ DONE     │ └──────────────┘ └──────────────┘
     └──────────────┘ └──────────────┘
-          │                                                 │
-          ▼                                                 ▼
-    ┌──────────────┐                                 ┌──────────────┐
-    │ @qr-plus/    │                                 │ @qr-plus/    │
-    │   compress   │                                 │   secure     │
-    │   ✅ DONE     │                                 └──────────────┘
-    └──────────────┘
+          │                │                                │
+          ▼                ▼                                ▼
+    ┌──────────────┐ ┌──────────────┐                ┌──────────────┐
+    │ @qr-plus/    │ │ @qr-plus/    │                │ @qr-plus/    │
+    │   compress   │ │   vue        │                │   secure     │
+    │   ✅ DONE     │ │   ✅ DONE     │                └──────────────┘
+    └──────────────┘ └──────────────┘
 ```
 
 ---
@@ -338,6 +338,51 @@ QR-optimized text compression — maximizes data capacity in a single QR code us
 2. **Header parsing** — The colon separator (`:`) is part of the Base45 charset, so header parsing must use positional limited split (find first 3 colons), not `split(":")`.
 
 ---
+
+### 5.6 `@qr-plus/vue` — ✅ Completado
+
+**Estado: publicado en npm v1.0.0**
+
+Vue 3 wrapper — 1:1 feature parity port of `@qr-plus/react` adapted to Vue 3 idioms.
+
+#### Decisiones de diseño
+
+- **Vue 3 only** — peer dependency `vue ^3.4`. Composition API only, no Vue 2 compat.
+- **`defineComponent` + `h()` render functions** — No SFCs. Pure `.ts` files compiled by tsup with zero plugins. Users still write `<QRCode value="..." />` in their templates normally.
+- **SVG-first** — `<QRCode />` renders SVG by default. Canvas opt-in via `<QRCodeCanvas />`.
+- **`computed()` for memoization** — Replaces React's `useRef` + `useMemo` pattern. Built-in lazy evaluation and caching.
+- **`MaybeRefOrGetter<string>` inputs** — Composable accepts refs, getters, or plain values via `toValue()` for maximum flexibility.
+- **Slots instead of children** — `<QRCodeDownload>` uses default slot instead of React's `children` prop.
+- **`class` instead of `className`** — Vue convention in types and component props.
+
+#### Lo implementado
+
+| Feature | Estado |
+| --- | --- |
+| `<QRCode />` — SVG component | ✅ |
+| `<QRCodeCanvas />` — Canvas component | ✅ |
+| `<QRCodeDownload />` — Download button (slots) | ✅ |
+| `useQRCode()` composable | ✅ |
+| Module shapes (square, rounded, circle, dot) | ✅ |
+| Corner radius | ✅ |
+| Custom colors | ✅ |
+| Size → scale mapping (post-generation) | ✅ |
+| SVG data URL output | ✅ |
+| SVG download | ✅ |
+| PNG download (client-side) | ✅ |
+| Error handling | ✅ |
+| Full TypeScript types | ✅ |
+| 50 unit tests | ✅ |
+| README con documentación completa | ✅ |
+
+#### Lo pendiente de Vue (mejoras futuras v2)
+
+| Feature | Prioridad |
+| --- | --- |
+| Logo/image overlay en el centro | Media |
+| Animation support | Baja |
+| `onGenerated` callback/emit | Baja |
+| Nuxt module (`@qr-plus/nuxt`) | Media |
 
 ## 6. Propuestas de herramientas hermanas
 
@@ -792,27 +837,94 @@ No es prioridad de corto plazo.
 
 ## 7. Otras integraciones posibles
 
-Estas no son prioridad, pero vale documentarlas.
+Estas integraciones amplían la audiencia del ecosistema hacia otros frameworks y herramientas.
 
-### 7.1 `@qr-plus/vue`
+### 7.1 ~~`@qr-plus/vue`~~ — ✅ Implementado
 
-- Wrapper idiomático para Vue.
+> Ver sección 5.6. Publicado como `@qr-plus/vue` v1.0.0 en npm.
+> Port 1:1 de `@qr-plus/react` adaptado a idioms de Vue 3: `defineComponent` + `h()` render functions,
+> `computed()` para memoización, `MaybeRefOrGetter` inputs, slots en vez de children prop.
+> Vue ^3.4 peer dependency, 50 tests, SVG-first, zero runtime deps (solo core + vue peer).
+
+---
 
 ### 7.2 `@qr-plus/svelte`
 
-- Wrapper idiomático para Svelte.
+#### Objetivo
+
+Wrapper idiomático para Svelte 5 con runes (`$state`, `$derived`, `$effect`).
+
+#### Por qué tiene sentido
+
+Svelte tiene una comunidad creciente, especialmente con SvelteKit. Además, Svelte 5 con runes es más simple que React o Vue para wrappear — los componentes son más directos.
+
+#### APIs posibles
+
+```svelte
+<script>
+  import { QRCode, QRCodeCanvas } from "@qr-plus/svelte";
+</script>
+
+<QRCode value="https://example.com" size={300} moduleShape="rounded" />
+<QRCodeCanvas value="https://example.com" />
+```
+
+#### Decisiones de diseño anticipadas
+
+- **Svelte 5 only** — runes (`$state`, `$derived`, `$effect`), no `let` reactivo legacy.
+- **Peer dependency**: `svelte ^5.0`.
+- Componentes con `$props()` tipados.
+
+#### Complejidad
+
+**Baja** — Svelte es más directo que React/Vue.
+
+#### Impacto
+
+**Medio** — comunidad más pequeña pero entusiasta.
+
+---
 
 ### 7.3 `@qr-plus/solid`
 
-- Wrapper idiomático para Solid.
+- Wrapper idiomático para Solid.js.
+- Signals nativos — sin overhead de reconciliación.
+- Baja prioridad hasta que haya demanda.
 
 ### 7.4 `@qr-plus/next`
 
 - Helpers específicos para App Router, Server Components y generación edge/server.
+- Server Action para generar QR SVG sin JS en el cliente.
+- Baja prioridad — React wrapper ya funciona en Next.js.
 
 ### 7.5 `@qr-plus/bench`
 
 - Suite de benchmarks comparando `@qr-plus/core` contra otras librerías del ecosistema.
+
+### 7.6 `@qr-plus/cli` v1.1 — Mejoras incrementales
+
+#### Objetivo
+
+Exponer features del core que ya existen pero no están en el CLI.
+
+#### Features planificadas
+
+| Feature | Prioridad |
+| --- | --- |
+| `--shape` (module shapes: rounded, circle, dot) | Alta |
+| `--corner-radius` | Alta |
+| `--stdin` (pipe input desde otro comando) | Media |
+| `qr-plus batch <file>` (batch mode desde JSON/CSV) | Media |
+| `--json` (output metadata: version, ecl, mode, size) | Media |
+| `qr-plus info <content>` (QR info sin generar) | Baja |
+
+#### Complejidad
+
+**Baja** — trabajo incremental sobre v1.0.0 existente.
+
+#### Impacto
+
+**Medio** — mejora DX para usuarios de terminal.
 
 ---
 
@@ -827,13 +939,16 @@ Estas no son prioridad, pero vale documentarlas.
 | `@qr-plus/wifi` | Bajo | Medio | — | — | ✅ Completado |
 | `@qr-plus/vcard` | Bajo/Medio | Medio | — | — | ✅ Completado |
 | `@qr-plus/compress` | Medio | Alto | — | — | ✅ Completado |
-| `@qr-plus/server` | Medio | Medio | Mediano plazo | 1 | Pendiente |
-| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 2 | Pendiente |
-| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 3 | Pendiente |
-| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 4 | Pendiente |
-| `@qr-plus/figma` | Medio | Medio | Largo plazo | 5 | Pendiente |
-| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 6 | Pendiente |
-| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 7 | Pendiente |
+| `@qr-plus/vue` | Bajo/Medio | Alto | — | — | ✅ Completado |
+| `@qr-plus/cli` v1.1 | Bajo | Medio | Corto plazo | 1 | Pendiente |
+| `@qr-plus/svelte` | Bajo | Medio | Corto plazo | 2 | Pendiente |
+| `@qr-plus/design-system` | Bajo | Medio | Mediano plazo | 3 | Pendiente |
+| `@qr-plus/server` | Medio | Medio | Mediano plazo | 4 | Pendiente |
+| `@qr-plus/pdf` | Medio | Medio | Mediano plazo | 5 | Pendiente |
+| `@qr-plus/reader` | Alto | Alto | Mediano/Largo plazo | 6 | Pendiente |
+| `@qr-plus/figma` | Medio | Medio | Largo plazo | 7 | Pendiente |
+| `@qr-plus/secure` | Alto | Nicho | Largo plazo | 8 | Pendiente |
+| `@qr-plus/analytics` | Alto | Alto | Largo plazo | 9 | Pendiente |
 
 ---
 
@@ -858,17 +973,19 @@ Objetivo: aumentar adopción con poco esfuerzo.
 
 ---
 
-### Fase B — Integración con frontend (completada)
+### Fase B — Integración con frontend (en progreso)
 
-Objetivo: entrar de lleno al ecosistema de apps web.
+Objetivo: entrar de lleno al ecosistema de apps web en todos los frameworks principales.
 
 #### Completado
 
 1. ✅ `@qr-plus/react` — publicado v1.0.0
+2. ✅ `@qr-plus/vue` — publicado v1.0.0
 
 #### Pendiente
 
-2. presets visuales básicos o `@qr-plus/design-system`
+3. `@qr-plus/svelte` — wrapper Svelte 5 (runes)
+4. presets visuales básicos o `@qr-plus/design-system`
 
 ---
 
@@ -910,19 +1027,19 @@ Si hubiera que elegir **los tres próximos movimientos inteligentes**, deberían
 
 Todos publicados como v1.0.0. Quick wins resueltos + compression como capacity multiplier.
 
-### 2. `@qr-plus/cli` v2 (mejoras)
+### 2. ~~`@qr-plus/vue` — Wrapper Vue 3~~ ✅ Completado
 
-Porque exponer module shapes (`--shape`, `--corner-radius`), stdin y batch en el CLI ya existente es trabajo incremental con buen retorno.
+Publicado como v1.0.0. Port 1:1 de React, adaptado a Vue 3 idioms.
 
-### 3. `@qr-plus/design-system`
+### 3. `@qr-plus/cli` v1.1 + `@qr-plus/svelte`
 
-Presets visuales listos para usar. Complementa React y el CLI, y sirve como showcase del renderer SVG.
+CLI v1.1 expone shapes y stdin — trabajo incremental con buen retorno. Svelte amplía la cobertura de frameworks con mínimo esfuerzo.
 
 Eso te consolida un ecosistema creciente:
 
 - core sólido y zero-dep,
 - entrada por terminal (ya hecha),
-- entrada por frontend (React),
+- entrada por frontend (React, Vue, y pronto Svelte),
 - soluciones concretas de negocio (WiFi, vCard),
 - maximización de capacidad (compress).
 
@@ -935,11 +1052,13 @@ Y eso, te digo la verdad, YA empieza a parecer una familia de productos y no sol
 Al día de hoy, la recomendación estratégica es:
 
 - mantener `@qr-plus/core` como motor central zero-dep,
+- ~~avanzar con `@qr-plus/vue` como próxima prioridad~~ ✅ Completado v1.0.0,
 - seguir evolucionando `@qr-plus/cli` con features incrementales (shapes, stdin, batch),
 - ~~avanzar con `@qr-plus/react` como próxima prioridad~~ ✅ Completado v1.0.0,
 - ~~complementar con `@qr-plus/wifi` y `@qr-plus/vcard` como quick wins~~ ✅ Completados v1.0.0,
 - ~~`@qr-plus/compress` para maximizar capacidad QR~~ ✅ Completado v1.0.0,
-- avanzar con `@qr-plus/design-system` como próxima prioridad,
+- evaluar `@qr-plus/svelte` después de Vue,
+- avanzar con `@qr-plus/design-system` como complemento visual para todos los frameworks,
 - postergar analytics, secure y reader hasta tener más señales de uso real,
 - mantener el paquete `qr-pure` como compat wrapper hasta que la migración de usuarios se complete.
 
@@ -950,13 +1069,15 @@ Al día de hoy, la recomendación estratégica es:
 Cuando se retome este documento, el orden lógico sería:
 
 1. agregar `--shape` y `--corner-radius` al CLI (v1.1),
-2. evaluar `@qr-plus/design-system` como complemento visual,
-3. convertir las propuestas pendientes en issues o milestones en GitHub,
-4. evaluar `@qr-plus/server` si hay demanda de uso server-side.
+2. evaluar `@qr-plus/svelte` como tercer framework wrapper,
+3. evaluar `@qr-plus/design-system` como complemento visual cross-framework,
+4. convertir las propuestas pendientes en issues o milestones en GitHub,
+5. evaluar `@qr-plus/server` si hay demanda de uso server-side.
 
 ### Preguntas que conviene resolver antes de implementar
 
 - ¿cuándo deprecar formalmente el paquete `qr-pure` compat?
+- ¿vale la pena hacer un meta-paquete `@qr-plus/frameworks` que re-exporte react/vue/svelte?
 - ¿qué paquete tiene mejor relación esfuerzo/impacto para el próximo release?
 
 ---

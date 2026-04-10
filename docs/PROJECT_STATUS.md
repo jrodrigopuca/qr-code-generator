@@ -1,7 +1,7 @@
 # @qr-plus — Estado del Proyecto
 
 > Documento generado: Marzo 2026 (actualizado: Abril 2026)
-> Versión actual: **core 1.1.0 · react 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
+> Versión actual: **core 1.1.0 · react 1.0.0 · vue 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
 > Estado: **Producción** (publicados en npm)
 
 ---
@@ -12,9 +12,9 @@
 
 | Métrica              | Valor                                                   |
 | -------------------- | ------------------------------------------------------- |
-| Paquetes publicados  | 6 (`core`, `react`, `cli`, `wifi`, `vcard`, `compress`) |
-| Dependencias runtime | 0 (core, wifi, vcard, compress), 0 peer-only (react), 1 (cli) |
-| Tests                | 588 (357 core + 48 react + 32 wifi + 45 vcard + 65 compress + 41 e2e) |
+| Paquetes publicados  | 7 (`core`, `react`, `vue`, `cli`, `wifi`, `vcard`, `compress`) |
+| Dependencias runtime | 0 (core, wifi, vcard, compress), 0 peer-only (react, vue), 1 (cli) |
+| Tests                | 638 (357 core + 48 react + 50 vue + 32 wifi + 45 vcard + 65 compress + 41 e2e) |
 | Cobertura global     | ~96% statements (core)                                  |
 | Build                | Dual CJS + ESM con tipos (tsup)                         |
 | Licencia             | MIT                                                     |
@@ -53,6 +53,7 @@
 | Unit tests           | ✅     | ~320 tests (core)            |
 | Integration tests    | ✅     | ~37 tests (core)             |
 | React tests          | ✅     | 48 tests                     |
+| Vue tests            | ✅     | 50 tests                     |
 | WiFi tests           | ✅     | 32 tests                     |
 | vCard tests          | ✅     | 45 tests                     |
 | Compress tests       | ✅     | 65 tests                     |
@@ -135,6 +136,14 @@ packages/
 │       ├── QRCodeCanvas.tsx # Canvas component
 │       ├── QRCodeDownload.tsx # Download button
 │       └── index.ts       # Public API
+├── vue/                   # @qr-plus/vue — Vue 3 components + composable
+│   └── src/
+│       ├── types.ts       # Shared types (class instead of className)
+│       ├── useQRCode.ts   # Composable (computed, MaybeRefOrGetter)
+│       ├── QRCode.ts      # SVG component (defineComponent + h)
+│       ├── QRCodeCanvas.ts # Canvas component (ref + watch)
+│       ├── QRCodeDownload.ts # Download button (slots)
+│       └── index.ts       # Public API
 ├── cli/                   # @qr-plus/cli — terminal tool
 │   └── src/
 │       └── index.ts       # CLI with commander
@@ -171,6 +180,7 @@ packages/
 | --- | --- | --- |
 | `@qr-plus/core` | 1.1.0 | — |
 | `@qr-plus/react` | 1.0.0 | react ^19, react-dom ^19 |
+| `@qr-plus/vue` | 1.0.0 | vue ^3.4 |
 | `@qr-plus/cli` | 1.0.0 | — |
 | `@qr-plus/wifi` | 1.0.0 | — |
 | `@qr-plus/vcard` | 1.0.0 | — |
@@ -232,6 +242,7 @@ pnpm run docs           # Generate API docs (TypeDoc)
 | ------------ | -------------------------------------------------------- |
 | npm (core)   | https://www.npmjs.com/package/@qr-plus/core              |
 | npm (react)  | https://www.npmjs.com/package/@qr-plus/react             |
+| npm (vue)    | https://www.npmjs.com/package/@qr-plus/vue               |
 | npm (cli)    | https://www.npmjs.com/package/@qr-plus/cli               |
 | npm (wifi)   | https://www.npmjs.com/package/@qr-plus/wifi              |
 | npm (vcard)  | https://www.npmjs.com/package/@qr-plus/vcard             |
@@ -246,6 +257,7 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 | Paquete  | Versión | Fecha    | Cambios principales                                        |
 | -------- | ------- | -------- | ---------------------------------------------------------- |
+| vue      | 1.0.0   | Apr 2026 | Initial release — Vue 3 components, composable, SVG-first  |
 | compress | 1.0.0   | Apr 2026 | Initial release — DEFLATE + Base45 QR compression          |
 | wifi     | 1.0.0   | Apr 2026 | Initial release — WiFi QR string builder                   |
 | vcard    | 1.0.0   | Apr 2026 | Initial release — vCard QR string builder                  |
