@@ -20,7 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "tsx": "^4.21.0",
-    "turbo": "^2.5.4"
+    "turbo": "^2.9.14"
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
