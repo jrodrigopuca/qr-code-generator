@@ -39,15 +39,17 @@
   },
   "homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/cli#readme",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "@qr-plus/core": "workspace:^",
-    "commander": "^14.0.0"
+    "@runa-cmd/core": "0.2.0-beta.0",
+    "@runa-cmd/help": "0.2.0-beta.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@types/node": "^22.15.0",
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.2"
+    "@types/node": "^24.19.2",
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3"
   }
 }

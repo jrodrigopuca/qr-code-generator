@@ -168,7 +168,7 @@ This project uses [pnpm](https://pnpm.io/) workspaces and [Turborepo](https://tu
 
 ### Prerequisites
 
-- Node.js >= 18
+- Node.js >= 24
 - pnpm >= 10
 
 ### Setup

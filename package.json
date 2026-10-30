@@ -18,13 +18,13 @@
     "e2e": "pnpm --filter @qr-plus/e2e-tests test"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.10",
-    "tsx": "^4.21.0",
-    "turbo": "^2.9.14"
+    "@biomejs/biome": "^2.6.4",
+    "tsx": "^4.23.15",
+    "turbo": "^2.11.10"
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

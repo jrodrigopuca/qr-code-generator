@@ -45,13 +45,13 @@
   },
   "homepage": "https://www.npmjs.com/package/@qr-plus/core",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "@qr-plus/core": "workspace:^"
   },
   "devDependencies": {
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.2"
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3"
   }
 }

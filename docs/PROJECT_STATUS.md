@@ -146,7 +146,7 @@ packages/
 │       └── index.ts       # Public API
 ├── cli/                   # @qr-plus/cli — terminal tool
 │   └── src/
-│       └── index.ts       # CLI with commander
+│       └── index.ts       # CLI with @runa-cmd/core
 ├── wifi/                  # @qr-plus/wifi — WiFi QR string builder
 │   └── src/
 │       ├── types.ts       # WifiConfig, WifiEncryption

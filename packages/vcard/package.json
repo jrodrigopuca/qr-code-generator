@@ -18,7 +18,11 @@
 			}
 		}
 	},
-	"files": ["dist", "README.md", "LICENSE"],
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
 	"scripts": {
 		"build": "tsup",
 		"dev": "tsup --watch",
@@ -49,11 +53,11 @@
 	},
 	"homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/vcard#readme",
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=24.0.0"
 	},
 	"devDependencies": {
-		"tsup": "^8.5.1",
-		"typescript": "^6.0.2",
-		"vitest": "^4.0.18"
+		"tsup": "^9.0.0",
+		"typescript": "^6.0.3",
+		"vitest": "^5.0.5"
 	}
 }

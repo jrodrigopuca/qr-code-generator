@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js >= 18
+- Node.js >= 24
 - pnpm >= 10
 
 ## Setup
@@ -127,7 +127,7 @@ npm deprecate qr-pure@"*" "This package has been renamed to @qr-plus/core. Insta
 qr-plus/
 ├── packages/
 │   ├── core/              ← @qr-plus/core (QR engine, zero dependencies)
-│   ├── cli/               ← @qr-plus/cli (CLI tool, depends on core + commander)
+│   ├── cli/               ← @qr-plus/cli (CLI tool, depends on core + @runa-cmd)
 │   ├── qr-pure-compat/    ← qr-pure (deprecated wrapper, re-exports core)
 │   └── e2e-tests/         ← E2E test suite (verifies QR readability with jsQR)
 ├── docs/                  ← Ecosystem documentation

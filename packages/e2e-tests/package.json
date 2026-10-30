@@ -11,8 +11,8 @@
     "test:seed": "node e2e-test.js --seed=12345"
   },
   "dependencies": {
-    "canvas": "^3.2.1",
-    "jsqr": "^1.4.0",
-    "@qr-plus/core": "workspace:*"
+    "@qr-plus/core": "workspace:*",
+    "canvas": "^3.2.3",
+    "jsqr": "^1.4.0"
   }
 }

@@ -52,12 +52,12 @@
 	},
 	"homepage": "https://github.com/jrodrigopuca/qr-code-generator/tree/master/packages/compress#readme",
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=24.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^22.19.15",
-		"tsup": "^8.5.1",
-		"typescript": "^6.0.2",
-		"vitest": "^4.0.18"
+		"@types/node": "^24.19.2",
+		"tsup": "^9.0.0",
+		"typescript": "^6.0.3",
+		"vitest": "^5.0.5"
 	}
 }

@@ -17,22 +17,23 @@ import { TimingPattern } from "../../src/patterns/TimingPattern";
 
 describe("QR Matrix Structure", () => {
 	describe("Dark Module", () => {
-		it.each([
-			1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-		] as const)("should have dark module at correct position for version %i", (version) => {
-			const qr = new QRCode("A".repeat(version * 2), {
-				errorCorrectionLevel: "L",
-				version,
-			});
-			const result = qr.generate();
-			const matrix = result.matrix;
+		it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const)(
+			"should have dark module at correct position for version %i",
+			(version) => {
+				const qr = new QRCode("A".repeat(version * 2), {
+					errorCorrectionLevel: "L",
+					version,
+				});
+				const result = qr.generate();
+				const matrix = result.matrix;
 
-			// Dark module está en posición (4 * version + 9, 8)
-			const darkModuleRow = 4 * version + 9;
-			const darkModuleCol = 8;
+				// Dark module está en posición (4 * version + 9, 8)
+				const darkModuleRow = 4 * version + 9;
+				const darkModuleCol = 8;
 
-			expect(matrix[darkModuleRow][darkModuleCol]).toBe(1);
-		});
+				expect(matrix[darkModuleRow][darkModuleCol]).toBe(1);
+			},
+		);
 
 		it("should always be dark (value 1) regardless of mask", () => {
 			// Probar con diferentes máscaras
