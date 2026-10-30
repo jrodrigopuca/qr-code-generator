@@ -35,6 +35,11 @@ jobs:
       - name: Run tests with coverage
         run: pnpm run test:coverage
 
+      # Only core defines test:coverage, so this covers every package.
+      # Serial because parallel Vitest runs share node_modules/.vitest-cache.
+      - name: Run tests for all packages
+        run: pnpm exec turbo run test --concurrency=1
+
       - name: Build
         run: pnpm run build
 
