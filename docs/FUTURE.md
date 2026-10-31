@@ -62,7 +62,7 @@ Se resolvió la pregunta monorepo vs multirepo: es **monorepo**.
 
 - **Core (`@qr-plus/core`)**: zero runtime dependencies. Esto no se negocia.
 - **Paquetes satélite**: pueden tener dependencias, pero mínimas y justificadas.
-- **CLI (`@qr-plus/cli`)**: solo `@runa-cmd/core`, `@runa-cmd/help` y `zod` (peer de Runa) como dependencias runtime.
+- **CLI (`@qr-plus/cli`)**: solo `@runa-cmd/core` y `zod` (peer de Runa) como dependencias runtime.
 
 ### 2.4 Tooling
 

@@ -9,6 +9,7 @@ import {
 import type { TerminalStyle } from "@qr-plus/core";
 import { CommandError, defineCommand, runCLI } from "@runa-cmd/core";
 import { z } from "@runa-cmd/core/zod";
+import { version } from "../package.json";
 
 const SIZE_PRESETS = {
   small: { scale: 4, margin: 2 },
@@ -18,15 +19,16 @@ const SIZE_PRESETS = {
 
 type SizePreset = keyof typeof SIZE_PRESETS;
 
+// Defaults live in the command schema, so only these two can be absent.
 interface CLIOptions {
   output?: string;
   format?: "terminal" | "svg" | "png";
-  size?: SizePreset;
-  ecl?: ErrorCorrectionLevel;
-  darkColor?: string;
-  lightColor?: string;
-  style?: TerminalStyle;
-  invert?: boolean;
+  size: SizePreset;
+  ecl: ErrorCorrectionLevel;
+  darkColor: string;
+  lightColor: string;
+  style: TerminalStyle;
+  invert: boolean;
 }
 
 function resolveFormat({
@@ -55,30 +57,30 @@ function resolveFormat({
 
 function generateTerminal(content: string, options: CLIOptions): void {
   const qr = new QRCode(content, {
-    errorCorrectionLevel: options.ecl ?? "M",
+    errorCorrectionLevel: options.ecl,
   });
   const { matrix } = qr.generate();
 
   const output = TerminalRenderer.render(matrix, {
-    style: options.style ?? "unicode",
-    invert: options.invert ?? false,
+    style: options.style,
+    invert: options.invert,
   });
 
   console.log(output);
 }
 
 function generateSVG(content: string, options: CLIOptions): void {
-  const preset = SIZE_PRESETS[options.size ?? "medium"];
+  const preset = SIZE_PRESETS[options.size];
   const qr = new QRCode(content, {
-    errorCorrectionLevel: options.ecl ?? "M",
+    errorCorrectionLevel: options.ecl,
   });
   const { matrix } = qr.generate();
 
   const svg = SVGRenderer.render(matrix, {
     scale: preset.scale,
     margin: preset.margin,
-    darkColor: options.darkColor ?? "#000000",
-    lightColor: options.lightColor ?? "#ffffff",
+    darkColor: options.darkColor,
+    lightColor: options.lightColor,
   });
 
   if (options.output) {
@@ -91,16 +93,16 @@ function generateSVG(content: string, options: CLIOptions): void {
 }
 
 function generatePNG(content: string, options: CLIOptions): void {
-  const preset = SIZE_PRESETS[options.size ?? "medium"];
+  const preset = SIZE_PRESETS[options.size];
   const qr = new QRCode(content, {
-    errorCorrectionLevel: options.ecl ?? "M",
+    errorCorrectionLevel: options.ecl,
   });
   const { matrix } = qr.generate();
 
   const size = matrix.length;
   const totalSize = (size + preset.margin * 2) * preset.scale;
-  const darkColor = hexToRGB(options.darkColor ?? "#000000");
-  const lightColor = hexToRGB(options.lightColor ?? "#ffffff");
+  const darkColor = hexToRGB(options.darkColor);
+  const lightColor = hexToRGB(options.lightColor);
 
   const png = encodePNG(
     matrix,
@@ -294,7 +296,7 @@ const hexColor = (flag: string) =>
 const generate = defineCommand({
   meta: {
     name: "qr-plus",
-    version: "1.0.0",
+    version,
     description: "Generate QR codes from the terminal",
     options: {
       output: { alias: ["-o"], valueName: "file" },
@@ -317,25 +319,25 @@ const generate = defineCommand({
     format: z
       .enum(["terminal", "svg", "png"])
       .optional()
-      .describe("Output format: terminal, svg, png"),
+      .describe("Output format"),
     size: z
       .enum(["small", "medium", "large"])
       .default("medium")
-      .describe("Size preset: small, medium, large"),
+      .describe("Size preset"),
     ecl: z
       .enum(["L", "M", "Q", "H"])
       .default("M")
-      .describe("Error correction: L, M, Q, H"),
+      .describe("Error correction level"),
     darkColor: hexColor("--dark-color")
       .default("#000000")
-      .describe("Dark module color (hex)"),
+      .describe("Dark module color"),
     lightColor: hexColor("--light-color")
       .default("#ffffff")
-      .describe("Light module color (hex)"),
+      .describe("Light module color"),
     style: z
       .enum(["unicode", "compact", "ascii"])
       .default("unicode")
-      .describe("Terminal style: unicode, compact, ascii"),
+      .describe("Terminal style"),
     invert: z
       .boolean()
       .default(false)
