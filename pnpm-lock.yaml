@@ -24,8 +24,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@runa-cmd/core':
-        specifier: 0.2.0-beta.1
-        version: 0.2.0-beta.1(zod@4.6.7)
+        specifier: 0.2.0-beta.2
+        version: 0.2.0-beta.2(zod@4.6.7)
       zod:
         specifier: ^4.6.7
         version: 4.6.7
@@ -774,8 +774,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@runa-cmd/core@0.2.0-beta.1':
-    resolution: {integrity: sha512-t6KvBCPBEDha87yDEnslIJ2Y7mtLB4NfJ8LEKZprlva770X1ki2rnHbd687hhmu3EsjdWGWomIsKdBLgsopB6w==}
+  '@runa-cmd/core@0.2.0-beta.2':
+    resolution: {integrity: sha512-jFb+cqMZyDWbY/c0Q4h7X7GhcmqthvTNecsnS/FRxMRKV09kUFbGKMsgPNWgtzyIfOJXdZ4H6N+ZQLjYvHQmHA==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       zod: ^4.0.0
@@ -2138,7 +2138,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.67.2':
     optional: true
 
-  '@runa-cmd/core@0.2.0-beta.1(zod@4.6.7)':
+  '@runa-cmd/core@0.2.0-beta.2(zod@4.6.7)':
     dependencies:
       zod: 4.6.7
 

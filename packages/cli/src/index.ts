@@ -7,7 +7,7 @@ import {
   TerminalRenderer,
 } from "@qr-plus/core";
 import type { TerminalStyle } from "@qr-plus/core";
-import { CommandError, defineCommand, runCLI } from "@runa-cmd/core";
+import { defineCommand, runCLI } from "@runa-cmd/core";
 import { z } from "@runa-cmd/core/zod";
 
 const SIZE_PRESETS = {
@@ -272,10 +272,12 @@ const generate = defineCommand({
     version: "1.0.0",
     description: "Generate QR codes from the terminal",
     options: {
-      output: { alias: ["-o"] },
+      output: { alias: ["-o"], valueName: "file" },
       format: { alias: ["-f"] },
       size: { alias: ["-s"] },
       ecl: { alias: ["-e"] },
+      darkColor: { valueName: "hex" },
+      lightColor: { valueName: "hex" },
     },
   },
   args: {
@@ -315,14 +317,7 @@ const generate = defineCommand({
       .default(false)
       .describe("Invert colors (for dark terminals)"),
   },
-  run({ args: { content }, options, rest }) {
-    // Runa leaves what follows `--` to the command: ignoring it would drop data.
-    if (rest.length > 0) {
-      throw new CommandError(`Unexpected argument: '${rest[0]}'`, {
-        exitCode: 2,
-      });
-    }
-
+  run({ args: { content }, options }) {
     try {
       const format = resolveFormat(options);
 

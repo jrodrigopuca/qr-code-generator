@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@qr-plus/core": "workspace:^",
-    "@runa-cmd/core": "0.2.0-beta.1",
+    "@runa-cmd/core": "0.2.0-beta.2",
     "zod": "^4.6.7"
   },
   "devDependencies": {

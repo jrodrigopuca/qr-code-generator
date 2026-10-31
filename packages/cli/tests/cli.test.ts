@@ -314,12 +314,12 @@ describe("--help and --version", () => {
 		expect(result.exit).toBe(0);
 		expect(result.text).toContain("<content>");
 		for (const option of [
-			"-o, --output",
+			"-o, --output <file>",
 			"-f, --format",
 			"-s, --size",
 			"-e, --ecl",
-			"--dark-color",
-			"--light-color",
+			"--dark-color <hex>",
+			"--light-color <hex>",
 			"--style",
 			"--invert",
 			"--help",
@@ -362,6 +362,7 @@ describe("usage errors", () => {
 		expect(result.exit).toBe(2);
 		expect(result.stdout).toHaveLength(0);
 		expect(result.stderr).toMatch(message);
+		expect(result.stderr).toContain("qr-plus --help");
 	});
 });
 
