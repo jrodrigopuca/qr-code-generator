@@ -77,6 +77,8 @@ qr-plus "https://github.com" --invert
 qr-plus "https://github.com" -o qr.svg --dark-color "#1a1a2e" --light-color "#e0e0e0"
 ```
 
+Colors must be `#rrggbb` or `#rgb`. Keep the quotes: in bash, an unquoted `#` starts a comment.
+
 ### PNG with Size Control
 
 ```bash

@@ -220,6 +220,18 @@ describe("PNG output", () => {
 		expect(png.pixel(0, 0)).toEqual([0xff, 0xee, 0xff]);
 	});
 
+	it("expands short hex colors", () => {
+		const margin = 4;
+		const scale = 8;
+
+		const result = run("hola", "-f", "png", "--dark-color", "#abc");
+		const png = readPNG(result.stdout);
+
+		expect(png.pixel(margin * scale, margin * scale)).toEqual([
+			0xaa, 0xbb, 0xcc,
+		]);
+	});
+
 	it("writes a large image to a pipe in full", () => {
 		const result = run("x".repeat(2000), "-f", "png", "-s", "large");
 
@@ -384,6 +396,27 @@ describe("usage errors", () => {
 		["an invalid error correction level", ["hola", "-e", "Z"], /--ecl/],
 		["an invalid size", ["hola", "-f", "svg", "-s", "huge"], /--size/],
 		["an invalid style", ["hola", "--style", "nope"], /--style/],
+		[
+			"a color name",
+			["hola", "-f", "svg", "--dark-color", "red"],
+			/--dark-color/,
+		],
+		[
+			"a hex color without #",
+			["hola", "-f", "png", "--dark-color", "112233"],
+			/--dark-color/,
+		],
+		[
+			"a hex color of the wrong length",
+			["hola", "--light-color", "#1234"],
+			/--light-color/,
+		],
+		[
+			"a hex color with alpha",
+			["hola", "--light-color", "#11223344"],
+			/--light-color/,
+		],
+		["a non-hex digit", ["hola", "--dark-color", "#12345g"], /--dark-color/],
 	])("rejects %s", (_name, args, message) => {
 		const result = run(...args);
 

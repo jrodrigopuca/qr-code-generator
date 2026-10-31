@@ -123,7 +123,8 @@ function generatePNG(content: string, options: CLIOptions): void {
 // --- Minimal PNG encoder (zero dependencies) ---
 
 function hexToRGB(hex: string): [number, number, number] {
-  const h = hex.replace("#", "");
+  const digits = hex.slice(1);
+  const h = digits.length === 3 ? digits.replace(/./g, "$&$&") : digits;
   return [
     Number.parseInt(h.substring(0, 2), 16),
     Number.parseInt(h.substring(2, 4), 16),
@@ -280,6 +281,16 @@ function encodePNG(
 
 // --- CLI setup ---
 
+// Validated here because each renderer fails differently: PNG parses the digits
+// into wrong colors, and SVG copies the value into the markup.
+const hexColor = (flag: string) =>
+  z
+    .string()
+    .regex(
+      /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i,
+      `${flag} must be a hex color such as #1a1a2e or #abc`,
+    );
+
 const generate = defineCommand({
   meta: {
     name: "qr-plus",
@@ -315,12 +326,10 @@ const generate = defineCommand({
       .enum(["L", "M", "Q", "H"])
       .default("M")
       .describe("Error correction: L, M, Q, H"),
-    darkColor: z
-      .string()
+    darkColor: hexColor("--dark-color")
       .default("#000000")
       .describe("Dark module color (hex)"),
-    lightColor: z
-      .string()
+    lightColor: hexColor("--light-color")
       .default("#ffffff")
       .describe("Light module color (hex)"),
     style: z
