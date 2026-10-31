@@ -105,6 +105,10 @@ When using `-o`, the format is automatically detected from the file extension:
 
 Without `-o`, the default format is `terminal`. The `terminal` format cannot be written to a file, so `-f terminal -o <file>` is an error.
 
+## Upgrading
+
+Moving from 1.x to 2.0? See the [migration guide](https://github.com/jrodrigopuca/qr-code-generator/blob/master/docs/MIGRATION.md).
+
 ## License
 
 MIT

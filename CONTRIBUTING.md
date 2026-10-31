@@ -89,7 +89,7 @@ pnpm --filter qr-pure publish --access public
 ### Publish checklist
 
 1. **Update the version** in the package's `package.json`
-2. **Update `CHANGELOG.md`** if the package has one
+2. **Update `CHANGELOG.md`** at the repository root, and `docs/MIGRATION.md` if the release has breaking changes
 3. **Run the full check suite:**
    ```bash
    pnpm run build && pnpm run test && pnpm run typecheck && pnpm run check
