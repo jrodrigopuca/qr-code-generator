@@ -7,16 +7,8 @@ import {
   TerminalRenderer,
 } from "@qr-plus/core";
 import type { TerminalStyle } from "@qr-plus/core";
-import {
-  CommandError,
-  defineCLI,
-  defineCommand,
-  definePlugin,
-} from "@runa-cmd/core";
-import type { OptionSchema } from "@runa-cmd/core";
+import { CommandError, defineCommand, runCLI } from "@runa-cmd/core";
 import { z } from "@runa-cmd/core/zod";
-import { helpPlugin } from "@runa-cmd/help";
-import type { RenderFnCtx } from "@runa-cmd/help";
 
 const SIZE_PRESETS = {
   small: { scale: 4, margin: 2 },
@@ -274,26 +266,20 @@ function encodePNG(
 
 // --- CLI setup ---
 
-const VERSION = "1.0.0";
-
 const generate = defineCommand({
   meta: {
     name: "qr-plus",
+    version: "1.0.0",
     description: "Generate QR codes from the terminal",
     options: {
-      output: { alias: ["-o"], hint: "<file>" },
-      format: { alias: ["-f"], hint: "<type>" },
-      size: { alias: ["-s"], hint: "<preset>" },
-      ecl: { alias: ["-e"], hint: "<level>" },
-      "dark-color": { hint: "<hex>" },
-      "light-color": { hint: "<hex>" },
-      style: { hint: "<style>" },
+      output: { alias: ["-o"] },
+      format: { alias: ["-f"] },
+      size: { alias: ["-s"] },
+      ecl: { alias: ["-e"] },
     },
   },
   args: {
-    // Optional here because `qr-plus -- -text` delivers the content through
-    // ctx.rest; run() enforces that exactly one was given.
-    content: z.string().optional().describe("Text or URL to encode"),
+    content: z.string().describe("Text or URL to encode"),
   },
   options: {
     output: z
@@ -312,11 +298,11 @@ const generate = defineCommand({
       .enum(["L", "M", "Q", "H"])
       .default("M")
       .describe("Error correction: L, M, Q, H"),
-    "dark-color": z
+    darkColor: z
       .string()
       .default("#000000")
       .describe("Dark module color (hex)"),
-    "light-color": z
+    lightColor: z
       .string()
       .default("#ffffff")
       .describe("Light module color (hex)"),
@@ -329,39 +315,26 @@ const generate = defineCommand({
       .default(false)
       .describe("Invert colors (for dark terminals)"),
   },
-  run({ args, options, rest }) {
-    const [content, ...extra] =
-      args.content === undefined ? rest : [args.content, ...rest];
-
-    if (content === undefined) {
-      throw new CommandError("Missing required argument: <content>", {
+  run({ args: { content }, options, rest }) {
+    // Runa leaves what follows `--` to the command: ignoring it would drop data.
+    if (rest.length > 0) {
+      throw new CommandError(`Unexpected argument: '${rest[0]}'`, {
         exitCode: 2,
       });
     }
-    if (extra.length > 0) {
-      throw new CommandError(`Unexpected argument: '${extra[0]}'`, {
-        exitCode: 2,
-      });
-    }
-
-    const opts: CLIOptions = {
-      ...options,
-      darkColor: options["dark-color"],
-      lightColor: options["light-color"],
-    };
 
     try {
-      const format = resolveFormat(opts);
+      const format = resolveFormat(options);
 
       switch (format) {
         case "terminal":
-          generateTerminal(content, opts);
+          generateTerminal(content, options);
           break;
         case "svg":
-          generateSVG(content, opts);
+          generateSVG(content, options);
           break;
         case "png":
-          generatePNG(content, opts);
+          generatePNG(content, options);
           break;
       }
     } catch (error) {
@@ -372,68 +345,4 @@ const generate = defineCommand({
   },
 });
 
-const versionPlugin = definePlugin({
-  meta: { name: "qr-plus-version", version: VERSION },
-  capabilities: { addGlobalOptions: true },
-  setup(api) {
-    api.addGlobalOption(
-      "version",
-      z.boolean().default(false).describe("Show version"),
-      { alias: ["-V"] },
-    );
-    api.hook("onGlobalFlags", (ctx) => {
-      if (!ctx.globalOptions?.version) return;
-      console.log(VERSION);
-      ctx.shortCircuit?.();
-    });
-  },
-});
-
-function formatOption(option: OptionSchema): [string, string] {
-  const flags = [...(option.alias ?? []), `--${option.name}`].join(", ");
-  const hasDefault =
-    option.defaultValue !== undefined && option.defaultValue !== false;
-  return [
-    option.hint ? `${flags} ${option.hint}` : flags,
-    `${option.description ?? ""}${hasDefault ? ` (default: ${option.defaultValue})` : ""}`,
-  ];
-}
-
-// Runa's default renderer lists commands, not the options of a single-command
-// CLI, so the help is built here from the same schema.
-const renderHelp = ({ schema }: RenderFnCtx): string => {
-  const options =
-    "commands" in schema
-      ? [...(schema.commands[0]?.options ?? []), ...schema.globalOptions]
-      : schema.options;
-  const rows = options.map(formatOption);
-  const width = Math.max(...rows.map(([flags]) => flags.length));
-
-  return [
-    "Usage: qr-plus [options] <content>",
-    "",
-    "Generate QR codes from the terminal",
-    "",
-    "Arguments:",
-    "  content  Text or URL to encode",
-    "",
-    "Options:",
-    ...rows.map(
-      ([flags, text]) => `  ${flags.padEnd(width)}  ${text}`.trimEnd(),
-    ),
-  ].join("\n");
-};
-
-// In single-command mode Runa consumes a first token equal to the command key,
-// so the key must be unreachable: `qr-plus qr-plus` has to encode "qr-plus".
-const cli = defineCLI({
-  meta: {
-    name: "qr-plus",
-    version: VERSION,
-    description: "Generate QR codes from the terminal",
-  },
-  commands: { "\0qr-plus": generate },
-  plugins: [helpPlugin({ render: renderHelp }), versionPlugin],
-});
-
-cli.run();
+runCLI(generate);
