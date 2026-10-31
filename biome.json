@@ -47,6 +47,7 @@
 	},
 	"files": {
 		"includes": [
+			"packages/cli/tests/**",
 			"packages/compress/src/**",
 			"packages/compress/tests/**",
 			"packages/core/src/**",
