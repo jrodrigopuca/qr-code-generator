@@ -285,13 +285,7 @@ function encodePNG(
 
 // Validated here because each renderer fails differently: PNG parses the digits
 // into wrong colors, and SVG copies the value into the markup.
-const hexColor = (flag: string) =>
-  z
-    .string()
-    .regex(
-      /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i,
-      `${flag} must be a hex color such as #1a1a2e or #abc`,
-    );
+const HEX_COLOR = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 const generate = defineCommand({
   meta: {
@@ -328,12 +322,22 @@ const generate = defineCommand({
       .enum(["L", "M", "Q", "H"])
       .default("M")
       .describe("Error correction level"),
-    darkColor: hexColor("--dark-color")
+    darkColor: z
+      .string()
+      .regex(
+        HEX_COLOR,
+        "--dark-color must be a hex color such as #1a1a2e or #abc",
+      )
       .default("#000000")
       .describe("Dark module color"),
-    lightColor: hexColor("--light-color")
+    lightColor: z
+      .string()
+      .refine(
+        (color) => color === "transparent" || HEX_COLOR.test(color),
+        "--light-color must be a hex color such as #1a1a2e or #abc, or transparent",
+      )
       .default("#ffffff")
-      .describe("Light module color"),
+      .describe("Light module color, or transparent (SVG only)"),
     style: z
       .enum(["unicode", "compact", "ascii"])
       .default("unicode")
@@ -345,6 +349,14 @@ const generate = defineCommand({
   },
   run({ args: { content }, options }) {
     const format = resolveFormat(options);
+
+    // The PNG encoder writes RGB, with no alpha channel.
+    if (format === "png" && options.lightColor === "transparent") {
+      throw new CommandError(
+        "PNG output cannot be transparent: use --format svg or a hex --light-color",
+        { exitCode: 2 },
+      );
+    }
 
     try {
       switch (format) {

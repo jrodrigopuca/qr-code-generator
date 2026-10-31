@@ -18,7 +18,7 @@ Scripts need more care, because several mistakes that used to pass now fail:
 2. Replace `-V` with `--version`.
 3. Handle exit code 2 if your script checks for 1.
 4. Check every `--output`: its extension must be `.svg` or `.png`, unless you also pass `--format svg` or `--format png`.
-5. Check every color: it must be `#rrggbb` or `#rgb`.
+5. Check every color: it must be `#rrggbb` or `#rgb`. In SVG, `--light-color` also accepts `transparent`.
 6. Stop parsing `--help` or error messages, if you do.
 
 ### Exit codes
@@ -55,7 +55,7 @@ In 1.0.0, these commands exited with 0 and created no file. A script could not t
 
 ### Colors
 
-`--dark-color` and `--light-color` accept `#rrggbb` and `#rgb`, in either case. Anything else exits with 2.
+`--dark-color` and `--light-color` accept `#rrggbb` and `#rgb`, in either case. In SVG, `--light-color transparent` also works, as it did in 1.0.0. Anything else exits with 2.
 
 | Value | 1.0.0 | 2.0 | What to do |
 |---|---|---|---|
@@ -63,7 +63,9 @@ In 1.0.0, these commands exited with 0 and created no file. A script could not t
 | `112233` | Worked in PNG, invalid in SVG | Error | Add the `#` |
 | Invalid value in PNG, such as `nothex` | Wrong color | Error | Use a hex color |
 | Named color in SVG, such as `red` | Worked | Error | Use its hex value: `#ff0000` |
-| Other CSS values in SVG, such as `transparent` or `rgb(0,0,0)` | Passed to the SVG | Error | Use a hex color. A transparent background has no replacement |
+| `--light-color transparent` in PNG | Wrong color | Error | Use SVG, or a hex color |
+| `--dark-color transparent` in SVG | Passed to the SVG | Error | Use a hex color |
+| Other CSS values in SVG, such as `rgb(0,0,0)` | Passed to the SVG | Error | Use a hex color |
 
 Keep the quotes around colors. In bash, an unquoted `#` starts a comment:
 

@@ -29,7 +29,7 @@ Planned as 2.0.0.
 - **Breaking:** usage errors exit with code 2, not 1.
 - **Breaking:** invalid `--format` and `--style` values are errors. They used to exit with 0.
 - **Breaking:** `--output` fails when the format can't be determined or the format is `terminal`. It used to exit with 0 without writing a file.
-- **Breaking:** `--dark-color` and `--light-color` only accept `#rrggbb` and `#rgb`.
+- **Breaking:** `--dark-color` and `--light-color` only accept `#rrggbb` and `#rgb`, plus `transparent` for `--light-color` in SVG output.
 - **Breaking:** error messages and `--help` have a new format.
 - The CLI is built on `@runa-cmd/core` and `zod`, replacing `commander`.
 

@@ -174,6 +174,20 @@ describe("SVG output", () => {
 			}),
 		);
 	});
+
+	it("accepts a transparent background", () => {
+		const result = run("hola", "-f", "svg", "--light-color", "transparent");
+
+		expect(result.exit).toBe(0);
+		expect(result.text).toBe(
+			SVGRenderer.render(matrixOf("hola"), {
+				scale: 8,
+				margin: 4,
+				darkColor: "#000000",
+				lightColor: "transparent",
+			}),
+		);
+	});
 });
 
 describe("PNG output", () => {
@@ -292,6 +306,12 @@ describe("output files that cannot be honored", () => {
 			/--format terminal/,
 		],
 		["an empty path", ["hola", "-o", ""], "", /--output/],
+		[
+			"a transparent PNG",
+			["hola", "-o", "qr.png", "--light-color", "transparent"],
+			"qr.png",
+			/transparent/,
+		],
 	])("rejects %s", (_name, args, file, message) => {
 		const result = run(...args);
 
@@ -417,6 +437,16 @@ describe("usage errors", () => {
 			/--light-color/,
 		],
 		["a non-hex digit", ["hola", "--dark-color", "#12345g"], /--dark-color/],
+		[
+			"transparent dark modules",
+			["hola", "-f", "svg", "--dark-color", "transparent"],
+			/--dark-color/,
+		],
+		[
+			"transparent in another case",
+			["hola", "-f", "svg", "--light-color", "Transparent"],
+			/--light-color/,
+		],
 	])("rejects %s", (_name, args, message) => {
 		const result = run(...args);
 

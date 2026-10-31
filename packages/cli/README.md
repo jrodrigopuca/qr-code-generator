@@ -79,6 +79,8 @@ qr-plus "https://github.com" -o qr.svg --dark-color "#1a1a2e" --light-color "#e0
 
 Colors must be `#rrggbb` or `#rgb`. Keep the quotes: in bash, an unquoted `#` starts a comment.
 
+For a transparent background in SVG, use `--light-color transparent`. PNG output doesn't support it.
+
 ### PNG with Size Control
 
 ```bash
