@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { extname, resolve } from "node:path";
 import {
   type ErrorCorrectionLevel,
   QRCode,
@@ -7,7 +7,7 @@ import {
   TerminalRenderer,
 } from "@qr-plus/core";
 import type { TerminalStyle } from "@qr-plus/core";
-import { defineCommand, runCLI } from "@runa-cmd/core";
+import { CommandError, defineCommand, runCLI } from "@runa-cmd/core";
 import { z } from "@runa-cmd/core/zod";
 
 const SIZE_PRESETS = {
@@ -29,14 +29,28 @@ interface CLIOptions {
   invert?: boolean;
 }
 
-function resolveFormat(options: CLIOptions): "terminal" | "svg" | "png" {
-  if (options.format) return options.format;
-  if (options.output) {
-    const ext = options.output.toLowerCase().split(".").pop();
-    if (ext === "svg") return "svg";
-    if (ext === "png") return "png";
+function resolveFormat({
+  format,
+  output,
+}: CLIOptions): "terminal" | "svg" | "png" {
+  if (output === undefined) return format ?? "terminal";
+
+  if (format === "terminal") {
+    throw new CommandError(
+      "--format terminal cannot write to a file: use svg or png, or drop --output",
+      { exitCode: 2 },
+    );
   }
-  return "terminal";
+  if (format) return format;
+
+  const ext = extname(output).toLowerCase();
+  if (ext === ".svg") return "svg";
+  if (ext === ".png") return "png";
+
+  throw new CommandError(
+    `Cannot infer the format of '${output}': use a .svg or .png extension, or set --format`,
+    { exitCode: 2 },
+  );
 }
 
 function generateTerminal(content: string, options: CLIOptions): void {
@@ -286,6 +300,7 @@ const generate = defineCommand({
   options: {
     output: z
       .string()
+      .min(1, "--output cannot be empty")
       .optional()
       .describe("Output file path (format inferred from extension)"),
     format: z
@@ -318,9 +333,9 @@ const generate = defineCommand({
       .describe("Invert colors (for dark terminals)"),
   },
   run({ args: { content }, options }) {
-    try {
-      const format = resolveFormat(options);
+    const format = resolveFormat(options);
 
+    try {
       switch (format) {
         case "terminal":
           generateTerminal(content, options);

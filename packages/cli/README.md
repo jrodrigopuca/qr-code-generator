@@ -99,9 +99,9 @@ When using `-o`, the format is automatically detected from the file extension:
 
 - `.svg` → SVG output
 - `.png` → PNG output
-- Other → use `-f` to specify format
+- Other → use `-f svg` or `-f png`; without it, the command fails and writes nothing
 
-Without `-o`, the default format is `terminal`.
+Without `-o`, the default format is `terminal`. The `terminal` format cannot be written to a file, so `-f terminal -o <file>` is an error.
 
 ## License
 

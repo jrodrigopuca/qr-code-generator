@@ -262,6 +262,34 @@ describe("output files", () => {
 	});
 });
 
+describe("output files that cannot be honored", () => {
+	// Exit 0 with no file would tell a script that the file is there.
+	it.each([
+		["an unknown extension", ["hola", "-o", "qr.jpg"], "qr.jpg", /--format/],
+		["no extension", ["hola", "-o", "qr"], "qr", /--format/],
+		[
+			"a name that only looks like a format",
+			["hola", "-o", "svg"],
+			"svg",
+			/--format/,
+		],
+		[
+			"the terminal format",
+			["hola", "-f", "terminal", "-o", "qr.svg"],
+			"qr.svg",
+			/--format terminal/,
+		],
+		["an empty path", ["hola", "-o", ""], "", /--output/],
+	])("rejects %s", (_name, args, file, message) => {
+		const result = run(...args);
+
+		expect(result.exit).toBe(2);
+		expect(result.stdout).toHaveLength(0);
+		expect(result.stderr).toMatch(message);
+		if (file) expect(existsSync(join(workDir, file))).toBe(false);
+	});
+});
+
 describe("arguments", () => {
 	it.each([
 		["options before the content", ["-e", "L", "hola"], "hola", "L"],
