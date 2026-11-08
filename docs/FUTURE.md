@@ -186,7 +186,7 @@ Estas features estaban en la propuesta original y siguen siendo válidas para un
 | --- | --- |
 | `--shape` (module shapes: rounded, circle, dot) | Media |
 | `--corner-radius` | Media |
-| `--version` (QR version manual) | Baja |
+| `--qr-version` (QR version manual; `--version` ya muestra la versión de la CLI) | Baja |
 | `--mask` (mask pattern manual) | Baja |
 | `--mode` (encoding mode manual) | Baja |
 | `--json` (metadata output) | Media |

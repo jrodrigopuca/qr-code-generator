@@ -1,8 +1,8 @@
 # @qr-plus — Estado del Proyecto
 
-> Documento generado: Marzo 2026 (actualizado: Abril 2026)
+> Documento generado: Marzo 2026 (actualizado: Octubre 2026)
 > Versión actual: **core 1.1.0 · react 1.0.0 · vue 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
-> Estado: **Producción** (publicados en npm)
+> Estado: **Producción** (publicados en npm). `master` tiene cambios sin publicar: ver [CHANGELOG](../CHANGELOG.md).
 
 ---
 
@@ -13,8 +13,8 @@
 | Métrica              | Valor                                                   |
 | -------------------- | ------------------------------------------------------- |
 | Paquetes publicados  | 7 (`core`, `react`, `vue`, `cli`, `wifi`, `vcard`, `compress`) |
-| Dependencias runtime | 0 (core, wifi, vcard, compress), 0 peer-only (react, vue), 1 (cli) |
-| Tests                | 638 (357 core + 48 react + 50 vue + 32 wifi + 45 vcard + 65 compress + 41 e2e) |
+| Dependencias runtime | 0 (core, wifi, vcard, compress), 0 peer-only (react, vue), 3 (cli) |
+| Tests                | 701 (357 core + 48 react + 50 vue + 32 wifi + 45 vcard + 65 compress + 63 cli + 41 e2e) |
 | Cobertura global     | ~96% statements (core)                                  |
 | Build                | Dual CJS + ESM con tipos (tsup)                         |
 | Licencia             | MIT                                                     |
@@ -57,6 +57,7 @@
 | WiFi tests           | ✅     | 32 tests                     |
 | vCard tests          | ✅     | 45 tests                     |
 | Compress tests       | ✅     | 65 tests                     |
+| CLI tests            | ✅     | 63 tests del binario         |
 | E2E tests            | ✅     | 41 tests con jsQR            |
 | Cobertura statements | ✅     | 95.81%                       |
 | Cobertura branches   | ✅     | 90.88%                       |
@@ -145,8 +146,10 @@ packages/
 │       ├── QRCodeDownload.ts # Download button (slots)
 │       └── index.ts       # Public API
 ├── cli/                   # @qr-plus/cli — terminal tool
-│   └── src/
-│       └── index.ts       # CLI with @runa-cmd/core
+│   ├── src/
+│   │   └── index.ts       # CLI with @runa-cmd/core
+│   └── tests/
+│       └── cli.test.ts    # Runs the built binary
 ├── wifi/                  # @qr-plus/wifi — WiFi QR string builder
 │   └── src/
 │       ├── types.ts       # WifiConfig, WifiEncryption
@@ -273,4 +276,4 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 ---
 
-_Última actualización: Abril 2026_
+_Última actualización: Octubre 2026_
