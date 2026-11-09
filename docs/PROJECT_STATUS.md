@@ -1,8 +1,8 @@
 # @qr-plus — Estado del Proyecto
 
-> Documento generado: Marzo 2026 (actualizado: Octubre 2026)
-> Versión actual: **core 1.1.0 · react 1.0.0 · vue 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
-> Estado: **Producción** (publicados en npm). `master` tiene la 2.0.0 de todos los paquetes, sin publicar: ver [CHANGELOG](../CHANGELOG.md).
+> Documento generado: Marzo 2026 (actualizado: Noviembre 2026)
+> Versión actual: **2.0.0** en todos los paquetes (core, react, vue, cli, wifi, vcard, compress)
+> Estado: **Producción** (publicados en npm). Cambios de cada versión: ver [CHANGELOG](../CHANGELOG.md).
 
 ---
 
@@ -260,6 +260,7 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 | Paquete  | Versión | Fecha    | Cambios principales                                        |
 | -------- | ------- | -------- | ---------------------------------------------------------- |
+| all      | 2.0.0   | Nov 2026 | Node 24+; CLI on Runa 1.0, exit 2 for usage errors         |
 | vue      | 1.0.0   | Apr 2026 | Initial release — Vue 3 components, composable, SVG-first  |
 | compress | 1.0.0   | Apr 2026 | Initial release — DEFLATE + Base45 QR compression          |
 | wifi     | 1.0.0   | Apr 2026 | Initial release — WiFi QR string builder                   |
@@ -276,4 +277,4 @@ pnpm run docs           # Generate API docs (TypeDoc)
 
 ---
 
-_Última actualización: Octubre 2026_
+_Última actualización: Noviembre 2026_

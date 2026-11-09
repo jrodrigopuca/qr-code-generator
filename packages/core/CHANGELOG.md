@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+From 2.0.0, changes to every package are listed in the [repository changelog](../../CHANGELOG.md).
+
+---
+
+## [2.0.0] - 2026-11-08
+
+### Changed
+
+- **BREAKING:** requires Node 24 or later, up from Node 18. The API is the same. See the [migration guide](../../docs/MIGRATION.md#node-18-to-node-24).
+- Type declarations regenerated with TypeScript 6.
+
 ---
 
 ## [1.1.0] - 2026-04-07
@@ -183,6 +194,7 @@ Original implementation, never published to npm.
 
 | Version              | Date     | Highlights                                |
 | -------------------- | -------- | ----------------------------------------- |
+| 2.0.0                | Nov 2026 | Require Node 24                           |
 | 1.1.0                | Apr 2026 | Fix convenience functions option forwarding |
 | 1.0.0 (@qr-plus/core) | Mar 2026 | Rename to @qr-plus scope                  |
 | 3.0.0 (qr-pure)     | Mar 2026 | Monorepo migration (pnpm + Turborepo)     |
@@ -192,7 +204,8 @@ Original implementation, never published to npm.
 
 ---
 
-[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v3.0.0...v1.0.0
 [3.0.0]: https://github.com/jrodrigopuca/qr-code-generator/compare/v2.1.0...v3.0.0

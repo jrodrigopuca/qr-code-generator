@@ -8,8 +8,6 @@ How to move between versions with breaking changes. The full list of changes is 
 
 ## `@qr-plus/cli` 1.x to 2.0
 
-> **Not released yet.** npm still serves `@qr-plus/cli` 1.0.0. This section describes the code in `master`.
-
 QR codes don't change: for the same valid arguments, stdout and the generated files are identical to 1.0.0. If you run the CLI by hand, you only need Node 24 and to replace `-V` with `--version`.
 
 Scripts need more care, because several mistakes that used to pass now fail:
@@ -85,8 +83,6 @@ qr-plus "Hello" -o qr.svg --dark-color "#1a1a2e"
 ## Node 18 to Node 24
 
 From 2.0.0, all published packages require Node 24 or later, up from Node 18: `@qr-plus/core`, `react`, `vue`, `wifi`, `vcard`, `compress` and `cli`.
-
-> **Not released yet.** The versions on npm still declare Node 18.
 
 The libraries have no API changes, so your code doesn't need to change. If you can't upgrade Node, stay on 1.x.
 

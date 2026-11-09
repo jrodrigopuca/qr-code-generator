@@ -8,13 +8,14 @@ Breaking changes come with steps in the [migration guide](docs/MIGRATION.md).
 
 ## [Unreleased]
 
-Nothing here is on npm yet. Runa reached 1.0, so these changes ship together as
-2.0.0 of every package ([ADR-0001](docs/adr/0001-publicar-juntos-con-runa-estable.md)).
+## [2.0.0] - 2026-11-08
+
+Every package ships as 2.0.0, together, once Runa reached 1.0
+([ADR-0001](docs/adr/0001-publicar-juntos-con-runa-estable.md)).
 
 ### All published packages
 
 Applies to `@qr-plus/core`, `react`, `vue`, `wifi`, `vcard`, `compress` and `cli`.
-Planned as 2.0.0.
 
 #### Changed
 
@@ -22,8 +23,6 @@ Planned as 2.0.0.
 - Type declarations were regenerated with TypeScript 6. The public API is the same.
 
 ### @qr-plus/cli
-
-Planned as 2.0.0.
 
 #### Changed
 
