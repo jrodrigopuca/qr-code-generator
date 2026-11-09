@@ -1,6 +1,6 @@
 {
 	"name": "@qr-plus/wifi",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "WiFi QR code string builder with validation. Generates properly formatted WiFi configuration strings following the ZXing standard.",
 	"type": "module",
 	"main": "dist/index.cjs",

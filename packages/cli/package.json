@@ -1,6 +1,6 @@
 {
   "name": "@qr-plus/cli",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "CLI tool for generating QR codes from the terminal. Supports SVG, PNG, and terminal output.",
   "type": "module",
   "bin": {
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@qr-plus/core": "workspace:^",
-    "@runa-cmd/core": "1.0.0",
+    "@runa-cmd/core": "^1.0.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

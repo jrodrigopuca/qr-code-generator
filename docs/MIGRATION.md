@@ -84,11 +84,11 @@ qr-plus "Hello" -o qr.svg --dark-color "#1a1a2e"
 
 ## Node 18 to Node 24
 
-All published packages require Node 24 or later, up from Node 18: `@qr-plus/core`, `react`, `vue`, `wifi`, `vcard`, `compress` and `cli`.
+From 2.0.0, all published packages require Node 24 or later, up from Node 18: `@qr-plus/core`, `react`, `vue`, `wifi`, `vcard`, `compress` and `cli`.
 
 > **Not released yet.** The versions on npm still declare Node 18.
 
-The libraries have no API changes, so your code doesn't need to change. If you can't upgrade Node, stay on your current version.
+The libraries have no API changes, so your code doesn't need to change. If you can't upgrade Node, stay on 1.x.
 
 ## `qr-pure` to `@qr-plus/core`
 

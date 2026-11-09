@@ -1,6 +1,6 @@
 {
 	"name": "@qr-plus/vcard",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"description": "vCard QR code string builder with validation. Generates standard-compliant vCard 3.0/4.0 content for QR code encoding.",
 	"type": "module",
 	"main": "dist/index.cjs",

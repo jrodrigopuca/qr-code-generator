@@ -65,6 +65,8 @@ All packages in the `@qr-plus` npm organization require **OTP (2FA)** — npm wi
 
 ### Publish a package
 
+Publish `core` first when its version changes: `cli`, `react` and `vue` depend on it through `workspace:^`.
+
 ```bash
 # Core library
 pnpm --filter @qr-plus/core publish --access public
@@ -75,12 +77,17 @@ pnpm --filter @qr-plus/cli publish --access public
 # React
 pnpm --filter @qr-plus/react publish --access public
 
+# Vue
+pnpm --filter @qr-plus/vue publish --access public
+
 # Wifi
 pnpm --filter @qr-plus/wifi publish --access public
 
 # VCard
 pnpm --filter @qr-plus/vcard publish --access public
 
+# Compress
+pnpm --filter @qr-plus/compress publish --access public
 
 # Compatibility wrapper (deprecated, only if needed)
 pnpm --filter qr-pure publish --access public

@@ -2,7 +2,7 @@
 
 > Documento generado: Marzo 2026 (actualizado: Octubre 2026)
 > Versión actual: **core 1.1.0 · react 1.0.0 · vue 1.0.0 · cli 1.0.0 · wifi 1.0.0 · vcard 1.0.0 · compress 1.0.0**
-> Estado: **Producción** (publicados en npm). `master` tiene cambios sin publicar: ver [CHANGELOG](../CHANGELOG.md).
+> Estado: **Producción** (publicados en npm). `master` tiene la 2.0.0 de todos los paquetes, sin publicar: ver [CHANGELOG](../CHANGELOG.md).
 
 ---
 

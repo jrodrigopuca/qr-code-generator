@@ -8,12 +8,13 @@ Breaking changes come with steps in the [migration guide](docs/MIGRATION.md).
 
 ## [Unreleased]
 
-Nothing here is on npm yet. These changes will ship together once Runa is stable
-([ADR-0001](docs/adr/0001-publicar-juntos-con-runa-estable.md)).
+Nothing here is on npm yet. Runa reached 1.0, so these changes ship together as
+2.0.0 of every package ([ADR-0001](docs/adr/0001-publicar-juntos-con-runa-estable.md)).
 
 ### All published packages
 
 Applies to `@qr-plus/core`, `react`, `vue`, `wifi`, `vcard`, `compress` and `cli`.
+Planned as 2.0.0.
 
 #### Changed
 
@@ -31,7 +32,7 @@ Planned as 2.0.0.
 - **Breaking:** `--output` fails when the format can't be determined or the format is `terminal`. It used to exit with 0 without writing a file.
 - **Breaking:** `--dark-color` and `--light-color` only accept `#rrggbb` and `#rgb`, plus `transparent` for `--light-color` in SVG output.
 - **Breaking:** error messages and `--help` have a new format.
-- The CLI is built on `@runa-cmd/core` and `zod`, replacing `commander`.
+- The CLI is built on `@runa-cmd/core` 1.x and `zod`, replacing `commander`.
 
 #### Added
 

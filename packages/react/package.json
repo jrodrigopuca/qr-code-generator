@@ -1,6 +1,6 @@
 {
   "name": "@qr-plus/react",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React components and hooks for QR code generation. SVG-first, zero-config, fully typed.",
   "type": "module",
   "main": "dist/index.cjs",
